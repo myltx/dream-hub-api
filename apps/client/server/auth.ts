@@ -20,9 +20,12 @@ export function isAuthenticated() {
   return logto.isAuthenticated.value
 }
 
-export function getToken() {
+export async function getToken() {
   // console.log(userStore.user, 'user')
-  return ''
+  const accessToken = await logto.getAccessToken(runtimeConfig?.public.backendEndpoint);
+  console.log(accessToken, 'token')
+
+  return accessToken;
 }
 export function fetchUserInfo() {
   return logto.fetchUserInfo()

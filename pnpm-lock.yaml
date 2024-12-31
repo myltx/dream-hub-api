@@ -25,6 +25,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.47.10
         version: 2.47.10
+      jose:
+        specifier: ^5.9.6
+        version: 5.9.6
       reflect-metadata:
         specifier: ^0.2.0
         version: 0.2.2

@@ -27,6 +27,15 @@ export class SupabaseService {
     }
     return data;
   }
+// 获取某些数据
+  async getDataByQuery(table: string): Promise<any> {
+    const { data, error } = await this.supabase.from(table).select('*');
+    if (error) {
+      throw error;
+    }
+    return data;
+  }
+  
 
   async insertData(table: string, payload: Record<string, any>): Promise<any> {
     const { data, error } = await this.supabase.from(table).insert(payload);

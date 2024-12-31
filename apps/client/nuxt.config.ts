@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     public: {
       logtoAppId: process.env.NUXT_LOGTO_APP_ID || "",
       logtoEndpoint: process.env.NUXT_LOGTO_ENDPOINT || "",
-      // backendEndpoint: [''],
+      backendEndpoint: process.env.BACKEND_ENDPOINT || "",
       signInRedirectURI: process.env.LOGTO_SIGN_IN_REDIRECT_URI || "",
       signOutRedirectURI: process.env.LOGTO_SIGN_OUT_REDIRECT_URI || "",
       supabaseUrl: process.env.SUPABASE_URL || "",
