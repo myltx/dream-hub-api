@@ -104,9 +104,15 @@ importers:
       '@nuxtjs/color-mode':
         specifier: 3.5.2
         version: 3.5.2
+      '@pinia/nuxt':
+        specifier: ^0.9.0
+        version: 0.9.0(pinia@2.3.0)
       nuxt:
         specifier: ^3.15.0
         version: 3.15.0(typescript@5.7.2)(vite@6.0.6)
+      pinia:
+        specifier: ^2.3.0
+        version: 2.3.0(typescript@5.7.2)(vue@3.5.13)
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.7.2)
@@ -2426,6 +2432,19 @@ packages:
       '@parcel/watcher-win32-arm64': 2.5.0
       '@parcel/watcher-win32-ia32': 2.5.0
       '@parcel/watcher-win32-x64': 2.5.0
+    dev: false
+
+  /@pinia/nuxt@0.9.0(pinia@2.3.0):
+    resolution: {integrity: sha512-2yeRo7LeyCF68AbNeL3xu2h6uw0617RkcsYxmA8DJM0R0PMdz5wQHnc44KeENQxR/Mrq8T910XVT6buosqsjBQ==}
+    peerDependencies:
+      pinia: ^2.3.0
+    dependencies:
+      '@nuxt/kit': 3.15.0(magicast@0.3.5)
+      pinia: 2.3.0(typescript@5.7.2)(vue@3.5.13)
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
     dev: false
 
   /@pkgjs/parseargs@0.11.0:
@@ -8364,6 +8383,23 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /pinia@2.3.0(typescript@5.7.2)(vue@3.5.13):
+    resolution: {integrity: sha512-ohZj3jla0LL0OH5PlLTDMzqKiVw2XARmC1XYLdLWIPBMdhDW/123ZWr4zVAhtJm+aoSkFa13pYXskAvAscIkhQ==}
+    peerDependencies:
+      typescript: '>=4.4.4'
+      vue: ^2.7.0 || ^3.5.11
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      typescript: 5.7.2
+      vue: 3.5.13(typescript@5.7.2)
+      vue-demi: 0.14.10(vue@3.5.13)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+    dev: false
+
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
@@ -10593,6 +10629,21 @@ packages:
     resolution: {integrity: sha512-+qALLI5cQncuetYOXp4yScwYvqh8c6SMXee3B+M7oTZxOgtESP0l4j/fXdEJoZ+EdMxkGWIj+aSEyjXkOdmd7g==}
     dependencies:
       ufo: 1.5.4
+    dev: false
+
+  /vue-demi@0.14.10(vue@3.5.13):
+    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.5.13(typescript@5.7.2)
     dev: false
 
   /vue-devtools-stub@0.1.0:

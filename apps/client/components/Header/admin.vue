@@ -71,7 +71,6 @@ const items = [
   }],
 ] as DropdownItem[][]
 const handleDropdownItemClick = (item: DropdownItem) => {
-  console.log('handleDropdownItemClick', item)
   if (item.key === 'frontend') {
     router.push('/')
   }

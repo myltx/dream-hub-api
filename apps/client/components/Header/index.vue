@@ -31,7 +31,7 @@
         :ui="{ item: { disabled: 'cursor-text select-text' } }"
         :popper="{ placement: 'bottom-start' }"
       >
-        <!-- <UAvatar :src="user?.user?.avatar" />
+        <UAvatar :src="user?.user?.avatar" />
         <template #account="{ item }">
           <div
             class="text-left"
@@ -49,7 +49,7 @@
               {{ item.label }}
             </p>
           </div>
-        </template> -->
+        </template>
 
         <template
           #item="{ item }"
@@ -80,10 +80,10 @@
 
 <script setup lang="ts">
 import { signOut, isAuthenticated, signIn } from '~/server/auth'
-// import { useUserStore } from '~/store/user'
+import { useUserStore } from '~/store/user'
 
 const router = useRouter()
-// const { user } = useUserStore()
+const { user } = useUserStore()
 console.log(isAuthenticated() , 'isAuthenticated')
 type DropdownItem = {
   label: string
@@ -127,7 +127,6 @@ watchEffect(() => {
   showItems.value = items.map(subArr => subArr.filter(item => item.show)).filter(item => item.length)
 })
 const handleDropdownItemClick = (item: DropdownItem) => {
-  console.log('handleDropdownItemClick', item)
   if (item.key === 'admin') {
     router.push('/admin/home')
   }

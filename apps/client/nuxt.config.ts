@@ -10,7 +10,13 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   plugins: ["~/plugins/logto.ts"],
-  modules: ["@unocss/nuxt", "@nuxtjs/color-mode", "@nuxt/icon", "@nuxt/ui"],
+  modules: [
+    "@unocss/nuxt",
+    "@nuxtjs/color-mode",
+    "@nuxt/icon",
+    "@nuxt/ui",
+    "@pinia/nuxt",
+  ],
   runtimeConfig: {
     logtoAppId: process.env.NUXT_LOGTO_APP_ID,
     logtoEndpoint: process.env.NUXT_LOGTO_ENDPOINT,
