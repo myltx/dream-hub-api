@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:client": "pnpm --filter=@myltx/client dev"
+    "dev:client": "pnpm --filter=@myltx/client dev",
+    "dev:server": "pnpm --filter=@myltx/api start:dev"
   },
   "keywords": [],
   "author": "",
