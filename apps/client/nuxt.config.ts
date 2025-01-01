@@ -36,9 +36,6 @@ export default defineNuxtConfig({
     nuxtLayers: true,
   },
 
-  supabase: {
-    redirect: false,
-  },
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
     fallback: 'light', // fallback value if not system preference found
