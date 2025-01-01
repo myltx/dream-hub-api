@@ -17,9 +17,8 @@ import { createRemoteJWKSet, jwtVerify } from 'jose';
 export class UserController {
   private jwks: any;
   constructor(private readonly userService: UserService) {
-    this.jwks = createRemoteJWKSet(
-      new URL('/oidc/jwks', process.env.LOGTO_ENDPOINT),
-    );
+    // Generate a JWKS using jwks_uri obtained from the Logto server
+    this.jwks = createRemoteJWKSet(new URL(process.env.LOGTO_ENDPOINT + '/oidc/jwks'));
   }
 
   @Post()
@@ -29,19 +28,20 @@ export class UserController {
 
   @Get()
   async findAll(@Headers('Authorization') Authorization: string) {
-    console.log(Authorization, 'Authorization');
-    console.log(this.jwks, 'jwks');
+    const token = Authorization.replace('Bearer ', '');
+    console.log(token, 'token');
     const { payload } = await jwtVerify(
       // The raw Bearer Token extracted from the request header
-      Authorization,
+      token,
       this.jwks,
       {
         // Expected issuer of the token, issued by the Logto server
-        issuer: new URL('oidc', process.env.LOGTO_ENDPOINT).href,
+        issuer: process.env.LOGTO_ENDPOINT + 'oidc',
         // Expected audience token, the resource indicator of the current API
-        audience: process.env.BACKEND_ENDPOINT,
+        audience: process.env.LOGTO_APP_ID,
       },
     );
+  
     console.log(payload, 'payload');
     const data = await this.userService.findAll();
     return {
