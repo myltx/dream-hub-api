@@ -15,7 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       UserScope.Identities,
       UserScope.Organizations,
     ],
-    resources: [runtimeConfig?.public.backendEndpoint],
+    // resources: [runtimeConfig?.public.backendEndpoint],
   };
   nuxtApp.vueApp.use(createLogto, config);
   setupAuth();
