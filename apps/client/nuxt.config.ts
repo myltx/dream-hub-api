@@ -30,6 +30,7 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY || '',
       supabaseJwtSecret: process.env.SUPABASE_JWT_SECRET || '',
       jti: process.env.JTI || '',
+      apiBase: process.env.API_BASE || '',
     },
   },
   unocss: {

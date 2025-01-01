@@ -1,6 +1,5 @@
 import {
   Controller,
-  Headers,
   Get,
   Post,
   Body,
@@ -12,29 +11,23 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { createRemoteJWKSet, jwtVerify } from 'jose';
-import { IsPublic } from 'src/auth/is-public.decorator';
 
 @Controller('users')
 export class UserController {
-  private jwks: any;
-  constructor(private readonly userService: UserService) {
-    // Generate a JWKS using jwks_uri obtained from the Logto server
-    this.jwks = createRemoteJWKSet(
-      new URL(process.env.LOGTO_ENDPOINT + '/oidc/jwks'),
-    );
-  }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    console.log(createUserDto, 'createUserDto')
+    return {
+      message: 'success',
+      code: 200,
+    }
+    // return this.userService.create(createUserDto);
   }
-  
-  @IsPublic()
+
   @Get()
   async findAll(@Req() req: any) {
-    console.log('User Payload:', req.user);
-
     const data = await this.userService.findAll();
     return { data, message: 'success', code: 200 };
   }

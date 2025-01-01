@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 // import getUserInfo from './api/user'
-import { getIdTokenClaims, isAuthenticated } from './server/auth'
+import { getIdTokenClaims, isAuthenticated } from './services/auth'
 // import { useUserStore } from './store/user'
 
 // const userStore = useUserStore()

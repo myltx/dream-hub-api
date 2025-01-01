@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { signOut, isAuthenticated, signIn } from '~/server/auth'
+import { signOut, isAuthenticated, signIn } from '~/services/auth'
 import { useUserStore } from '~/store/user'
 
 const router = useRouter()
