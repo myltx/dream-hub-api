@@ -4,5 +4,8 @@
 		"source.fixAll.eslint": "explicit"
 	},
 	"eslint.experimental.useFlatConfig": true,
-	"Codegeex.RepoIndex": true
+	"Codegeex.RepoIndex": true,
+	"editor.formatOnSave": true, // 保存时自动格式化
+	"editor.defaultFormatter": "esbenp.prettier-vscode", // 强制使用 Prettier 作为默认格式化工具
+	"prettier.requireConfig": true
 }

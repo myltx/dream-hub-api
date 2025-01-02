@@ -6,9 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:client": "pnpm --filter=@myltx/client dev",
-    "dev:server": "pnpm --filter=@myltx/api start:dev"
+    "dev:server": "pnpm --filter=@myltx/api start:dev",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
 }

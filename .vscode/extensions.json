@@ -1,0 +1,6 @@
+{
+	"recommendations": [
+		"esbenp.prettier-vscode"
+	], // 推荐安装 Prettier 插件
+	"unwantedRecommendations": [] // 防止冲突的格式化插件
+}
