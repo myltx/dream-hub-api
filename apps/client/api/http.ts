@@ -16,8 +16,13 @@ export function setupHttp() {
     baseURL,
     headers: { "Content-Type": "application/json" },
     async onRequest({ options }) {
+      console.log(options);
       const token = await getToken();
-      options.headers = { ...options.headers, Authorization: `Bearer ${token}` };
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      };
     },
     async onResponseError({ request, response, options }) {
       const { message } = response._data;
