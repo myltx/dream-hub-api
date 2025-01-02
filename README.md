@@ -1,7 +1,7 @@
-# 项目介绍
+## 项目介绍
  - 用于记录自己平时使用或发现的好用的网站
 
-# 📦 项目依赖
+## 📦 项目依赖
  - [nuxt3](https://nuxt.com/) Nuxt3 is a framework for building Vue.js applications.
  - [nuxt-ui](https://github.com/nuxt/ui) Nuxt UI is a collection of UI components for Nuxt.js applications.
  - [unocss](https://unocss.dev/)  Unocss is a utility-first CSS framework that provides a powerful and flexible way to build custom styles for your web applications.
@@ -9,7 +9,16 @@
  - [supabase](https://supabase.com/)  Supabase is an open source real-time database and backend built on PostgreSQL.
  - [nsetjs](https://nestjs.com/) Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications. 
 
-# 🚀 How To Start?
+## ✨ 特性
+* 使用前端最新技术栈开发
+* 使用 nestjs 作为后端框架
+* 极快响应、便于开发部署
+* 支持多种部署方式，优先推荐 [Vercel](https://vercel.com/)
+* 支持暗黑模式
+<!-- * 支持 `SSR` 渲染，利于 `SEO` 优化  -->
+<!-- * 目录结构清晰，轻量级，前后端一体 -->
+
+## 🚀 How To Start?
 <!-- The mentioned operations below are based on the root directory of the current project, please be attentive to ensure there are no errors! -->
 1. 添加 .env 配置文件
 	```shell
@@ -34,69 +43,34 @@
    ```shell
    pnpm dev
    ```
-# 注意事项
+## 注意事项
 1. node 版本需要 20 以上
 
-## TODO
+## ⚙️ Vercel 一键部署
+1. `Fork` 本项目，在 `Vercel` 官网点击 `New Project`
+2. 点击 `Import Git Repository` 并选择你 fork 的此项目并点击 `import`
+3. `PROJECT NAME`自己填，`FRAMEWORK PRESET` 选 `Other` 然后直接点 `Deploy` 接着等部署完成即可
 
-- [X] logto 模块添加调试
-- [x] logto 登录后用户数据添加到 supabase
-<!-- - [ ] supabase api 封装 -->
-- [x] 暗黑主题配置
-- [ ] 展示布局开发
-- [ ] 后台功能设计
-- [ ] 接口设计
-  - [ ] 用户管理
-    - [ ] 新增
-    - [ ] 查询详情
-    - [ ] 查询列表
-    - [ ] 编辑
-    - [ ] 删除
-  - [ ] 网站管理
-  - [ ] 分类管理
-  - [ ] 标签管理
-## 目录说明
-```shell
-├── apps/                   # 应用目录
-│   ├── client/             # 前端展示，基于 Nuxt3
-│   │   ├── nuxt.config.ts
-│   │   ├── package.json
-│   │   ├── tsconfig.json
-│   │   ├── public/         # 静态文件
-│   │   ├── components/     # 组件
-│   │   ├── pages/          # 页面目录
-│   │   └── ...             # 其他 Nuxt3 项目相关目录
-│   ├── api/                # 后端服务，基于 NestJS
-│   │   ├── src/
-│   │   │   ├── main.ts
-│   │   │   ├── app.module.ts
-│   │   │   ├── auth/       # 登录相关的模块
-│   │   │   ├── database/   # 数据库交互逻辑
-│   │   │   └── ...         # 其他后端模块
-│   │   ├── package.json
-│   │   ├── tsconfig.json
-│   │   ├── nest-cli.json
-│   │   └── ...             # 其他配置文件
-├── packages/               # 共享代码和工具库
-│   ├── shared/             # 共享代码库
-│   │   ├── utils/          # 工具函数
-│   │   │   └── index.ts    # 示例工具文件
-│   │   ├── types/          # 全局类型声明
-│   │   │   └── index.d.ts  # 类型声明文件
-│   │   ├── package.json
-│   │   └── tsconfig.json   # TypeScript 配置文件
-│   ├── supabase/           # Supabase 配置模块
-│   │   ├── src/            # 数据库操作逻辑
-│   │   │   ├── schema.ts   # 数据库表结构定义
-│   │   │   ├── queries.ts  # 查询封装
-│   │   │   └── ...         # 其他操作逻辑
-│   │   ├── migrations/     # 数据库迁移文件
-│   │   ├── seeds/          # 初始数据脚本
-│   │   ├── package.json
-│   │   └── tsconfig.json
-├── .pnpm-workspace.yaml    # pnpm workspace 配置
-├── tsconfig.base.json      # 根目录下的通用 TypeScript 配置
-├── package.json            # 根 package.json 文件
-└── README.md               # 项目说明文档
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/myltx/nav-monorepo)
 
+## ⚙️ Vecel 本地部署
+```powershell
+// 全局安装 vercel
+npm i -g vercel
+
+// 登录
+vercel login
+
+// 项目推送
+vercel
+
+// 挂载生产
+vercel --prod
 ```
+> 具体教程可参考文章：[如何使用 Vercel 托管静态网站](https://baiwumm.com/p/5zzij7bt)
+> 
+
+
+<!-- ## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=baiwumm/dream-site&type=Date)](https://github.com/myltx/nav-monorepo&Date) -->
