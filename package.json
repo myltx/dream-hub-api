@@ -7,12 +7,23 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:client": "pnpm --filter=@myltx/client dev",
     "dev:server": "pnpm --filter=@myltx/api start:dev",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "pnpm prettier --write"
+    ]
   }
 }
