@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,14 +11,18 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  // 手动设置跨域头部
-  // app.use((req: any, res: any, next: Function) => {
-  //   res.header('Access-Control-Allow-Origin', 'https://nav.myltx.top');
-  //   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-  //   res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  //   res.header('Access-Control-Allow-Credentials', 'true');
-  //   next();
-  // });
+  // swagger 配置
+  const options = new DocumentBuilder()
+    .setTitle('VisionaryHub') // 标题
+    .setDescription('VisionaryHub接口文档') // 描述
+    .setVersion('1.0') // 版本
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  //配置swgger地址
+  SwaggerModule.setup('/VisionaryHub/api', app, document);
+
   await app.listen(process.env.PORT ?? 8081);
 }
 bootstrap();

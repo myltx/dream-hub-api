@@ -1,5 +1,14 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 export class UpdateUserDto {
-  readonly email?: string;
-  readonly user_id?: string;
-  readonly updated_at?: string;
+  @ApiProperty({
+    example: "123@qq.com",
+    description: "邮箱",
+  })
+  readonly email: string;
+  @ApiProperty({
+    example: "123@qq.com",
+    description: "邮箱",
+  })
+  readonly user_id: string;
 }

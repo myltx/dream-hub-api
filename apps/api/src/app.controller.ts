@@ -1,26 +1,15 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { SupabaseService } from './supabase/supabase.service';
+import {IsPublic} from './auth/is-public.decorator'
 
-@Controller('user')
+@Controller()
 export class AppController {
   constructor(private readonly supabaseService: SupabaseService) {}
 
+  @IsPublic()
   @Get()
   async getData() {
-    try {
-      const data = await this.supabaseService.getData('users');
-      return {
-        code: 200,
-        message: 'success',
-        data,
-      };
-    } catch (err) {
-      return {
-        code: 500,
-        message: 'error',
-        data: err,
-      };
-    }
+   return '欢迎使用'
   }
 
   @Post()
