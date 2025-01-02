@@ -4,7 +4,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log(`请访问：http://localhost:${process.env.PORT ?? 8081}`);
   // 启用跨域
   app.enableCors({
     origin: '*',
@@ -21,8 +20,15 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   //配置swgger地址
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, {
+    customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css',
+    customJs:
+      'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.js',
+    // customJsStr:
+    //   'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.js',
+  });
 
   await app.listen(process.env.PORT ?? 8081);
+  console.log(`Application is running on: ${await app.getUrl()} , or http://localhost:${process.env.PORT}`);
 }
 bootstrap();
