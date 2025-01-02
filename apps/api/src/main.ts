@@ -9,7 +9,7 @@ async function bootstrap() {
   //  [process.env.REQUEST_ORIGIN ?? 'http://localhost:3000']
   const allowedOrigins = process.env.REQUEST_ORIGIN?.split(',') || ['https://example.com']
   app.enableCors({
-    origin: 'https://nav.myltx.top', // 允许的前端域名
+    origin: allowedOrigins, // 允许的前端域名
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',              // 允许的 HTTP 方法
     credentials: true,                                      // 是否允许携带凭证（如 Cookies）
   });
