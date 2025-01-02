@@ -8,7 +8,7 @@ async function bootstrap() {
   console.log(`允许的前端域名：${process.env.REQUEST_ORIGIN}`)
   //  [process.env.REQUEST_ORIGIN ?? 'http://localhost:3000']
   app.enableCors({
-    origin: true, // 允许的前端域名
+    origin: '*', // 允许的前端域名
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',              // 允许的 HTTP 方法
     credentials: true,                                      // 是否允许携带凭证（如 Cookies）
   });
