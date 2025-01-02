@@ -2,7 +2,7 @@ import { getHttp } from './http'
 
 export default function getUserInfo() {
   const http = getHttp()
-  return http('/api/users', {
+  return http('/users', {
     method: 'GET',
   })
 }
