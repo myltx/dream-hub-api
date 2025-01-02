@@ -21,11 +21,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   //配置swgger地址
   SwaggerModule.setup('api-docs', app, document, {
-    customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css',
-    customJs:
+    customSiteTitle: 'VisionaryHub API Docs', // 自定义页面标题
+    customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css', // 使用 Swagger UI 的 CDN 静态资源
+    customJs: [
       'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.js',
-    // customJsStr:
-    //   'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.js',
+      'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-standalone-preset.js',
+    ],
+    explorer: true, // 启用 API 文档选择器
+    useGlobalPrefix: true, // 支持全局前缀
   });
 
   await app.listen(process.env.PORT ?? 8081);
