@@ -7,13 +7,11 @@ async function bootstrap() {
   // 启用跨域
   // console.log(`允许的前端域名：${process.env.REQUEST_ORIGIN}`)
   //  [process.env.REQUEST_ORIGIN ?? 'http://localhost:3000']
-   const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.REQUEST_ORIGIN ?? 'https://nav.myltx.top']
-  : ['http://localhost:3000']; // 本地开发时允许的域名
+  const allowedOrigins = process.env.REQUEST_ORIGIN?.split(',') || ['https://example.com']
   app.enableCors({
-    origin: allowedOrigins, // 允许的前端域名
+    origin: 'https://nav.myltx.top', // 允许的前端域名
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',              // 允许的 HTTP 方法
-    // credentials: true,                                      // 是否允许携带凭证（如 Cookies）
+    credentials: true,                                      // 是否允许携带凭证（如 Cookies）
   });
   await app.listen(process.env.PORT ?? 8081);
 }
