@@ -1,11 +1,13 @@
-# 导航网站
+# 项目介绍
  - 用于记录自己平时使用或发现的好用的网站
 
-# 技术栈
- - [nuxt3](https://nuxt.com/)
- - [logto](https://logto.io/)
- - [supabase](https://supabase.com/)
- - [unocss](https://unocss.dev/)
+# 📦 项目依赖
+ - [nuxt3](https://nuxt.com/) Nuxt3 is a framework for building Vue.js applications.
+ - [nuxt-ui](https://github.com/nuxt/ui) Nuxt UI is a collection of UI components for Nuxt.js applications.
+ - [unocss](https://unocss.dev/)  Unocss is a utility-first CSS framework that provides a powerful and flexible way to build custom styles for your web applications.
+ - [logto](https://logto.io/) Logto is an open-source identity and access management (IAM) solution that helps you build modern web and mobile applications with ease.
+ - [supabase](https://supabase.com/)  Supabase is an open source real-time database and backend built on PostgreSQL.
+ - [nsetjs](https://nestjs.com/) Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications. 
 
 # 🚀 How To Start?
 <!-- The mentioned operations below are based on the root directory of the current project, please be attentive to ensure there are no errors! -->
