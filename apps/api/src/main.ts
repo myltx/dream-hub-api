@@ -12,8 +12,8 @@ async function bootstrap() {
   });
   // swagger 配置
   const options = new DocumentBuilder()
-    .setTitle('VisionaryHub') // 标题
-    .setDescription('VisionaryHub接口文档') // 描述
+    .setTitle('Dream Hub') // 标题
+    .setDescription('Dream Hub接口文档') // 描述
     .setVersion('1.0') // 版本
     .addBearerAuth()
     .build();
@@ -21,7 +21,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   //配置swgger地址
   SwaggerModule.setup('api-docs', app, document, {
-    customSiteTitle: 'VisionaryHub API Docs', // 自定义页面标题
+    customSiteTitle: 'Dream Hub API Docs', // 自定义页面标题
     customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css', // 使用 Swagger UI 的 CDN 静态资源
     customJs: [
       'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui-bundle.js',
