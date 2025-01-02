@@ -16,6 +16,10 @@
         "Access-Control-Allow-Headers": "Authorization, Content-Type",
         "Access-Control-Allow-Credentials": "true"
       }
+    },
+    {
+      "src": "/api-docs/(.*)",
+      "dest": "src/main.ts"
     }
   ]
 }

@@ -21,7 +21,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   //配置swgger地址
-  SwaggerModule.setup('/VisionaryHub/api', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT ?? 8081);
 }
