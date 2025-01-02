@@ -71,7 +71,6 @@ vercel --prod
 > 具体教程可参考文章：[如何使用 Vercel 托管静态网站](https://baiwumm.com/p/5zzij7bt)
 > 
 
+## ⭐ Star History
 
-<!-- ## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=baiwumm/dream-site&type=Date)](https://github.com/myltx/nav-monorepo&Date) -->
+[![Star History Chart](https://api.star-history.com/svg?repos=myltx/dream-hub&type=Date)](https://star-history.com/#myltx/dream-hub&Date)
