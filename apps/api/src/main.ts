@@ -9,7 +9,11 @@ async function bootstrap() {
   const allowedOrigins = process.env.REQUEST_ORIGIN?.split(',') || [
     'https://nav.myltx.top',
   ];
-  app.enableCors();
+  app.enableCors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  });
   await app.listen(process.env.PORT ?? 8081);
 }
 bootstrap();
