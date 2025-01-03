@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^8.1.0",
     "@supabase/supabase-js": "^2.47.10",
+    "change-case-object": "^2.0.0",
     "jose": "^5.9.6",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",

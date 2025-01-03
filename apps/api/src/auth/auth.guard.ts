@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
 
     // 检查 Authorization 头
     const authorization = request.headers['authorization'];
-    if (!authorization) {
+    if (!authorization || authorization.length < 7) {
       throw new HttpException(
         'Authorization header is missing',
         HttpStatus.UNAUTHORIZED,
@@ -50,7 +50,6 @@ export class AuthGuard implements CanActivate {
       // }
 
       // 将用户信息附加到请求对象中
-      console.log('payload', payload);
       request.user = payload;
       return true;
     } catch (error) {

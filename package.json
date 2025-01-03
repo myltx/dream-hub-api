@@ -10,8 +10,6 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "commit": "cz",
-    "commit:zh": "COMMIT_LANGUAGE=zh git-cz",
-    "commit:en": "COMMIT_LANGUAGE=en git-cz",
     "release": "release-it"
   },
   "keywords": [],
@@ -33,7 +31,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-customizable"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "lint-staged": {

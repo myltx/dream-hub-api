@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { SupabaseModule } from './supabase/supabase.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,8 @@ import { UserModule } from './user/user.module';
 import { AuthGuard } from './auth/auth.guard';
 import { TokenService } from './auth/token.service';
 import { CategoriesModule } from './categories/categories.module';
+// 驼峰转换拦截器
+import { CamelToSnakeInterceptor } from './interceptors/camel-to-snake.interceptor';
 
 @Module({
   imports: [
@@ -28,6 +30,10 @@ import { CategoriesModule } from './categories/categories.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CamelToSnakeInterceptor,
     },
   ],
   exports: [SupabaseClientProvider],

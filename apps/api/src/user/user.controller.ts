@@ -38,14 +38,13 @@ export class UserController {
     description: '用户令牌',
     example: 'Bearer token',
   })
-  @Post()
+  @Post('create')
   async create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto, 'createUserDto');
+    const data = await this.userService.create(createUserDto);
     return {
       message: 'success',
       code: 200,
     };
-    // return this.userService.create(createUserDto);
   }
 
   @ApiOperation({
@@ -58,11 +57,22 @@ export class UserController {
   }
 
   @ApiOperation({
-    summary: '查询用户详情', // 接口描述信息
+    summary: '根据用户id查询用户信息', // 接口描述信息
   })
-  @Get(':userId')
-  async findOne(@Param('userId') userId: string) {
-    return this.userService.findOne(userId);
+  @Post('detail')
+  async findOne(@Body() { userId }) {
+    if (!userId) {
+      return {
+        message: 'userId不能为空',
+        code: 400,
+      };
+    }
+    const data = await this.userService.findOne(userId);
+    return {
+      message: 'success',
+      code: 200,
+      data,
+    };
   }
   @ApiOperation({
     summary: '更新用户', // 接口描述信息

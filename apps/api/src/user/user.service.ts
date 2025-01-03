@@ -37,6 +37,9 @@ export class UserService {
       .select('*')
       .eq('user_id', user_id)
       .single();
+    if (!data) {
+      return null;
+    }
 
     if (error) {
       throw new Error(`Error fetching user: ${error.message}`);
