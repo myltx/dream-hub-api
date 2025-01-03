@@ -9,7 +9,9 @@
     "dev:server": "pnpm --filter=@myltx/api start:dev",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "commit:zh": "COMMIT_LANGUAGE=zh git-cz",
+    "commit:en": "COMMIT_LANGUAGE=en git-cz"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@commitlint/config-conventional": "^19.6.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
+    "cz-customizable": "^7.4.0",
     "husky": "^9.1.7",
     "prettier": "^3.0.0"
   },
@@ -27,7 +30,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/cz-customizable"
     }
   },
   "lint-staged": {
