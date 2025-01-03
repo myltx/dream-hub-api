@@ -60,14 +60,14 @@ export class UserController {
     summary: '根据用户id查询用户信息', // 接口描述信息
   })
   @Post('detail')
-  async findOne(@Body() { userId }) {
-    if (!userId) {
+  async findOne(@Body() { user_id }) {
+    if (!user_id) {
       return {
         message: 'userId不能为空',
         code: 400,
       };
     }
-    const data = await this.userService.findOne(userId);
+    const data = await this.userService.findOne(user_id);
     return {
       message: 'success',
       code: 200,
