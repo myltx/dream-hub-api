@@ -6,32 +6,26 @@
     <NuxtLoadingIndicator />
     <NuxtPage />
   </NuxtLayout>
+  <UNotifications />
+  <UModals />
 </template>
 
 <script setup lang="ts">
-// import getUserInfo from './api/user'
-import { getIdTokenClaims, isAuthenticated } from './services/auth'
-// import { useUserStore } from './store/user'
+import { getUserInfoByUserId } from '~/api/user';
+import { getIdTokenClaims, isAuthenticated } from './services/auth';
+import { useUserStore } from './store/user';
 
-// const userStore = useUserStore()
+const userStore = useUserStore();
 const { status } = useAsyncData('initApplication', async () => {
   if (isAuthenticated()) {
-    const res = await getIdTokenClaims()
-    const { data } = await useFetch('/api/user/getToken', {
-      method: 'post',
-      body: {
-        userId: res?.sub,
-      },
-    })
-
-    // const user = await getUserInfo({ userId: res?.sub })
-    // userStore.initUser({
-    //   ...res,
-    //   user,
-    //   ...data?.value?.data,
-    // })
+    const res = await getIdTokenClaims();
+    const { data } = await getUserInfoByUserId({ userId: res?.sub as string });
+    userStore.initUser({
+      ...res,
+      userInfo: data,
+    });
   }
-})
+});
 </script>
 
 <style>

@@ -1,9 +1,9 @@
-import type { $Fetch } from "ofetch";
+import type { $Fetch } from 'ofetch';
 
-import { useRuntimeConfig } from "#app";
-import { ofetch } from "ofetch";
+import { useRuntimeConfig } from '#app';
+import { ofetch } from 'ofetch';
 
-import { getToken } from "~/services/auth";
+import { getToken, signOut } from '~/services/auth';
 
 let http: $Fetch;
 export function setupHttp() {
@@ -14,18 +14,28 @@ export function setupHttp() {
 
   http = ofetch.create({
     baseURL,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
     async onRequest({ options }) {
-      console.log(options);
       const token = await getToken();
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token || ''}`,
+        'Content-Type': 'application/json',
       };
     },
     async onResponseError({ request, response, options }) {
-      const { message } = response._data;
+      const { message, statusCode } = response._data;
+      const toast = useToast();
+      // const modal = useModal()
+      if (statusCode === 401 && message === 'Invalid or expired token') {
+        toast.add({
+          title: 'Error',
+          description: '登录失效，请重新登录',
+          color: 'red',
+        });
+        signOut();
+        return;
+      }
       if (Array.isArray(message)) {
         message.forEach((item) => {
           httpStatusErrorHandler?.(item, response.status);
@@ -49,7 +59,7 @@ export function injectHttpStatusErrorHandler(handler: HttpStatusErrorHandler) {
 
 export function getHttp() {
   if (!http) {
-    throw new Error("HTTP client not initialized. Call setupHttp first.");
+    throw new Error('HTTP client not initialized. Call setupHttp first.');
   }
   return http;
 }
