@@ -8,18 +8,27 @@
     "dev:client": "pnpm --filter=@myltx/client dev",
     "dev:server": "pnpm --filter=@myltx/api start:dev",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "cz"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^3.0.0",
-    "husky": "^8.0.0"
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.0.0"
   },
   "dependencies": {
-    "husky": "^9.1.7",
     "lint-staged": "^15.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
