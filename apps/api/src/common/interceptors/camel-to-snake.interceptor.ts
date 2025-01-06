@@ -17,6 +17,9 @@ export class CamelToSnakeInterceptor implements NestInterceptor {
     if (request.body) {
       request.body = this.convertToSnakeCase(request.body);
     }
+    if (request.query) {
+      request.query = this.convertToSnakeCase(request.query);
+    }
 
     return next.handle().pipe(
       // 2. 将响应数据的字段从 snake_case 转为 camelCase

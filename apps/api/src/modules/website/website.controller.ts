@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { WebsiteService } from './website.service';
 import {
@@ -72,5 +73,16 @@ export class WebsiteController {
   @Get('public')
   async findAllPublic() {
     return this.websiteService.findAll();
+  }
+
+  @ApiOperation({ summary: '根据查询条件获取站点' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('query')
+  async findByQuery(@Query() query: Record<string, any>) {
+    if (query.category_id && query.category_id === '-1') {
+      delete query.category_id;
+    }
+    return this.websiteService.findByQuery(query);
   }
 }
