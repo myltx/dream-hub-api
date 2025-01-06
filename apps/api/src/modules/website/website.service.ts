@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
+import { CreateWebsiteDto } from './dto/create-website.dto';
+import { UpdateWebsiteDto } from './dto/update-website.dto';
 
 @Injectable()
-export class TagService {
-  dbName = 'tags';
+export class WebsiteService {
+  dbName = 'websites';
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
-  async create(createCategoryDto: CreateTagDto) {
+  async create(createWebsiteDto: CreateWebsiteDto) {
     const { data, error } = await this.supabase
       .from(this.dbName)
-      .insert([createCategoryDto]);
+      .insert([createWebsiteDto]);
 
     if (error) {
       throw new Error(`Error creating category: ${error.message}`);
@@ -20,12 +20,23 @@ export class TagService {
 
     return data;
   }
+  async update(id: string, updateWebsiteDto: UpdateWebsiteDto) {
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .update(updateWebsiteDto)
+      .eq('id', id);
 
+    if (error) {
+      throw new Error(`Error updating taf: ${error.message}`);
+    }
+
+    return data;
+  }
   async findAll() {
     const { data, error } = await this.supabase.from(this.dbName).select('*');
 
     if (error) {
-      throw new Error(`Error fetching tags: ${error.message}`);
+      throw new Error(`Error getting tafs: ${error.message}`);
     }
 
     return data;
@@ -38,18 +49,7 @@ export class TagService {
       .single();
 
     if (error) {
-      throw new Error(`Error fetching tag: ${error.message}`);
-    }
-    return data;
-  }
-  async update(id: string, updateCategoryDto: UpdateTagDto) {
-    const { data, error } = await this.supabase
-      .from(this.dbName)
-      .update(updateCategoryDto)
-      .eq('id', id);
-
-    if (error) {
-      throw new Error(`Error updating taf: ${error.message}`);
+      throw new Error(`Error getting taf: ${error.message}`);
     }
 
     return data;
@@ -61,7 +61,7 @@ export class TagService {
       .eq('id', id);
 
     if (error) {
-      throw new Error(`Error deleting tag: ${error.message}`);
+      throw new Error(`Error deleting taf: ${error.message}`);
     }
 
     return data;

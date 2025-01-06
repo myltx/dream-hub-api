@@ -16,7 +16,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
@@ -28,7 +28,7 @@ import { IsPublic } from '../auth/decorators/is-public.decorator';
   description: '用户令牌',
   example: 'Bearer token',
 })
-@Controller('categories')
+@Controller('category')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 

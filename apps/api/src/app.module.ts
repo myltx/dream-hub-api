@@ -7,8 +7,9 @@ import { AppService } from './app.service';
 import { SupabaseClientProvider } from './database/supabase/supabase-client.provider';
 // 业务模块
 import { UserModule } from './modules/user/user.module';
-import { CategoriesModule } from './modules/categories/categories.module';
+import { CategoriesModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
+import { WebsiteModule } from './modules/website/website.module';
 // token
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { TokenService } from './modules/auth/token.service';
@@ -24,6 +25,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     UserModule,
     CategoriesModule,
     TagModule,
+    WebsiteModule,
   ],
   controllers: [AppController],
   providers: [

@@ -5,13 +5,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
+  dbName = 'users';
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     const { data, error } = await this.supabase
-      .from('users')
+      .from(this.dbName)
       .insert([createUserDto]);
 
     if (error) {
@@ -22,7 +23,7 @@ export class UserService {
   }
 
   async findAll() {
-    const { data, error } = await this.supabase.from('users').select('*');
+    const { data, error } = await this.supabase.from(this.dbName).select('*');
 
     if (error) {
       throw new Error(`Error fetching users: ${error.message}`);
@@ -33,7 +34,7 @@ export class UserService {
 
   async findOne(user_id: string) {
     const { data, error } = await this.supabase
-      .from('users')
+      .from(this.dbName)
       .select('*')
       .eq('user_id', user_id)
       .single();
@@ -50,7 +51,7 @@ export class UserService {
 
   async update(user_id: string, updateUserDto: UpdateUserDto) {
     const { data, error } = await this.supabase
-      .from('users')
+      .from(this.dbName)
       .update(updateUserDto)
       .eq('user_id', user_id);
 
@@ -63,7 +64,7 @@ export class UserService {
 
   async remove(id: string) {
     const { data, error } = await this.supabase
-      .from('users')
+      .from(this.dbName)
       .delete()
       .eq('id', id);
 

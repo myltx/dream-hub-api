@@ -5,13 +5,14 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
+  dbName = 'categories';
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from(this.dbName)
       .insert([createCategoryDto]);
 
     if (error) {
@@ -22,7 +23,7 @@ export class CategoriesService {
   }
 
   async findAll() {
-    const { data, error } = await this.supabase.from('categories').select('*');
+    const { data, error } = await this.supabase.from(this.dbName).select('*');
 
     if (error) {
       throw new Error(`Error fetching categories: ${error.message}`);
@@ -32,7 +33,7 @@ export class CategoriesService {
   }
   async findOne(id: string) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from(this.dbName)
       .select('*')
       .eq('id', id)
       .single();
@@ -44,7 +45,7 @@ export class CategoriesService {
   }
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from(this.dbName)
       .update(updateCategoryDto)
       .eq('id', id);
 
@@ -56,7 +57,7 @@ export class CategoriesService {
   }
   async remove(id: number) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from(this.dbName)
       .delete()
       .eq('id', id);
 

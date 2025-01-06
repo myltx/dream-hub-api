@@ -29,7 +29,7 @@ import { CreateUserVo } from './vo/create-user.vo';
   example: 'Bearer token',
 })
 @ApiBearerAuth() // 鉴权
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

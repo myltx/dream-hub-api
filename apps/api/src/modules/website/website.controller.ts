@@ -4,59 +4,65 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
+import { WebsiteService } from './website.service';
 import {
   ApiBearerAuth,
   ApiHeader,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { TagService } from './tag.service';
-import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
-import { HttpStatus } from '@nestjs/common/enums';
+import { CreateWebsiteDto } from './dto/create-website.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 
-@ApiTags('标签管理')
+@ApiTags('站点管理')
 @ApiBearerAuth()
 @ApiHeader({
   name: 'Authorization',
   description: '用户令牌',
   example: 'Bearer token',
 })
-@Controller('tag')
-export class TagController {
-  constructor(private readonly tagService: TagService) {}
+@Controller('website')
+export class WebsiteController {
+  constructor(private readonly websiteService: WebsiteService) {}
 
-  @ApiOperation({ summary: '创建标签' })
+  @ApiOperation({
+    summary: '创建站点',
+  })
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() createTagDto: CreateTagDto) {
-    return this.tagService.create(createTagDto);
+  async create(@Body() createWebsiteDto: CreateWebsiteDto) {
+    return this.websiteService.create(createWebsiteDto);
   }
 
-  @ApiOperation({ summary: '更新标签' })
+  @ApiOperation({
+    summary: '更新站点',
+  })
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagService.update(id, updateTagDto);
+  async update(
+    @Param('id') id: string,
+    @Body() createWebsiteDto: CreateWebsiteDto,
+  ) {
+    return this.websiteService.update(id, createWebsiteDto);
   }
-
-  @ApiOperation({ summary: '删除标签' })
+  @ApiOperation({
+    summary: '删除站点',
+  })
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.tagService.remove(id);
+    return this.websiteService.remove(id);
   }
-
   @ApiOperation({ summary: '获取标签列表, (需要鉴权)' })
   @HttpCode(HttpStatus.OK)
   @Get()
   async findAll() {
-    return this.tagService.findAll();
+    return this.websiteService.findAll();
   }
 
   @ApiOperation({ summary: '获取标签详情, (需要鉴权)' })
@@ -64,6 +70,6 @@ export class TagController {
   @IsPublic()
   @Get('public')
   async findAllPublic() {
-    return this.tagService.findAll();
+    return this.websiteService.findAll();
   }
 }
