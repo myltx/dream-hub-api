@@ -67,12 +67,7 @@ export class UserController {
         code: 400,
       };
     }
-    const data = await this.userService.findOne(user_id);
-    return {
-      message: 'success',
-      code: 200,
-      data,
-    };
+    return this.userService.findOne(user_id);
   }
   @ApiOperation({
     summary: '更新用户', // 接口描述信息

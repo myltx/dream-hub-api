@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +12,13 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+
+  // 注册全局拦截器
+  app.useGlobalInterceptors(new ResponseInterceptor());
+
+  // 注册全局异常过滤器
+  app.useGlobalFilters(new AllExceptionsFilter());
+
   // swagger 配置
   const options = new DocumentBuilder()
     .setTitle('Dream Hub') // 标题
@@ -32,6 +41,8 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT ?? 8081);
-  console.log(`Application is running on: ${await app.getUrl()} , or http://localhost:${process.env.PORT}`);
+  console.log(
+    `Application is running on: ${await app.getUrl()} , or http://localhost:${process.env.PORT}`,
+  );
 }
 bootstrap();

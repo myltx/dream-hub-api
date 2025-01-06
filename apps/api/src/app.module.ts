@@ -11,7 +11,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { TokenService } from './auth/token.service';
 import { CategoriesModule } from './categories/categories.module';
 // 驼峰转换拦截器
-import { CamelToSnakeInterceptor } from './interceptors/camel-to-snake.interceptor';
+import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
 
 @Module({
   imports: [
