@@ -10,7 +10,9 @@ export class SupabaseService {
     const supabaseKey = process.env.SUPABASE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase URL or Key is not defined in environment variables');
+      throw new Error(
+        'Supabase URL or Key is not defined in environment variables',
+      );
     }
 
     this.supabase = createClient(supabaseUrl, supabaseKey);
@@ -27,7 +29,7 @@ export class SupabaseService {
     }
     return data;
   }
-// 获取某些数据
+  // 获取某些数据
   async getDataByQuery(table: string): Promise<any> {
     const { data, error } = await this.supabase.from(table).select('*');
     if (error) {
@@ -35,7 +37,6 @@ export class SupabaseService {
     }
     return data;
   }
-  
 
   async insertData(table: string, payload: Record<string, any>): Promise<any> {
     const { data, error } = await this.supabase.from(table).insert(payload);

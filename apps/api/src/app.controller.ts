@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { SupabaseService } from './supabase/supabase.service';
-import {IsPublic} from './auth/is-public.decorator'
+import { SupabaseService } from './database/supabase/supabase.service';
+import { IsPublic } from './modules/auth/decorators/is-public.decorator';
 
 @Controller()
 export class AppController {
@@ -9,7 +9,7 @@ export class AppController {
   @IsPublic()
   @Get()
   async getData() {
-   return '欢迎使用'
+    return '欢迎使用';
   }
 
   @Post()

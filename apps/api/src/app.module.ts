@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { SupabaseModule } from './supabase/supabase.module';
+import { SupabaseModule } from './database/supabase/supabase.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SupabaseClientProvider } from './supabase/supabase-client.provider';
-import { UserModule } from './user/user.module';
-import { CategoriesModule } from './categories/categories.module';
+import { SupabaseClientProvider } from './database/supabase/supabase-client.provider';
+import { UserModule } from './modules/user/user.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 // token
-import { AuthGuard } from './auth/auth.guard';
-import { TokenService } from './auth/token.service';
+import { AuthGuard } from './modules/auth/guards/auth.guard';
+import { TokenService } from './modules/auth/token.service';
 // 驼峰转换拦截器
 import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
+import { TagModule } from './modules/tag/tag.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     SupabaseModule,
     UserModule,
     CategoriesModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [
