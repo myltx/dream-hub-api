@@ -18,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateWebsiteDto } from './dto/create-website.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { UpdateWebsiteDto } from './dto/update-website.dto';
 
 @ApiTags('站点管理')
 @ApiBearerAuth()
@@ -46,7 +47,7 @@ export class WebsiteController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() createWebsiteDto: CreateWebsiteDto,
+    @Body() createWebsiteDto: UpdateWebsiteDto,
   ) {
     return this.websiteService.update(id, createWebsiteDto);
   }
