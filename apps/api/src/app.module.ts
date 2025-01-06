@@ -6,10 +6,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SupabaseClientProvider } from './supabase/supabase-client.provider';
 import { UserModule } from './user/user.module';
+import { CategoriesModule } from './categories/categories.module';
+
 // token
 import { AuthGuard } from './auth/auth.guard';
 import { TokenService } from './auth/token.service';
-import { CategoriesModule } from './categories/categories.module';
 // 驼峰转换拦截器
 import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
 

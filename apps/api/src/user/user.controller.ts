@@ -21,11 +21,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserVo } from './vo/create-user.vo';
 
 @ApiTags('用户管理')
+@ApiHeader({
+  name: 'Authorization',
+  description: '用户令牌',
+  example: 'Bearer token',
+})
+@ApiBearerAuth() // 鉴权
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiBearerAuth() // 鉴权
   @ApiOperation({
     summary: '添加用户', // 接口描述信息
   })
@@ -33,27 +38,17 @@ export class UserController {
     description: '返回示例',
     type: CreateUserVo,
   })
-  @ApiHeader({
-    name: 'Authorization',
-    description: '用户令牌',
-    example: 'Bearer token',
-  })
   @Post('create')
   async create(@Body() createUserDto: CreateUserDto) {
-    const data = await this.userService.create(createUserDto);
-    return {
-      message: 'success',
-      code: 200,
-    };
+    return this.userService.create(createUserDto);
   }
 
   @ApiOperation({
     summary: '查询用户', // 接口描述信息
   })
   @Get()
-  async findAll(@Req() req: any) {
-    const data = await this.userService.findAll();
-    return { data, message: 'success', code: 200 };
+  async findAll() {
+    return this.userService.findAll();
   }
 
   @ApiOperation({
