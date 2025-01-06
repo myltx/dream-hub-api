@@ -33,13 +33,14 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @ApiOperation({ summary: '创建分类' })
+  @HttpCode(HttpStatus.OK)
   @Post()
-  @HttpCode(HttpStatus.CREATED)
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
   @ApiOperation({ summary: '编辑分类' })
+  @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -48,12 +49,14 @@ export class CategoriesController {
     return this.categoriesService.update(id, updateCategoryDto);
   }
   @ApiOperation({ summary: '删除分类' })
+  @HttpCode(HttpStatus.OK)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.remove(id);
   }
 
   @ApiOperation({ summary: '获取全部分类列表（需要鉴权）' })
+  @HttpCode(HttpStatus.OK)
   @Get()
   async findAll() {
     return this.categoriesService.findAll();
@@ -61,6 +64,7 @@ export class CategoriesController {
 
   @ApiOperation({ summary: '获取全部分类列表（无需鉴权）' })
   @IsPublic()
+  @HttpCode(HttpStatus.OK)
   @Get('public')
   async findAllPublic() {
     return this.categoriesService.findAll();

@@ -1,17 +1,16 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 
 @Injectable()
-export class CategoriesService {
+export class TagService {
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
-
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateTagDto) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from('tags')
       .insert([createCategoryDto]);
 
     if (error) {
@@ -22,46 +21,46 @@ export class CategoriesService {
   }
 
   async findAll() {
-    const { data, error } = await this.supabase.from('categories').select('*');
+    const { data, error } = await this.supabase.from('tags').select('*');
 
     if (error) {
-      throw new Error(`Error fetching categories: ${error.message}`);
+      throw new Error(`Error fetching tags: ${error.message}`);
     }
 
     return data;
   }
   async findOne(id: string) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from('tags')
       .select('*')
       .eq('id', id)
       .single();
 
     if (error) {
-      throw new Error(`Error fetching category: ${error.message}`);
+      throw new Error(`Error fetching tag: ${error.message}`);
     }
     return data;
   }
-  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+  async update(id: number, updateCategoryDto: UpdateTagDto) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from('tags')
       .update(updateCategoryDto)
       .eq('id', id);
 
     if (error) {
-      throw new Error(`Error updating category: ${error.message}`);
+      throw new Error(`Error updating taf: ${error.message}`);
     }
 
     return data;
   }
   async remove(id: number) {
     const { data, error } = await this.supabase
-      .from('categories')
+      .from('tags')
       .delete()
       .eq('id', id);
 
     if (error) {
-      throw new Error(`Error deleting category: ${error.message}`);
+      throw new Error(`Error deleting tag: ${error.message}`);
     }
 
     return data;

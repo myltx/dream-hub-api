@@ -10,9 +10,4 @@ export class UpdateCategoryDto {
     description: '分类描述',
   })
   readonly description: string;
-  @ApiProperty({
-    example: 'xxxx',
-    description: 'id',
-  })
-  readonly id: string;
 }

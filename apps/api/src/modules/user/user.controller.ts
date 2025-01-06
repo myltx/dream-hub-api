@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Req,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -38,6 +40,7 @@ export class UserController {
     description: '返回示例',
     type: CreateUserVo,
   })
+  @HttpCode(HttpStatus.OK)
   @Post('create')
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -46,6 +49,7 @@ export class UserController {
   @ApiOperation({
     summary: '查询用户', // 接口描述信息
   })
+  @HttpCode(HttpStatus.OK)
   @Get()
   async findAll() {
     return this.userService.findAll();
@@ -54,6 +58,7 @@ export class UserController {
   @ApiOperation({
     summary: '根据用户id查询用户信息', // 接口描述信息
   })
+  @HttpCode(HttpStatus.OK)
   @Post('detail')
   async findOne(@Body() { user_id }) {
     if (!user_id) {
@@ -67,6 +72,7 @@ export class UserController {
   @ApiOperation({
     summary: '更新用户', // 接口描述信息
   })
+  @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
@@ -74,6 +80,7 @@ export class UserController {
   @ApiOperation({
     summary: '删除用户', // 接口描述信息
   })
+  @HttpCode(HttpStatus.OK)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.userService.remove(id);
