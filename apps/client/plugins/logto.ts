@@ -1,7 +1,7 @@
-import type { LogtoConfig } from "@logto/vue";
-import { createLogto, UserScope } from "@logto/vue";
-import { defineNuxtPlugin, useRuntimeConfig } from "nuxt/app";
-import { setupAuth } from "~/services/auth";
+import type { LogtoConfig } from '@logto/vue';
+import { createLogto, UserScope } from '@logto/vue';
+import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app';
+import { setupAuth } from '~/services/auth';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
@@ -15,7 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       UserScope.Identities,
       UserScope.Organizations,
     ],
-    // resources: [runtimeConfig?.public.backendEndpoint],
+    resources: [runtimeConfig?.public.backendEndpoint],
   };
   nuxtApp.vueApp.use(createLogto, config);
   setupAuth();

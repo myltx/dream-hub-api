@@ -23,7 +23,7 @@ export class TokenService {
       // 验证 Token
       const { payload } = await jwtVerify(token, this.jwks, {
         issuer: new URL(process.env.LOGTO_ENDPOINT + 'oidc').href,
-        audience: process.env.LOGTO_APP_ID,
+        audience: process.env.BACKEND_ENDPOINT,
       });
       // 验证通过，返回解码的 Payload
       return payload;

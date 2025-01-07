@@ -22,9 +22,14 @@ export function isAuthenticated() {
 
 export async function getToken() {
   // console.log(userStore.user, 'user')
-  // const accessToken = await logto.getAccessToken(runtimeConfig?.public.backendEndpoint);
+  // runtimeConfig?.public.backendEndpoint
+  const accessToken = await logto.getAccessToken(
+    runtimeConfig?.public.backendEndpoint
+  );
+  console.log(accessToken, 'accessToken');
   const idToken = await logto.getIdToken(runtimeConfig?.public.backendEndpoint);
-  return idToken;
+  console.log(idToken, 'idToken');
+  return accessToken;
 }
 export function fetchUserInfo() {
   return logto.fetchUserInfo();
