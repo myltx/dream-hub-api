@@ -31,6 +31,7 @@ export default defineNuxtConfig({
       supabaseJwtSecret: process.env.SUPABASE_JWT_SECRET || '',
       jti: process.env.JTI || '',
       apiBase: process.env.API_BASE || '',
+      projectName: process.env.PROJECT_NAME || '',
     },
   },
   unocss: {
@@ -47,5 +48,4 @@ export default defineNuxtConfig({
     classSuffix: '',
     storageKey: 'nuxt-color-mode',
   },
-
-})
+});

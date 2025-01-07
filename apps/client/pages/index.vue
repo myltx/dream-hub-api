@@ -12,15 +12,16 @@ interface Website {
 const categorys = ref<Category[]>([]);
 const activeTab = ref(-1);
 const websites = ref<Website[]>([]);
+const loading = ref(true);
 
 const onChangeTab = (id: number) => {
+  loading.value = true;
   activeTab.value = id;
   getWebSites();
 };
 
 const getSelectData = async () => {
   const { data: categorysData } = await getCategoryList();
-  console.log(categorysData, 'categorysData');
   categorys.value = categorysData.map((item: Category) => {
     return {
       ...item,
@@ -46,6 +47,7 @@ const getWebSites = () => {
     categoryId: activeTab.value,
   }).then((res) => {
     websites.value = res.data;
+    loading.value = false;
   });
 };
 onMounted(async () => {
@@ -54,8 +56,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="mt-2">
-    <div class="b-b-1 b-#eee py-5 flex items-center my-2 mx-2">
+  <div class="h-100%">
+    <div class="py-2 px-2 flex items-center mt-2 mx-2 shadow-md rounded-lg">
       <div
         v-for="tab in categorys"
         :key="tab.id"
@@ -64,20 +66,26 @@ onMounted(async () => {
           tab.id == activeTab
             ? 'text-blue-500 border-blue-500 font-500'
             : 'text-gray-500 border-gray-500',
-          $colorMode.value === 'dark' ? 'b-1 b-#fff' : '',
+          $colorMode.value === 'dark' ? 'bg-gray-800' : '',
         ]"
         @click="onChangeTab(tab.id)"
       >
         {{ tab.name }}
       </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-5 overflow-y-auto h-89%">
       <div
         class="grid gap-5 w-full justify-center"
         style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
       >
         <div
-          v-for="item in websites"
+          v-for="item in [
+            ...websites,
+            ...websites,
+            ...websites,
+            ...websites,
+            ...websites,
+          ]"
           :key="item.id"
           class="cursor-pointer item"
           @click="goLink(item.url)"
@@ -122,6 +130,7 @@ onMounted(async () => {
       </div>
     </div>
   </div>
+  <Loading v-if="loading" />
 </template>
 
 <style scoped>

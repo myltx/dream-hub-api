@@ -1,13 +1,9 @@
 <template>
   <div class="mt-4">
-    <UDivider label="myltx" />
+    <UDivider :label="$config.public.projectName" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

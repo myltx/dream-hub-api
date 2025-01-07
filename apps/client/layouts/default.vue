@@ -1,7 +1,7 @@
 <template>
-  <div class="">
+  <div class="h-100vh">
     <Header />
-    <div class="w-98% mx-auto shadow rounded-2 h-175">
+    <div class="w-98% h-88% mx-auto rounded-2 h-175">
       <slot />
     </div>
     <Footer />

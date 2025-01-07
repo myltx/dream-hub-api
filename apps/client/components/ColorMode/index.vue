@@ -1,30 +1,19 @@
-<template>
-  <Icon
-    :name="
-      $colorMode.value === 'dark'
-        ? 'i-heroicons-moon-solid'
-        : 'i-heroicons-sun-solid'
-    "
-    class="text-2xl cursor-pointer"
-    @click="toggleDark" />
-</template>
-
 <script setup lang="ts">
 const colorMode = useColorMode();
 
 // 切换模式
 const setColorMode = () => {
-  colorMode.value = colorMode.value === "dark" ? "light" : "dark";
+  colorMode.value = colorMode.value === 'dark' ? 'light' : 'dark';
 };
 
 // 判断是否支持 startViewTransition API
 const enableTransitions = () =>
-  "startViewTransition" in document &&
-  window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  'startViewTransition' in document &&
+  window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
 
 // 切换动画
 async function toggleDark({ clientX: x, clientY: y }: MouseEvent) {
-  const isDark = colorMode.value === "dark";
+  const isDark = colorMode.value === 'dark';
 
   if (!enableTransitions()) {
     setColorMode();
@@ -48,13 +37,26 @@ async function toggleDark({ clientX: x, clientY: y }: MouseEvent) {
     { clipPath: !isDark ? clipPath.reverse() : clipPath },
     {
       duration: 300,
-      easing: "ease-in",
-      pseudoElement: `::view-transition-${!isDark ? "old" : "new"}(root)`,
+      easing: 'ease-in',
+      pseudoElement: `::view-transition-${!isDark ? 'old' : 'new'}(root)`,
     }
   );
 }
 </script>
-<style scoped>
+
+<template>
+  <Icon
+    :name="
+      $colorMode.value === 'dark'
+        ? 'i-heroicons-moon-solid'
+        : 'i-heroicons-sun-solid'
+    "
+    class="text-2xl cursor-pointer"
+    @click="toggleDark"
+  />
+</template>
+
+<style>
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;

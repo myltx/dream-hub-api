@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between static top-0 h-14 shadow-md dark:shadow-white-500 50 backdrop-blur dark:bg-transparent transition-all py-3 px-4"
+    class="flex items-center justify-between static top-0 h-14 shadow dark:shadow-white-500 50 backdrop-blur dark:bg-transparent transition-all py-3 px-4"
   >
     <div class="logo flex items-center">
       <img
@@ -8,7 +8,7 @@
         class="h-6 w-6 rounded-full mr-2"
         alt=""
       />
-      handy website
+      {{ $config.public.projectName }}
     </div>
     <div class="flex items-center">
       <UDropdown
@@ -121,7 +121,7 @@ watchEffect(() => {
 });
 const handleDropdownItemClick = (item: DropdownItem) => {
   if (item.key === 'admin') {
-    router.push('/admin/home');
+    router.push('/admin');
   } else if (item.key === 'signOut') {
     signOut();
   } else if (item.key === 'signIn') {

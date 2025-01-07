@@ -9,7 +9,11 @@
       />
       <div
         class="w-full p-2 h-100% overflow-y-auto mx-3"
-        :class="$colorMode.value === 'dark' ? 'bg-gray-800 shadow-gray' : 'bg-gray-50 shadow'"
+        :class="
+          $colorMode.value === 'dark'
+            ? 'bg-gray-800 shadow-gray'
+            : 'bg-gray-50 shadow'
+        "
       >
         <slot />
       </div>
@@ -20,17 +24,17 @@
 
 <script setup lang="ts">
 const links = [
-//   {
-//     label: 'Profile',
-//     avatar: {
-//       src: 'https://avatars.githubusercontent.com/u/739984?v=4',
-//     },
-//     badge: 100,
-//   },
+  //   {
+  //     label: 'Profile',
+  //     avatar: {
+  //       src: 'https://avatars.githubusercontent.com/u/739984?v=4',
+  //     },
+  //     badge: 100,
+  //   },
   {
     label: '首页',
     icon: 'i-heroicons-home',
-    to: '/admin/home',
+    to: '/admin',
   },
   {
     label: '站点管理',
@@ -47,9 +51,7 @@ const links = [
     icon: 'i-heroicons-chart-bar',
     to: '/admin/tag',
   },
-]
+];
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
