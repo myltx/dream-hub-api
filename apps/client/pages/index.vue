@@ -79,13 +79,7 @@ onMounted(async () => {
         style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
       >
         <div
-          v-for="item in [
-            ...websites,
-            ...websites,
-            ...websites,
-            ...websites,
-            ...websites,
-          ]"
+          v-for="item in websites"
           :key="item.id"
           class="cursor-pointer item"
           @click="goLink(item.url)"
