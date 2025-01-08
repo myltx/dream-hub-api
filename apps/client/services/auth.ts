@@ -27,7 +27,7 @@ export async function getToken() {
     runtimeConfig?.public.backendEndpoint
   );
   console.log(accessToken, 'accessToken');
-  const idToken = await logto.getIdToken(runtimeConfig?.public.backendEndpoint);
+  const idToken = await logto.getIdToken();
   console.log(idToken, 'idToken');
   return accessToken;
 }
