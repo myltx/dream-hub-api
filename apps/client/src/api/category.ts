@@ -38,3 +38,13 @@ export function delCategory(id: string) {
     method: RequestEnum.DELETE,
   });
 }
+
+export function getCategoryQuery(params: any) {
+  const http = getHttp();
+  // 构建查询字符串
+  const queryString = new URLSearchParams(params).toString();
+
+  return http(`${ServicePrefixEnum.CATEGORY}/query?${queryString}`, {
+    method: RequestEnum.GET,
+  });
+}

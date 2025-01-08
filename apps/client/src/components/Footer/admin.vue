@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4">
-    <UDivider label="底部" />
+    <UDivider :label="$config.public.projectName" />
   </div>
 </template>
 

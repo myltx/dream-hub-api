@@ -1,7 +1,7 @@
 <template>
-  <div class="p-2">
+  <div class="p-2 h-100vh">
     <HeaderAdmin />
-    <div class="flex justify-between items-start h-176">
+    <div class="flex justify-between items-start h-206">
       <UVerticalNavigation
         :links="links"
         class="w-1/8 shadow min-h-100% overflow-y-auto"

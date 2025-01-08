@@ -6,11 +6,15 @@
     >
       <div class="flex items-center">
         <div>
-          <UInput v-model="value" placeholder="请输入名称" class="mr-4" />
+          <UInput
+            v-model="searchForm.name"
+            placeholder="请输入名称"
+            class="mr-4"
+          />
         </div>
         <div>
-          <UButton color="gray"> 重置 </UButton>
-          <UButton class="mx-2"> 查询 </UButton>
+          <UButton color="gray" @click="reset"> 重置 </UButton>
+          <UButton class="mx-2" @click="fetch"> 查询 </UButton>
           <UButton @click="openEditModalFn"> 新增 </UButton>
         </div>
       </div>
@@ -19,7 +23,7 @@
       class="shadow p-2 rounded-2 mt-2 h-84%"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UTable :rows="people" :columns="columns" :loading="loading">
+      <UTable :rows="dataList" :columns="columns" :loading="loading">
         <template #actions-data="{ row }">
           <div>
             <UButton
@@ -44,10 +48,11 @@
       </UTable>
     </div>
     <div
-      class="shadow p-2 rounded-2 mt-2"
+      class="shadow p-2 rounded-2 mt-4 flex items-center justify-end"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UPagination v-model="page" :page-count="5" :total="items.length" />
+      <div class="mr-2 text-gray-700 text-xs">共 {{ dataList.length }} 条</div>
+      <UPagination v-model="page" :page-count="5" :total="dataList.length" />
     </div>
     <!-- 提交表单 -->
     <USlideover v-model="openEditModal">
@@ -97,6 +102,7 @@ import {
   delCategory,
   getCategory,
   updateCategory,
+  getCategoryQuery,
 } from '~/api/category';
 import { useDialog } from '~/components/BasicDialog/index';
 
@@ -107,11 +113,10 @@ const { openDialog } = useDialog();
 const value = ref('');
 const form = ref();
 const page = ref(1);
-const items = ref(Array(55));
 const openEditModal = ref(false);
 
 const loading = ref(true);
-const people = ref([]);
+const dataList = ref([]);
 const columns = ref([
   {
     key: 'name',
@@ -142,6 +147,9 @@ const formData = ref({
   name: undefined,
   description: undefined,
 });
+const searchForm = ref({
+  name: '',
+});
 
 watchEffect(() => {
   if (!openEditModal.value) {
@@ -151,6 +159,19 @@ watchEffect(() => {
     formData.value.id = '';
   }
 });
+
+const reset = () => {
+  loading.value = true;
+  dataList.value = [];
+  searchForm.value.name = '';
+  getList();
+};
+
+const fetch = () => {
+  loading.value = true;
+  dataList.value = [];
+  getList();
+};
 
 const openEditModalFn = () => {
   openEditModal.value = true;
@@ -238,9 +259,9 @@ onMounted(() => {
 const getList = async () => {
   loading.value = true;
   try {
-    const data = await getCategory({});
+    const data = await getCategoryQuery(searchForm.value);
     if (data.code === 200) {
-      people.value = data.data;
+      dataList.value = data.data;
     }
     loading.value = false;
   } catch (err) {
