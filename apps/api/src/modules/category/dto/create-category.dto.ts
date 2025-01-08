@@ -14,5 +14,5 @@ export class CreateCategoryDto {
     example: 'xxxx',
     description: '用户ID',
   })
-  readonly userId: string;
+  readonly user_id: string;
 }

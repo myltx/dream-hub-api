@@ -19,7 +19,29 @@
       class="shadow p-2 rounded-2 mt-2 h-84%"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UTable :rows="people" :columns="columns" :loading="loading" />
+      <UTable :rows="people" :columns="columns" :loading="loading">
+        <template #actions-data="{ row }">
+          <div>
+            <UButton
+              icon="tabler:edit"
+              size="2xs"
+              color="primary"
+              square
+              variant="solid"
+              class="mr-2"
+              @click="editFn(row)"
+            />
+            <UButton
+              icon="tabler:trash-filled"
+              size="2xs"
+              color="red"
+              square
+              variant="solid"
+              @click="deleteFn(row?.id)"
+            />
+          </div>
+        </template>
+      </UTable>
     </div>
     <div
       class="shadow p-2 rounded-2 mt-2"
@@ -47,11 +69,14 @@
       <div class="h-90%">
         <UForm ref="form" :validate="validate" :state="state" class="space-y-4">
           <UFormGroup label="分类名称" name="name">
-            <UInput v-model="state.name" placeholder="请输入分类名称" />
+            <UInput v-model="formData.name" placeholder="请输入分类名称" />
           </UFormGroup>
 
           <UFormGroup label="描述" name="description">
-            <UTextarea v-model="state.description" placeholder="请输入描述" />
+            <UTextarea
+              v-model="formData.description"
+              placeholder="请输入描述"
+            />
           </UFormGroup>
         </UForm>
       </div>
@@ -67,24 +92,23 @@
 
 <script setup lang="ts">
 import type { FormError } from '#ui/types';
-import { createCategory, getCategory } from '~/api/category';
+import {
+  createCategory,
+  delCategory,
+  getCategory,
+  updateCategory,
+} from '~/api/category';
+import { useDialog } from '~/components/BasicDialog/index';
 
 definePageMeta({
   layout: 'admin',
 });
+const { openDialog } = useDialog();
 const value = ref('');
 const form = ref();
 const page = ref(1);
 const items = ref(Array(55));
 const openEditModal = ref(false);
-
-const openEditModalFn = () => {
-  openEditModal.value = true;
-};
-const closeEditModalFn = () => {
-  form.value?.clear();
-  openEditModal.value = false;
-};
 
 const loading = ref(true);
 const people = ref([]);
@@ -98,45 +122,113 @@ const columns = ref([
     label: '描述',
   },
   {
-    key: 'created_at',
+    key: 'createdAt',
     label: '创建时间',
-    render(h) {
-      return 123;
-    },
   },
   {
-    key: 'updated_at',
+    key: 'updatedAt',
     label: '更新时间',
   },
   {
-    key: 'action',
+    key: 'actions',
     label: '操作',
     width: 100,
     align: 'center',
   },
 ]);
 
-const state = reactive({
+const formData = ref({
+  id: '',
   name: undefined,
   description: undefined,
 });
 
+watchEffect(() => {
+  if (!openEditModal.value) {
+    form.value?.clear();
+    formData.value.name = undefined;
+    formData.value.description = undefined;
+    formData.value.id = '';
+  }
+});
+
+const openEditModalFn = () => {
+  openEditModal.value = true;
+};
+const closeEditModalFn = () => {
+  form.value?.clear();
+  formData.value.name = undefined;
+  formData.value.description = undefined;
+  openEditModal.value = false;
+};
 const validate = (state: any): FormError[] => {
   const errors = [];
-  if (!state.name) errors.push({ path: 'name', message: '请输入分类名称' });
-  if (!state.description)
+  if (!formData.value.name)
+    errors.push({ path: 'name', message: '请输入分类名称' });
+  if (!formData.value.description)
     errors.push({ path: 'description', message: '请输入描述' });
   return errors;
 };
 
 async function onSubmit() {
-  // Do something with data
   const submitData = await form.value.validate();
-  const data = await createCategory(submitData);
-  console.log(data);
-  closeEditModalFn();
-  getList();
+  const toast = useToast();
+  try {
+    if (formData.value?.id) {
+      await updateCategory(formData.value?.id, formData.value);
+    } else {
+      await createCategory({
+        name: formData.value?.name,
+        description: formData.value?.description,
+      });
+    }
+    toast.add({
+      description: `${formData.value?.id ? '编辑' : '添加'}成功`,
+      icon: 'success',
+      timeout: 2000,
+    });
+    closeEditModalFn();
+    getList();
+  } catch (err) {
+    console.log(err);
+    // toast.add({
+    //   title: '添加成功',
+    //   description: '添加成功',
+    //   icon: 'success',
+    //   timeout: 2000,
+    // });
+  }
 }
+
+const deleteFn = (id: string) => {
+  openDialog({
+    title: '提示',
+    content: '确定要删除吗？',
+    type: 'warning',
+    onConfirm: async () => {
+      try {
+        await delCategory(id);
+        const toast = useToast();
+        toast.add({
+          description: '删除成功',
+          icon: 'success',
+          timeout: 2000,
+        });
+        getList();
+      } catch (err) {}
+    },
+  });
+};
+
+const editFn = async (data: any) => {
+  try {
+    console.log(data);
+    formData.value.name = data.name;
+    formData.value.description = data.description;
+    formData.value.id = data.id;
+    openEditModal.value = true;
+  } catch (err) {}
+};
 
 // 这里获取列表数据
 onMounted(() => {

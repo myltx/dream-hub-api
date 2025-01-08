@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       // 验证 Token
-      const { payload } = await this.tokenService.verifyToken(token);
+      const payload = await this.tokenService.verifyToken(token);
 
       // 检查 Token 是否过期
       // if (this.tokenService.isTokenExpired(payload)) {

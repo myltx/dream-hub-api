@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -35,8 +36,11 @@ export class CategoriesController {
   @ApiOperation({ summary: '创建分类' })
   @HttpCode(HttpStatus.OK)
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  async create(@Body() createCategoryDto: CreateCategoryDto, @Request() req) {
+    return this.categoriesService.create({
+      ...createCategoryDto,
+      user_id: req.user.sub,
+    });
   }
 
   @ApiOperation({ summary: '编辑分类' })
@@ -58,7 +62,8 @@ export class CategoriesController {
   @ApiOperation({ summary: '获取全部分类列表（需要鉴权）' })
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll() {
+  async findAll(@Request() req) {
+    console.log(req.user.sub, 'req');
     return this.categoriesService.findAll();
   }
 

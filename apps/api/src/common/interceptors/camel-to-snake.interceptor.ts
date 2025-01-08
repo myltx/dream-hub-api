@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { camelCase, snakeCase } from 'change-case-object';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class CamelToSnakeInterceptor implements NestInterceptor {
@@ -34,7 +35,7 @@ export class CamelToSnakeInterceptor implements NestInterceptor {
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]) => [
           camelCase(key),
-          this.convertToCamelCase(value),
+          this.formatDates(camelCase(key), this.convertToCamelCase(value)),
         ]),
       );
     }
@@ -48,10 +49,18 @@ export class CamelToSnakeInterceptor implements NestInterceptor {
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]) => [
           snakeCase(key),
-          this.convertToSnakeCase(value),
+          this.formatDates(snakeCase(key), this.convertToSnakeCase(value)),
         ]),
       );
     }
     return obj;
+  }
+
+  private formatDates(key: string, value: any): any {
+    // 假设日期字段的key包含 'date' 或 'At' 等词
+    if (key.includes('date') || key.includes('At')) {
+      return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+    }
+    return value;
   }
 }
