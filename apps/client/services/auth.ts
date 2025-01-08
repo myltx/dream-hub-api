@@ -7,8 +7,7 @@ export async function setupAuth() {
   runtimeConfig = useRuntimeConfig();
 }
 
-export async function signIn(callback?: string) {
-  // callback && setSignInCallback(callback)
+export async function signIn() {
   logto.signIn(runtimeConfig.public.signInRedirectURI);
 }
 
@@ -21,14 +20,9 @@ export function isAuthenticated() {
 }
 
 export async function getToken() {
-  // console.log(userStore.user, 'user')
-  // runtimeConfig?.public.backendEndpoint
   const accessToken = await logto.getAccessToken(
     runtimeConfig?.public.backendEndpoint
   );
-  console.log(accessToken, 'accessToken');
-  const idToken = await logto.getIdToken();
-  console.log(idToken, 'idToken');
   return accessToken;
 }
 export function fetchUserInfo() {
@@ -38,18 +32,3 @@ export function fetchUserInfo() {
 export async function getIdTokenClaims() {
   return await logto.getIdTokenClaims();
 }
-
-// export function getSignInCallback() {
-//   const callback = sessionStorage.getItem('callback')
-//   if (callback) {
-//     sessionStorage.removeItem('callback')
-//     return callback
-//   }
-//   else {
-//     return '/'
-//   }
-// }
-
-// function setSignInCallback(callback: string) {
-//   sessionStorage.setItem('callback', callback)
-// }
