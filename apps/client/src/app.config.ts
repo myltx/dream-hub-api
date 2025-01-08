@@ -11,6 +11,9 @@ export default defineAppConfig({
       // Show toasts at the top right of the screen
       position: 'top-0 bottom-[unset]',
     },
+    slideover: {
+      padding: 'p-4',
+    },
   },
   // pageTransition: {
   //   name: 'page',

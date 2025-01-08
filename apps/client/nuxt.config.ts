@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     layoutTransition: { name: 'layout', mode: 'out-in' },
   },
   ssr: false,
+  srcDir: 'src',
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   plugins: ['~/plugins/logto.ts'],

@@ -7,16 +7,17 @@
 </template>
 
 <script setup lang="ts">
-const isOpen = ref(false)
+const isOpen = ref(false);
 const props = defineProps({
   open: Boolean,
-})
+});
 
-watch(() => props.open, (value) => {
-  isOpen.value = value
-})
+watch(
+  () => props.open,
+  (value) => {
+    isOpen.value = value;
+  }
+);
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
