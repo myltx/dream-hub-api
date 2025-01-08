@@ -28,18 +28,46 @@
 
 1. 添加 .env 配置文件
 
+   - client env 配置
+
    ```shell
    # logto 配置
    NUXT_LOGTO_ENDPOINT=
    NUXT_LOGTO_APP_ID=
+   BACKEND_ENDPOINT=
+   LOGTO_SIGN_IN_REDIRECT_URI =
+   LOGTO_SIGN_OUT_REDIRECT_URI =
+
    # supabase 配置
    SUPABASE_URL=
    SUPABASE_KEY=
    SUPABASE_JWT_SECRET=
-   JTI=
 
-   LOGTO_SIGN_IN_REDIRECT_URI=
-   LOGTO_SIGN_OUT_REDIRECT_URI=
+   API_BASE=
+
+   # project config
+   PROJECT_NAME= Dream-hub
+
+   ```
+
+   - api env 配置
+
+   ```shell
+   # supabase 配置
+   SUPABASE_URL=
+   SUPABASE_KEY=
+   SUPABASE_JWT_SECRET=
+
+   # redis 配置
+   REDIS_URL=
+
+   # server 配置
+   PORT=8081
+
+   # logto 配置
+   LOGTO_ENDPOINT=
+   LOGTO_APP_ID=
+   BACKEND_ENDPOINT=
 
    ```
 
