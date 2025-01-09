@@ -64,14 +64,16 @@ onMounted(async () => {
 <template>
   <div class="h-100%">
     <div
-      class="py-2 px-2 mt-2 mx-2 shadow-md rounded-lg w-100% overflow-hidden"
+      class="px-2 mt-2 h-auto mx-2 shadow-md rounded-lg w-100% overflow-x-hidden"
     >
-      <div class="w-99% flex items-center whitespace-nowrap overflow-x-auto">
+      <div
+        class="w-99% flex items-center whitespace-nowrap overflow-x-auto h-100% py-2"
+      >
         <div
           v-for="tab in categorys"
           :key="tab.id"
           :data-id="tab.id"
-          class="tab p-5 flex-1 cursor-pointer text-4 h-10 rounded-5 flex items-center justify-center mr-3 shadow hover:text-blue hover:font-500"
+          class="tab p-5 cursor-pointer text-4 h-10 rounded-5 flex items-center justify-center mr-3 shadow hover:text-blue hover:font-500"
           :class="[
             tab.id == activeTab
               ? 'text-blue-500 border-blue-500 font-500'
