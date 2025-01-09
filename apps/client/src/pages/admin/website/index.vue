@@ -23,14 +23,6 @@ const tags = ref([]);
 const { openDialog } = useDialog();
 const toast = useToast();
 
-const openEditModalFn = () => {
-  openEditModal.value = true;
-};
-const closeEditModalFn = () => {
-  form.value?.clear();
-  openEditModal.value = false;
-};
-
 const loading = ref(true);
 const tableData = ref([]);
 const columns = ref([
@@ -62,8 +54,7 @@ const columns = ref([
     align: 'center',
   },
 ]);
-
-const formData = ref({
+const defaultFormData = {
   title: undefined,
   url: undefined,
   description: undefined,
@@ -72,6 +63,14 @@ const formData = ref({
   logo: undefined,
   tags: undefined,
   id: '',
+};
+const formData = ref(defaultFormData);
+
+watchEffect(() => {
+  if (!openEditModal.value) {
+    form.value?.clear();
+    formData.value = defaultFormData;
+  }
 });
 
 const validate = (state: any): FormError[] => {
@@ -87,6 +86,13 @@ const validate = (state: any): FormError[] => {
   return errors;
 };
 
+const openEditModalFn = () => {
+  openEditModal.value = true;
+};
+const closeEditModalFn = () => {
+  form.value?.clear();
+  openEditModal.value = false;
+};
 async function onSubmit() {
   // Do something with data
   const submitData = await form.value.validate();
@@ -160,11 +166,11 @@ const deleteFn = (id: string) => {
 };
 
 const editFn = async (data: any) => {
-  try {
-    // formData.value.name = data.name;
-    // formData.value.id = data.id;
-    openEditModal.value = true;
-  } catch (err) {}
+  if (data.websiteTags && data.websiteTags.length) {
+    data.tags = data.websiteTags.map((item: any) => item.tagId);
+  }
+  Object.assign(formData.value, data);
+  openEditModal.value = true;
 };
 </script>
 <template>

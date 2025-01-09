@@ -43,6 +43,12 @@ export class UpdateWebsiteDto {
   readonly category_id: string;
 
   @ApiProperty({
+    example: [1, 2],
+    description: '网站标签ID',
+  })
+  tags?: string[];
+
+  @ApiProperty({
     example: '1',
     description: '网站评分（1-5分)',
   })

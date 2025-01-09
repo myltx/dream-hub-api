@@ -40,17 +40,59 @@ export class WebsiteService {
     return data;
   }
   async update(id: string, updateWebsiteDto: UpdateWebsiteDto) {
-    const { data, error } = await this.supabase
-      .from(this.dbName)
-      .update(updateWebsiteDto)
-      .eq('id', id);
+    const tags = updateWebsiteDto.tags;
+    delete updateWebsiteDto.tags;
+    const excludeKeys = ['categories', 'website_tags', 'tags', 'id'];
 
-    if (error) {
-      throw new Error(`Error updating taf: ${error.message}`);
+    for (const key in updateWebsiteDto) {
+      if (excludeKeys.includes(key)) {
+        delete updateWebsiteDto[key];
+      }
     }
 
-    return data;
+    console.log(updateWebsiteDto, 'updateWebsiteDto');
+    // 更新主表数据
+    const { data: websiteData, error: websiteError } = await this.supabase
+      .from(this.dbName)
+      .update(updateWebsiteDto)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (websiteError) {
+      throw new Error(`Error updating website: ${websiteError.message}`);
+    }
+
+    // 更新关联表数据（website_tags）
+    if (tags && tags.length) {
+      // 删除旧的关联
+      const { error: deleteError } = await this.supabase
+        .from('website_tags')
+        .delete()
+        .eq('website_id', id);
+
+      if (deleteError) {
+        throw new Error(`Error removing old tags: ${deleteError.message}`);
+      }
+
+      // 插入新的关联
+      const subTags = tags.map((tag: string) => ({
+        tag_id: tag,
+        website_id: id,
+      }));
+
+      const { error: insertError } = await this.supabase
+        .from('website_tags')
+        .insert(subTags);
+
+      if (insertError) {
+        throw new Error(`Error adding new tags: ${insertError.message}`);
+      }
+    }
+
+    return websiteData;
   }
+
   async findAll() {
     const { data, error } = await this.supabase
       .from(this.dbName)
@@ -86,14 +128,28 @@ export class WebsiteService {
 
     return data;
   }
+
   async remove(id: string) {
+    // 删除关联表中的数据
+    const { error: tagsError } = await this.supabase
+      .from('website_tags')
+      .delete()
+      .eq('website_id', id);
+
+    if (tagsError) {
+      throw new Error(`Error removing tags: ${tagsError.message}`);
+    }
+
+    // 删除主表中的数据
     const { data, error } = await this.supabase
       .from(this.dbName)
       .delete()
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      .single();
 
     if (error) {
-      throw new Error(`Error deleting taf: ${error.message}`);
+      throw new Error(`Error deleting website: ${error.message}`);
     }
 
     return data;
