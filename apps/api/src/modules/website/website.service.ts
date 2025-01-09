@@ -52,7 +52,20 @@ export class WebsiteService {
     return data;
   }
   async findAll() {
-    const { data, error } = await this.supabase.from(this.dbName).select('*');
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .select(
+        `
+      *,
+      categories!websites_category_id_fkey(name),
+      website_tags(
+        tag_id,
+        tags!website_tags_tag_id_fkey(name)
+      )
+    `,
+      )
+      .order('created_at', { ascending: false }); // 按创建时间降序排序
+    // .range(offset, offset + pageSize - 1);
 
     if (error) {
       throw new Error(`Error getting tafs: ${error.message}`);
@@ -86,7 +99,19 @@ export class WebsiteService {
     return data;
   }
   async findByQuery(query: Record<string, any>) {
-    let queryBuilder = this.supabase.from(this.dbName).select('*');
+    let queryBuilder = this.supabase
+      .from(this.dbName)
+      .select(
+        `
+    *,
+    categories!websites_category_id_fkey(name),
+    website_tags(
+      tag_id,
+      tags!website_tags_tag_id_fkey(name)
+    )
+  `,
+      )
+      .order('created_at', { ascending: false });
 
     // 动态构建查询条件
     for (const [key, value] of Object.entries(query)) {
