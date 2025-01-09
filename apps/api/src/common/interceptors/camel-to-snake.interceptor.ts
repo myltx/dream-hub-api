@@ -7,8 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { camelCase, snakeCase } from 'change-case-object';
-import { formatTime } from 'src/utils';
-// import dayjs from 'dayjs';
+import { formatTime } from '../../utils/index';
 
 @Injectable()
 export class CamelToSnakeInterceptor implements NestInterceptor {
