@@ -7,7 +7,8 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { camelCase, snakeCase } from 'change-case-object';
-import * as dayjs from 'dayjs';
+import { formatTime } from 'src/utils';
+// import dayjs from 'dayjs';
 
 @Injectable()
 export class CamelToSnakeInterceptor implements NestInterceptor {
@@ -59,7 +60,7 @@ export class CamelToSnakeInterceptor implements NestInterceptor {
   private formatDates(key: string, value: any): any {
     // 假设日期字段的key包含 'date' 或 'At' 等词
     if (key.includes('date') || key.includes('At')) {
-      return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      return formatTime(value);
     }
     return value;
   }
