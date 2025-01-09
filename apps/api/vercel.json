@@ -21,6 +21,5 @@
       "src": "/api-docs/(.*)",
       "dest": "src/main.ts"
     }
-  ],
-  "installCommand": "pnpm install --filter api..."
+  ]
 }

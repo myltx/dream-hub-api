@@ -66,6 +66,9 @@ importers:
       change-case-object:
         specifier: ^2.0.0
         version: 2.0.0
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       jose:
         specifier: ^5.9.6
         version: 5.9.6
