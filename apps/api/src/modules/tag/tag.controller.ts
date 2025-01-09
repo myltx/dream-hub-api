@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -42,6 +43,7 @@ export class TagController {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    console.log(id, updateTagDto);
     return this.tagService.update(id, updateTagDto);
   }
 
@@ -65,5 +67,19 @@ export class TagController {
   @Get('public')
   async findAllPublic() {
     return this.tagService.findAll();
+  }
+  @ApiOperation({ summary: '根据查询条件获取标签列表' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('query')
+  async findByQuery(@Query() query: Record<string, any>) {
+    for (const key in query) {
+      if (Object.prototype.hasOwnProperty.call(query, key)) {
+        if (!query[key]) {
+          delete query[key];
+        }
+      }
+    }
+    return this.tagService.findByQuery(query);
   }
 }

@@ -1,32 +1,38 @@
 <script setup lang="ts">
 import type { FormError } from '#ui/types';
-import {
-  createCategory,
-  delCategory,
-  getCategory,
-  updateCategory,
-  getCategoryQuery,
-} from '~/api/category';
-import { useDialog } from '~/components/BasicDialog/index';
+import { getTag, createTag, delTag, updateTag, getTagQuery } from '~/api/tag';
+import { useDialog } from '~/components/BasicDialog';
 
 definePageMeta({
   layout: 'admin',
 });
-const { openDialog } = useDialog();
+
+const formData = ref({
+  name: '',
+  id: '',
+});
 const form = ref();
 const page = ref(1);
 const openEditModal = ref(false);
+const searchForm = ref({
+  name: '',
+});
 
+watchEffect(() => {
+  if (!openEditModal.value) {
+    form.value?.clear();
+    formData.value.name = '';
+    formData.value.id = '';
+  }
+});
+
+const { openDialog } = useDialog();
 const loading = ref(true);
 const dataList = ref([]);
 const columns = ref([
   {
     key: 'name',
     label: '分类名称',
-  },
-  {
-    key: 'description',
-    label: '描述',
   },
   {
     key: 'createdAt',
@@ -44,24 +50,46 @@ const columns = ref([
   },
 ]);
 
-const formData = ref({
-  id: '',
-  name: undefined,
-  description: undefined,
-});
-const searchForm = ref({
-  name: '',
+// 这里获取列表数据
+onMounted(() => {
+  getList();
 });
 
-watchEffect(() => {
-  if (!openEditModal.value) {
-    form.value?.clear();
-    formData.value.name = undefined;
-    formData.value.description = undefined;
-    formData.value.id = '';
+const validate = (state: any): FormError[] => {
+  const errors = [];
+  if (!state.name) errors.push({ path: 'name', message: '请输入分类名称' });
+  return errors;
+};
+
+const openEditModalFn = () => {
+  openEditModal.value = true;
+};
+
+const closeEditModalFn = () => {
+  form.value?.clear();
+  openEditModal.value = false;
+};
+
+async function onSubmit() {
+  const toast = useToast();
+  const submitData = await form.value.validate();
+  try {
+    if (formData.value.id) {
+      await updateTag(formData.value.id, submitData);
+    } else {
+      await createTag(submitData);
+    }
+    toast.add({
+      description: `${formData.value?.id ? '编辑' : '添加'}成功`,
+      icon: 'success',
+      timeout: 2000,
+    });
+    closeEditModalFn();
+    getList();
+  } catch (err) {
+    console.log(err);
   }
-});
-
+}
 const reset = () => {
   loading.value = true;
   dataList.value = [];
@@ -75,53 +103,18 @@ const fetch = () => {
   getList();
 };
 
-const openEditModalFn = () => {
-  openEditModal.value = true;
-};
-const closeEditModalFn = () => {
-  form.value?.clear();
-  formData.value.name = undefined;
-  formData.value.description = undefined;
-  openEditModal.value = false;
-};
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!formData.value.name)
-    errors.push({ path: 'name', message: '请输入分类名称' });
-  if (!formData.value.description)
-    errors.push({ path: 'description', message: '请输入描述' });
-  return errors;
-};
-
-async function onSubmit() {
-  const submitData = await form.value.validate();
-  const toast = useToast();
+const getList = async () => {
+  loading.value = true;
   try {
-    if (formData.value?.id) {
-      await updateCategory(formData.value?.id, formData.value);
-    } else {
-      await createCategory({
-        name: formData.value?.name,
-        description: formData.value?.description,
-      });
+    const data = await getTagQuery(searchForm.value);
+    if (data.code === 200) {
+      dataList.value = data.data;
     }
-    toast.add({
-      description: `${formData.value?.id ? '编辑' : '添加'}成功`,
-      icon: 'success',
-      timeout: 2000,
-    });
-    closeEditModalFn();
-    getList();
+    loading.value = false;
   } catch (err) {
-    console.log(err);
-    // toast.add({
-    //   title: '添加成功',
-    //   description: '添加成功',
-    //   icon: 'success',
-    //   timeout: 2000,
-    // });
+    loading.value = false;
   }
-}
+};
 
 const deleteFn = (id: string) => {
   openDialog({
@@ -130,7 +123,7 @@ const deleteFn = (id: string) => {
     type: 'warning',
     onConfirm: async () => {
       try {
-        await delCategory(id);
+        await delTag(id);
         const toast = useToast();
         toast.add({
           description: '删除成功',
@@ -146,30 +139,12 @@ const deleteFn = (id: string) => {
 const editFn = async (data: any) => {
   try {
     formData.value.name = data.name;
-    formData.value.description = data.description;
     formData.value.id = data.id;
     openEditModal.value = true;
   } catch (err) {}
 };
-
-// 这里获取列表数据
-onMounted(() => {
-  getList();
-});
-
-const getList = async () => {
-  loading.value = true;
-  try {
-    const data = await getCategoryQuery(searchForm.value);
-    if (data.code === 200) {
-      dataList.value = data.data;
-    }
-    loading.value = false;
-  } catch (err) {
-    loading.value = false;
-  }
-};
 </script>
+
 <template>
   <div class="h-full">
     <div
@@ -220,7 +195,7 @@ const getList = async () => {
       </UTable>
     </div>
     <div
-      class="shadow p-2 rounded-2 mt-4 flex items-center justify-end"
+      class="shadow p-2 rounded-2 mt-2 flex items-center justify-end"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
       <div class="mr-2 text-gray-700 text-xs">共 {{ dataList.length }} 条</div>
@@ -253,13 +228,6 @@ const getList = async () => {
           <UFormGroup label="分类名称" name="name">
             <UInput v-model="formData.name" placeholder="请输入分类名称" />
           </UFormGroup>
-
-          <UFormGroup label="描述" name="description">
-            <UTextarea
-              v-model="formData.description"
-              placeholder="请输入描述"
-            />
-          </UFormGroup>
         </UForm>
       </div>
       <div class="flex items-center justify-end mt-4 b-t-1 b-gray/50 p-t-2">
@@ -271,4 +239,5 @@ const getList = async () => {
     </USlideover>
   </div>
 </template>
+
 <style scoped></style>

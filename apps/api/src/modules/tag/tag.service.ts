@@ -66,4 +66,26 @@ export class TagService {
 
     return data;
   }
+
+  async findByQuery(query: Record<string, any>) {
+    let queryBuilder = this.supabase.from(this.dbName).select('*');
+
+    // 动态构建查询条件
+    for (const [key, value] of Object.entries(query)) {
+      queryBuilder = queryBuilder.eq(key, value);
+    }
+    // const limit = query.limit || 10;
+    // const offset = query.offset || 0;
+    // queryBuilder = queryBuilder.range(offset, offset + limit - 1);
+    // if (query.sortBy) {
+    //   queryBuilder = queryBuilder.order(query.sortBy, {
+    //     ascending: query.order !== 'desc',
+    //   });
+    // }
+    const { data, error } = await queryBuilder;
+    if (error) {
+      throw new Error(`查询失败: ${error.message}`);
+    }
+    return data;
+  }
 }
