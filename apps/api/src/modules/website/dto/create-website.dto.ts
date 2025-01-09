@@ -4,7 +4,7 @@ export class CreateWebsiteDto {
     example: '123',
     description: '用户ID',
   })
-  readonly userId: string;
+  readonly user_id: string;
 
   @ApiProperty({
     example: 'https://www.baidu.com',
@@ -41,6 +41,12 @@ export class CreateWebsiteDto {
     description: '网站分类ID',
   })
   readonly category_id: string;
+
+  @ApiProperty({
+    example: [1, 2],
+    description: '网站标签ID',
+  })
+  tags?: string[];
 
   @ApiProperty({
     example: '1',

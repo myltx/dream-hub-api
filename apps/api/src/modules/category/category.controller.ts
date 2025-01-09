@@ -64,7 +64,6 @@ export class CategoriesController {
   @HttpCode(HttpStatus.OK)
   @Get()
   async findAll(@Request() req) {
-    console.log(req.user.sub, 'req');
     return this.categoriesService.findAll();
   }
 

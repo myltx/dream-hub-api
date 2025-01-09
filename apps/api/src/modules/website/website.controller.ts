@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { WebsiteService } from './website.service';
 import {
@@ -37,8 +38,11 @@ export class WebsiteController {
   })
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() createWebsiteDto: CreateWebsiteDto) {
-    return this.websiteService.create(createWebsiteDto);
+  async create(@Body() createWebsiteDto: CreateWebsiteDto, @Request() req) {
+    return this.websiteService.create({
+      ...createWebsiteDto,
+      user_id: req.user.id,
+    });
   }
 
   @ApiOperation({
@@ -80,8 +84,12 @@ export class WebsiteController {
   @IsPublic()
   @Get('query')
   async findByQuery(@Query() query: Record<string, any>) {
-    if (query.category_id && query.category_id === '-1') {
-      delete query.category_id;
+    for (const key in query) {
+      if (Object.prototype.hasOwnProperty.call(query, key)) {
+        if (!query[key] || query[key] === '-1') {
+          delete query[key];
+        }
+      }
     }
     return this.websiteService.findByQuery(query);
   }

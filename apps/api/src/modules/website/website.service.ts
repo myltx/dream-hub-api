@@ -10,10 +10,29 @@ export class WebsiteService {
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
   async create(createWebsiteDto: CreateWebsiteDto) {
+    const tags = createWebsiteDto.tags;
+    delete createWebsiteDto.tags;
+
     const { data, error } = await this.supabase
       .from(this.dbName)
-      .insert([createWebsiteDto]);
+      .insert([createWebsiteDto])
+      .select()
+      .single();
 
+    if (data && data.id) {
+      const websiteId = data.id;
+      if (tags && tags.length) {
+        const subTags = tags.map((tag: string) => {
+          return { tag_id: tag, website_id: websiteId };
+        });
+        const { error: tagError } = await this.supabase
+          .from('website_tags')
+          .insert(subTags);
+        if (tagError) {
+          throw new Error(`Supabase query failed: ${tagError.message}`);
+        }
+      }
+    }
     if (error) {
       throw new Error(`Error creating category: ${error.message}`);
     }

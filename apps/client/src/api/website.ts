@@ -4,7 +4,7 @@ import { RequestEnum } from '~/enums/httpEnum';
 
 export function createWebsite(data: any) {
   const http = getHttp();
-  return http(`${ServicePrefixEnum.WEBSITE}/create`, {
+  return http(`${ServicePrefixEnum.WEBSITE}`, {
     method: RequestEnum.POST,
     body: data,
   });
@@ -14,6 +14,20 @@ export function getWebsite() {
   const http = getHttp();
   return http(`${ServicePrefixEnum.WEBSITE}`, {
     method: RequestEnum.GET,
+  });
+}
+
+export function updateWebsite(id: string, data: any) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.WEBSITE}/${id}`, {
+    method: RequestEnum.PATCH,
+    body: data,
+  });
+}
+export function delWebSite(id: string) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.WEBSITE}/${id}`, {
+    method: RequestEnum.DELETE,
   });
 }
 
