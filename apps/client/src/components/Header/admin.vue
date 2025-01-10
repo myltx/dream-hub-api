@@ -53,9 +53,9 @@ const handleDropdownItemClick = (item: DropdownItem) => {
       {{ $config.public.projectName }} 后台管理
     </div>
     <div class="flex items-center">
-      <User :type="'admin'" />
-      <ColorMode class="mx-2" />
+      <ColorMode />
       <Github />
+      <User :type="'admin'" class="ml-2" />
     </div>
   </div>
 </template>
