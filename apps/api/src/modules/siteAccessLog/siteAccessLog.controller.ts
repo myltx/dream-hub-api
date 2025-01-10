@@ -41,6 +41,19 @@ export class SiteAccessLogController {
       user_id: req.user?.sub,
     });
   }
+  // 获取访问次数
+
+  @ApiOperation({ summary: '获取访问数量' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('count')
+  async getInterViewCount() {
+    const data = await this.logService.findAll();
+    console.log(data);
+
+    return data.length;
+  }
+
   @ApiOperation({ summary: '获取日志列表' })
   @HttpCode(HttpStatus.OK)
   @Get()

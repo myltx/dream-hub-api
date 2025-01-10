@@ -102,7 +102,7 @@ const handleDropdownItemClick = (item: DropdownItem) => {
     :ui="{ item: { disabled: 'cursor-text select-text' } }"
     :popper="{ placement: 'bottom-start' }"
   >
-    <UAvatar :src="user?.userInfo?.avatar" />
+    <UAvatar :src="user?.userInfo?.avatar" alt="Dream-hub" />
     <template #account="{ item }">
       <div class="text-left">
         <p v-if="!isAuthenticated()">请先登录</p>

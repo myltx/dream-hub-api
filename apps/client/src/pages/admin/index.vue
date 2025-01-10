@@ -1,18 +1,35 @@
 <script setup lang="ts">
+import { getSiteAccessInterViewCount } from '~/api/log';
+
 definePageMeta({
   layout: 'admin',
 });
 const router = useRouter();
+
+const { data } = await getSiteAccessInterViewCount();
+console.log(data, 'data');
+
 const toLink = (link: string) => {
   router.push(link);
 };
 </script>
 <template>
-  <div class="text-xl font-bold text-center mb-4">
-    欢迎来到 {{ $config.public.projectName }} 管理后台
+  <div
+    class="text-xl font-bold text-center mb-4 flex items-center justify-center"
+  >
+    <Icon name="unjs:nypm" class="mr-2" /> 欢迎来到
+    {{ $config.public.projectName }} 管理后台
   </div>
   <div class="text-gray-500 text-center">
     您可以在这里配置您自己需要的信息！
+  </div>
+  <div class="text-gray-500 text-center mt-4 flex items-center justify-center">
+    <Icon name="fluent-emoji-flat:fireworks" class="mr-2" />
+    当前项目共被访问:
+    <span class="text-blue-500">
+      {{ data }}
+    </span>
+    次 <Icon name="dashicons:update" />
   </div>
   <!-- 快捷导航 -->
   <div class="text-xl font-bold mb-4">快捷导航</div>

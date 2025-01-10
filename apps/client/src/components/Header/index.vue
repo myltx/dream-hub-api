@@ -22,6 +22,7 @@ import NavLink from './components/Link.vue';
       <ColorMode />
       <Github />
       <User class="ml-2" />
+      <!-- <Icon name="dashicons:admin-users" /> -->
     </div>
   </div>
 </template>

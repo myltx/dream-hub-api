@@ -17,6 +17,13 @@ export function getSiteAccessLog() {
   });
 }
 
+export function getSiteAccessInterViewCount() {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.SITEACCESSLOG}/count`, {
+    method: RequestEnum.GET,
+  });
+}
+
 export function getSiteAccessLogQuery(params: any) {
   const http = getHttp();
   // 构建查询字符串

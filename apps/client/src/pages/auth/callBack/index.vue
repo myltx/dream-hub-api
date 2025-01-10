@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 当正在处理中 -->
-    <p v-if="isLoading">正在登录中...请稍后</p>
+    <FullLoading v-if="isLoading" :text="'正在登录中，请稍后...'" />
   </div>
 </template>
 
