@@ -18,7 +18,7 @@ import {
 import { SiteAccessLogService } from './siteAccessLog.service';
 import { CreateLogDto } from './dto/create-siteAccessLog.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
-@ApiTags('标签管理')
+@ApiTags('日志管理')
 @ApiBearerAuth()
 @ApiHeader({
   name: 'Authorization',
@@ -26,7 +26,7 @@ import { IsPublic } from '../auth/decorators/is-public.decorator';
   example: 'Bearer token',
 })
 @Controller('siteAccessLog')
-export class LogController {
+export class SiteAccessLogController {
   constructor(private readonly logService: SiteAccessLogService) {}
 
   @ApiOperation({ summary: '新增日志' })
