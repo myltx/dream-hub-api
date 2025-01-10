@@ -16,7 +16,7 @@ const { openDialog } = useDialog();
 const form = ref();
 const limit = ref(0);
 const total = ref(0);
-const searchForm = ref<any>(
+const searchParams = ref<any>(
   initPageQueryParams({
     name: '',
   })
@@ -75,7 +75,7 @@ watchEffect(() => {
 const reset = () => {
   loading.value = true;
   dataList.value = [];
-  searchForm.value.name = '';
+  searchParams.value.name = '';
   getList();
 };
 
@@ -87,7 +87,7 @@ const fetch = () => {
 
 // 切换分页时调用
 const handlePageChange = async (page: number) => {
-  searchForm.value.page = page;
+  searchParams.value.page = page;
   fetch();
 };
 
@@ -176,7 +176,7 @@ onMounted(() => {
 const getList = async () => {
   loading.value = true;
   try {
-    const data = await getCategoryQuery(searchForm.value);
+    const data = await getCategoryQuery(searchParams.value);
     if (data.code === 200) {
       dataList.value = data.data?.list;
       limit.value = data.data?.limit;
@@ -197,7 +197,7 @@ const getList = async () => {
       <div class="flex items-center">
         <div>
           <UInput
-            v-model="searchForm.name"
+            v-model="searchParams.name"
             placeholder="请输入名称"
             class="mr-4"
           />
@@ -213,7 +213,15 @@ const getList = async () => {
       class="shadow p-2 rounded-2 mt-2 h-84%"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UTable :rows="dataList" :columns="columns" :loading="loading">
+      <UTable
+        :rows="dataList"
+        :columns="columns"
+        :loading="loading"
+        class="w-full"
+        :ui="{
+          td: { base: 'max-w-[0] truncate' },
+        }"
+      >
         <template #actions-data="{ row }">
           <div>
             <UButton
@@ -243,7 +251,7 @@ const getList = async () => {
     >
       <div class="mr-2 text-gray-700 text-xs">共 {{ total }} 条</div>
       <UPagination
-        v-model="searchForm.page"
+        v-model="searchParams.page"
         :page-count="limit"
         :total="total"
         :active-button="{ variant: 'outline' }"

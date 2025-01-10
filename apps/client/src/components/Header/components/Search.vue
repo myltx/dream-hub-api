@@ -27,8 +27,10 @@ const getSelectData = async () => {
 const getWebSites = () => {
   getWebsiteQuery({
     categoryId: '-1',
+    page: 1,
+    limit: 9999,
   }).then((res) => {
-    websites.value = res.data;
+    websites.value = res.data.list;
     categorys.value.forEach((item) => {
       const commands = websites.value
         .filter((website) => website.categoryId === item.id)
@@ -67,7 +69,7 @@ onMounted(async () => {
   await getSelectData();
   await getWebSites();
 
-  document.addEventListener('keydown', (e) => {
+  useEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'k') {
       showModal();
     }

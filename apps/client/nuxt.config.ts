@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
+    '@vueuse/nuxt',
   ],
   runtimeConfig: {
     logtoAppId: process.env.NUXT_LOGTO_APP_ID,

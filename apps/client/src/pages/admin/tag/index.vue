@@ -77,6 +77,7 @@ async function onSubmit() {
     if (formData.value.id) {
       await updateTag(formData.value.id, submitData);
     } else {
+      delete submitData.id;
       await createTag(submitData);
     }
     toast.add({

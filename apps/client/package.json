@@ -15,6 +15,8 @@
     "@nuxt/ui": "2.20.0",
     "@nuxtjs/color-mode": "3.5.2",
     "@pinia/nuxt": "^0.9.0",
+    "@vueuse/core": "^12.4.0",
+    "@vueuse/nuxt": "^12.4.0",
     "nuxt": "^3.15.0",
     "pinia": "^2.3.0",
     "vue": "latest",

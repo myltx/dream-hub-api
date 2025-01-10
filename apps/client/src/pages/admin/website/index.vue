@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { FormError } from '#ui/types';
 import { getCategory } from '~/api/category';
 import { getTag } from '~/api/tag';
 import {
@@ -9,81 +8,61 @@ import {
   updateWebsite,
 } from '~/api/website';
 import { useDialog } from '~/components/BasicDialog';
+import { columns, defaultFormData, validate } from './website.data';
 
 definePageMeta({
   layout: 'admin',
 });
-const value = ref('');
+const { openDialog } = useDialog();
 const form = ref();
-const page = ref(1);
-const items = ref(Array(55));
+const limit = ref(0);
+const total = ref(0);
 const openEditModal = ref(false);
 const categorys = ref([]);
 const tags = ref([]);
-const { openDialog } = useDialog();
 const toast = useToast();
 
 const loading = ref(true);
-const tableData = ref([]);
-const columns = ref([
-  {
-    key: 'title',
-    label: '分类名称',
-  },
-  {
-    key: 'url',
-    label: '地址',
-    class: 'w-200',
-  },
-  {
-    key: 'description',
-    label: '描述',
-  },
-  {
-    key: 'categories',
-    label: '分类',
-  },
-  {
-    key: 'websiteTags',
-    label: '标签',
-  },
-  {
-    key: 'actions',
-    label: '操作',
-    width: 100,
-    align: 'center',
-  },
-]);
-const defaultFormData = {
-  title: undefined,
-  url: undefined,
-  description: undefined,
-  image: undefined,
-  categoryId: undefined,
-  logo: undefined,
-  tags: undefined,
-  id: '',
-};
-const formData = ref(defaultFormData);
+const dataList = ref([]);
+
+const formData = ref(JSON.parse(JSON.stringify(defaultFormData)));
+const searchParams = ref<any>(
+  initPageQueryParams({
+    title: '',
+  })
+);
 
 watchEffect(() => {
   if (!openEditModal.value) {
+    formData.value = JSON.parse(JSON.stringify(defaultFormData));
     form.value?.clear();
-    formData.value = defaultFormData;
   }
 });
+onMounted(() => {
+  useEventListener('keydown', (e) => {
+    if (e.keyCode === 13) {
+      fetch();
+    }
+  });
+});
 
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.title) errors.push({ path: 'title', message: '请输入站点名称' });
-  if (!state.categoryId)
-    errors.push({ path: 'categoryId', message: '请选择分类' });
-  if (!state.tags) errors.push({ path: 'tags', message: '请选择标签' });
-  if (!state.url) errors.push({ path: 'url', message: '请输入站点地址' });
-  if (!state.description)
-    errors.push({ path: 'description', message: '请输入描述' });
-  if (!state.image) errors.push({ path: 'image', message: '请上传图片' });
-  return errors;
+const reset = () => {
+  loading.value = true;
+  dataList.value = [];
+  searchParams.value.title = '';
+  getList();
+};
+
+const fetch = () => {
+  loading.value = true;
+  dataList.value = [];
+  getList();
+};
+
+// 切换分页时调用
+const handlePageChange = async (page: number) => {
+  searchParams.value.page = page;
+  fetch();
 };
 
 const openEditModalFn = () => {
@@ -126,12 +105,11 @@ onMounted(() => {
 const getList = async () => {
   loading.value = true;
   try {
-    const data = await getWebsiteQuery({
-      // page: page.value,
-      // limit: 10,
-    });
+    const data = await getWebsiteQuery(searchParams.value);
     if (data.code === 200) {
-      tableData.value = data.data;
+      dataList.value = data.data.list;
+      limit.value = data.data?.limit;
+      total.value = data.data?.total;
     }
     loading.value = false;
   } catch (err) {
@@ -181,11 +159,15 @@ const editFn = async (data: any) => {
     >
       <div class="flex items-center">
         <div>
-          <UInput v-model="value" placeholder="请输入名称" class="mr-4" />
+          <UInput
+            v-model="searchParams.title"
+            placeholder="请输入名称"
+            class="mr-4"
+          />
         </div>
         <div>
-          <UButton color="gray" @click="getList"> 重置 </UButton>
-          <UButton class="mx-2" @click="getList"> 查询 </UButton>
+          <UButton color="gray" @click="reset"> 重置 </UButton>
+          <UButton class="mx-2" @click="fetch"> 查询 </UButton>
           <UButton @click="openEditModalFn"> 新增 </UButton>
         </div>
       </div>
@@ -194,7 +176,15 @@ const editFn = async (data: any) => {
       class="shadow p-2 rounded-2 mt-2 h-84%"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UTable :rows="tableData" :columns="columns" :loading="loading">
+      <UTable
+        :rows="dataList"
+        :columns="columns"
+        :loading="loading"
+        class="w-full"
+        :ui="{
+          td: { base: 'max-w-[0] truncate' },
+        }"
+      >
         <template #categories-data="{ row }">
           <div>{{ row?.categories?.name }}</div>
         </template>
@@ -232,10 +222,18 @@ const editFn = async (data: any) => {
       </UTable>
     </div>
     <div
-      class="shadow p-2 rounded-2 mt-2"
+      class="shadow p-2 rounded-2 mt-4 flex items-center justify-end"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <UPagination v-model="page" :page-count="5" :total="items.length" />
+      <div class="mr-2 text-gray-700 text-xs">共 {{ total }} 条</div>
+      <UPagination
+        v-model="searchParams.page"
+        :page-count="limit"
+        :total="total"
+        :active-button="{ variant: 'outline' }"
+        :inactive-button="{ color: 'gray' }"
+        @update:modelValue="handlePageChange"
+      />
     </div>
     <!-- 提交表单 -->
     <USlideover v-model="openEditModal" prevent-close>

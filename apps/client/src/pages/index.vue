@@ -50,9 +50,11 @@ const goLink = (url: string) => {
 };
 const getWebSites = () => {
   getWebsiteQuery({
-    categoryId: activeTab.value,
+    categoryId: activeTab.value === -1 ? '' : activeTab.value,
+    page: 1,
+    limit: 10,
   }).then((res) => {
-    websites.value = res.data;
+    websites.value = res.data.list;
     loading.value = false;
   });
 };
