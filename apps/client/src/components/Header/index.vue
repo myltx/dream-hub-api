@@ -19,7 +19,7 @@ import NavLink from './components/Link.vue';
     </div>
     <div class="flex items-center">
       <Search />
-      <ColorMode class="mx-2" />
+      <ColorMode />
       <Github />
       <User class="ml-2" />
     </div>
