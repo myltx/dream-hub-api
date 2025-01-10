@@ -10,6 +10,8 @@ import { UserModule } from './modules/user/user.module';
 import { CategoriesModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { WebsiteModule } from './modules/website/website.module';
+import { LogModule } from './modules/siteAccessLog/siteAccessLog.module';
+
 // token
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { TokenService } from './modules/auth/token.service';
@@ -26,6 +28,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     CategoriesModule,
     TagModule,
     WebsiteModule,
+    LogModule,
   ],
   controllers: [AppController],
   providers: [

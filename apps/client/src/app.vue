@@ -14,6 +14,7 @@
 import { getUserInfoByUserId } from '~/api/user';
 import { getIdTokenClaims, isAuthenticated } from './services/auth';
 import { useUserStore } from './store/user';
+import { createSiteAccessLog } from './api/log';
 
 const userStore = useUserStore();
 const { status } = useAsyncData('initApplication', async () => {
@@ -25,6 +26,26 @@ const { status } = useAsyncData('initApplication', async () => {
       userInfo: data,
     });
   }
+  const { userAgent, platform } = navigator;
+  // 获取地理位置
+  // if (navigator.geolocation) {
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       console.log('Geolocation:', position.coords);
+  //     },
+  //     (error) => {
+  //       console.error('Geolocation Error:', error.message);
+  //     }
+  //   );
+  // } else {
+  //   console.log('Geolocation not supported');
+  // }
+  await createSiteAccessLog({
+    userAgent,
+    platform,
+    browserName: getBrowserInfo().browserName,
+    deviceType: isMobile() ? 'Mobile' : 'PC',
+  });
 });
 </script>
 
