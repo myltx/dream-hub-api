@@ -21,6 +21,7 @@ import {
 import { CreateWebsiteDto } from './dto/create-website.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { UpdateWebsiteDto } from './dto/update-website.dto';
+import { QueryWebsiteDto } from './dto/query-website.dto';
 
 @ApiTags('站点管理')
 @ApiBearerAuth()
@@ -83,7 +84,7 @@ export class WebsiteController {
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('query')
-  async findByQuery(@Query() query: Record<string, any>) {
+  async findByQuery(@Query() query: QueryWebsiteDto) {
     for (const key in query) {
       if (Object.prototype.hasOwnProperty.call(query, key)) {
         if (!query[key] || query[key] === '-1') {

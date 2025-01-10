@@ -80,7 +80,7 @@ export class CategoriesService {
 
     // 构建动态查询
     const queryBuilder = this.supabase
-      .from('categories')
+      .from(this.dbName)
       .select('*', { count: 'exact' });
 
     for (const [key, value] of Object.entries(filters)) {

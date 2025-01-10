@@ -36,7 +36,6 @@ export class SiteAccessLogController {
   async create(@Body() createTagDto: CreateLogDto, @Request() req) {
     // 从请求头获取 IP 地址
     // TODO: 暂时未获取到 ip 地址，需要优化
-    console.log(req, 'req');
     return this.logService.create({
       ...createTagDto,
       user_id: req.user?.sub,
