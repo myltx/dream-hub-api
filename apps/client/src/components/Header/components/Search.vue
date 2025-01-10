@@ -79,10 +79,21 @@ const showModal = () => {
 </script>
 <template>
   <UTooltip
-    text="Search"
-    :shortcuts="['⌘', 'K']"
     class="cursor-pointer flex items-center justify-center rounded-md p-1.5 text-gray-700 hover:bg-gray-100"
   >
+    <template #text>
+      <div>
+        <!-- :shortcuts="['⌘', 'K']" -->
+        <div class="flex items-center justify-between">
+          <span class="text-gray-500">
+            search ·
+            <UKbd size="xs">⌘</UKbd>
+            +
+            <UKbd size="xs">K</UKbd>
+          </span>
+        </div>
+      </div>
+    </template>
     <Icon
       name="eva:search-outline"
       class="text-2xl cursor-pointer text-gray-700"
