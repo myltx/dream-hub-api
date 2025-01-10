@@ -38,17 +38,17 @@ const links = [
   },
   {
     label: '站点管理',
-    icon: 'i-heroicons-chart-bar',
+    icon: 'icon-park-outline:ad-product',
     to: '/admin/website',
   },
   {
     label: '分类管理',
-    icon: 'i-heroicons-chart-bar',
+    icon: 'icon-park-outline:all-application',
     to: '/admin/categories',
   },
   {
     label: '标签管理',
-    icon: 'i-heroicons-chart-bar',
+    icon: 'icon-park-outline:add-text-two',
     to: '/admin/tag',
   },
 ];

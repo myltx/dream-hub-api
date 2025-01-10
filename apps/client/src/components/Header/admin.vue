@@ -1,46 +1,6 @@
-<template>
-  <div
-    class="flex items-center justify-between h-12 shadow mb-2 px-2 rounded-2"
-  >
-    <div>{{ $config.public.projectName }} 后台管理</div>
-    <div class="flex items-center">
-      <UDropdown
-        :items="items"
-        :ui="{ item: { disabled: 'cursor-text select-text' } }"
-        :popper="{ placement: 'bottom-start' }"
-      >
-        <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-
-        <template #account="{ item }">
-          <div class="text-left">
-            <p>Signed in as</p>
-            <p class="truncate font-medium text-gray-900 dark:text-white">
-              {{ item.label }}
-            </p>
-          </div>
-        </template>
-
-        <template #item="{ item }">
-          <div
-            class="w-100% flex items-center justify-between"
-            @click="handleDropdownItemClick(item)"
-          >
-            <span class="truncate">{{ item.label }}</span>
-
-            <UIcon
-              :name="item.icon"
-              class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            />
-          </div>
-        </template>
-      </UDropdown>
-      <ColorMode class="mx-2" />
-      <Icon name="uil:github" class="text-2xl cursor-pointer" />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
+import Github from './components/Github.vue';
+import User from './components/User.vue';
 const router = useRouter();
 
 type DropdownItem = {
@@ -77,5 +37,27 @@ const handleDropdownItemClick = (item: DropdownItem) => {
   }
 };
 </script>
+<template>
+  <div
+    class="flex items-center justify-between h-12 shadow mb-2 px-2 rounded-2"
+  >
+    <div
+      class="cursor-pointer flex items-center"
+      @click="router.push('/admin')"
+    >
+      <img
+        src="~/assets/images/logo.gif"
+        class="h-6 w-6 rounded-full mr-2"
+        alt=""
+      />
+      {{ $config.public.projectName }} 后台管理
+    </div>
+    <div class="flex items-center">
+      <User :type="'admin'" />
+      <ColorMode class="mx-2" />
+      <Github />
+    </div>
+  </div>
+</template>
 
 <style scoped></style>
