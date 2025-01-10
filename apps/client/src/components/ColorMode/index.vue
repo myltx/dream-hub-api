@@ -45,15 +45,19 @@ async function toggleDark({ clientX: x, clientY: y }: MouseEvent) {
 </script>
 
 <template>
-  <Icon
-    :name="
-      $colorMode.value === 'dark'
-        ? 'i-heroicons-moon-solid'
-        : 'i-heroicons-sun-solid'
-    "
-    class="text-2xl cursor-pointer"
-    @click="toggleDark"
-  />
+  <div
+    class="cursor-pointer flex items-center justify-center rounded-md p-1.5 text-gray-700 hover:bg-gray-100"
+  >
+    <Icon
+      :name="
+        $colorMode.value === 'dark'
+          ? 'i-heroicons-moon-solid'
+          : 'i-heroicons-sun-solid'
+      "
+      class="text-2xl cursor-pointer"
+      @click="toggleDark"
+    />
+  </div>
 </template>
 
 <style>
