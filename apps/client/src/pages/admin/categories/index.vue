@@ -14,7 +14,14 @@ definePageMeta({
 });
 const { openDialog } = useDialog();
 const form = ref();
-const page = ref(1);
+const limit = ref(0);
+const total = ref(0);
+const searchForm = ref<any>(
+  initPageQueryParams({
+    name: '',
+  })
+);
+
 const openEditModal = ref(false);
 
 const loading = ref(true);
@@ -27,6 +34,10 @@ const columns = ref([
   {
     key: 'description',
     label: '描述',
+  },
+  {
+    key: 'sortOrder',
+    label: '排序',
   },
   {
     key: 'createdAt',
@@ -48,9 +59,7 @@ const formData = ref({
   id: '',
   name: undefined,
   description: undefined,
-});
-const searchForm = ref({
-  name: '',
+  sortOrder: 0,
 });
 
 watchEffect(() => {
@@ -58,6 +67,7 @@ watchEffect(() => {
     form.value?.clear();
     formData.value.name = undefined;
     formData.value.description = undefined;
+    formData.value.sortOrder = 0;
     formData.value.id = '';
   }
 });
@@ -73,6 +83,12 @@ const fetch = () => {
   loading.value = true;
   dataList.value = [];
   getList();
+};
+
+// 切换分页时调用
+const handlePageChange = async (page: number) => {
+  searchForm.value.page = page;
+  fetch();
 };
 
 const openEditModalFn = () => {
@@ -162,7 +178,9 @@ const getList = async () => {
   try {
     const data = await getCategoryQuery(searchForm.value);
     if (data.code === 200) {
-      dataList.value = data.data;
+      dataList.value = data.data?.list;
+      limit.value = data.data?.limit;
+      total.value = data.data?.total;
     }
     loading.value = false;
   } catch (err) {
@@ -223,8 +241,15 @@ const getList = async () => {
       class="shadow p-2 rounded-2 mt-4 flex items-center justify-end"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <div class="mr-2 text-gray-700 text-xs">共 {{ dataList.length }} 条</div>
-      <UPagination v-model="page" :page-count="5" :total="dataList.length" />
+      <div class="mr-2 text-gray-700 text-xs">共 {{ total }} 条</div>
+      <UPagination
+        v-model="searchForm.page"
+        :page-count="limit"
+        :total="total"
+        :active-button="{ variant: 'outline' }"
+        :inactive-button="{ color: 'gray' }"
+        @update:modelValue="handlePageChange"
+      />
     </div>
     <!-- 提交表单 -->
     <USlideover v-model="openEditModal">
@@ -252,6 +277,9 @@ const getList = async () => {
         >
           <UFormGroup label="分类名称" name="name">
             <UInput v-model="formData.name" placeholder="请输入分类名称" />
+          </UFormGroup>
+          <UFormGroup label="排序" name="sortOrder">
+            <UInput v-model="formData.sortOrder" placeholder="请输入排序" />
           </UFormGroup>
 
           <UFormGroup label="描述" name="description">

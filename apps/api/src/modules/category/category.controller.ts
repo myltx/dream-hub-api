@@ -22,6 +22,7 @@ import { CategoriesService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { QueryCategoryDto } from './dto/query-category.dto';
 
 @ApiTags('分类管理')
 @ApiBearerAuth()
@@ -79,14 +80,14 @@ export class CategoriesController {
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('query')
-  async findByQuery(@Query() query: Record<string, any>) {
-    for (const key in query) {
-      if (Object.prototype.hasOwnProperty.call(query, key)) {
-        if (!query[key]) {
-          delete query[key];
-        }
-      }
-    }
+  async findByQuery(@Query() query: QueryCategoryDto) {
+    // for (const key in query) {
+    //   if (Object.prototype.hasOwnProperty.call(query, key)) {
+    //     if (!query[key]) {
+    //       delete query[key];
+    //     }
+    //   }
+    // }
     return this.categoriesService.findByQuery(query);
   }
 }

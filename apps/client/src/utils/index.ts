@@ -37,3 +37,12 @@ export function isMobile() {
     navigator.userAgent
   );
 }
+
+// 初始化分页数据查询参数
+export function initPageQueryParams(params: { [key: string]: any }) {
+  return {
+    page: 1,
+    limit: 10,
+    ...params,
+  };
+}

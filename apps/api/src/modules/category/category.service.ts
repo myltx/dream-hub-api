@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { QueryCategoryDto } from './dto/query-category.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -23,7 +24,10 @@ export class CategoriesService {
   }
 
   async findAll() {
-    const { data, error } = await this.supabase.from(this.dbName).select('*');
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .select('*')
+      .order('sort_order', { ascending: false }); // 由大到小排序
 
     if (error) {
       throw new Error(`Error fetching categories: ${error.message}`);
@@ -69,25 +73,39 @@ export class CategoriesService {
     return data;
   }
 
-  async findByQuery(query: Record<string, any>) {
-    let queryBuilder = this.supabase.from(this.dbName).select('*');
+  async findByQuery(query: QueryCategoryDto) {
+    const { page, limit, ...filters } = query;
 
-    // 动态构建查询条件
-    for (const [key, value] of Object.entries(query)) {
-      queryBuilder = queryBuilder.eq(key, value);
+    const offset = (page - 1) * limit;
+
+    // 构建动态查询
+    const queryBuilder = this.supabase
+      .from('categories')
+      .select('*', { count: 'exact' });
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) {
+        queryBuilder.ilike(key, `%${value}%`); // 假设需要模糊查询
+      }
     }
-    // const limit = query.limit || 10;
-    // const offset = query.offset || 0;
-    // queryBuilder = queryBuilder.range(offset, offset + limit - 1);
-    // if (query.sortBy) {
-    //   queryBuilder = queryBuilder.order(query.sortBy, {
-    //     ascending: query.order !== 'desc',
-    //   });
-    // }
-    const { data, error } = await queryBuilder;
+
+    const { data, error, count } = await queryBuilder.range(
+      offset,
+      offset + limit - 1,
+    );
+
     if (error) {
-      throw new Error(`查询失败: ${error.message}`);
+      throw new Error(`查询出错: ${error.message}`);
     }
-    return data;
+    // 计算总页数
+    const totalPages = Math.ceil((count || 0) / limit);
+
+    return {
+      list: data,
+      total: count,
+      totalPages,
+      page,
+      limit,
+    };
   }
 }

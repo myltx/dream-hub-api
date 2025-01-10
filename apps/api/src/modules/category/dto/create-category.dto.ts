@@ -15,4 +15,9 @@ export class CreateCategoryDto {
     description: '用户ID',
   })
   readonly user_id: string;
+  @ApiProperty({
+    example: 1,
+    description: '排序',
+  })
+  readonly sortOrder: number;
 }
