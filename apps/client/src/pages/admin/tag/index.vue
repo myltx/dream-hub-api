@@ -2,6 +2,7 @@
 import type { FormError } from '#ui/types';
 import { getTag, createTag, delTag, updateTag, getTagQuery } from '~/api/tag';
 import { useDialog } from '~/components/BasicDialog';
+import { columns } from './tag.data';
 
 definePageMeta({
   layout: 'admin',
@@ -12,11 +13,15 @@ const formData = ref({
   id: '',
 });
 const form = ref();
-const page = ref(1);
 const openEditModal = ref(false);
-const searchForm = ref({
-  name: '',
-});
+
+const limit = ref(0);
+const total = ref(0);
+const searchParams = ref<any>(
+  initPageQueryParams({
+    name: '',
+  })
+);
 
 watchEffect(() => {
   if (!openEditModal.value) {
@@ -29,26 +34,6 @@ watchEffect(() => {
 const { openDialog } = useDialog();
 const loading = ref(true);
 const dataList = ref([]);
-const columns = ref([
-  {
-    key: 'name',
-    label: '分类名称',
-  },
-  {
-    key: 'createdAt',
-    label: '创建时间',
-  },
-  {
-    key: 'updatedAt',
-    label: '更新时间',
-  },
-  {
-    key: 'actions',
-    label: '操作',
-    width: 100,
-    align: 'center',
-  },
-]);
 
 // 这里获取列表数据
 onMounted(() => {
@@ -94,7 +79,7 @@ async function onSubmit() {
 const reset = () => {
   loading.value = true;
   dataList.value = [];
-  searchForm.value.name = '';
+  searchParams.value.name = '';
   getList();
 };
 
@@ -103,13 +88,20 @@ const fetch = () => {
   dataList.value = [];
   getList();
 };
+// 切换分页时调用
+const handlePageChange = async (page: number) => {
+  searchParams.value.page = page;
+  fetch();
+};
 
 const getList = async () => {
   loading.value = true;
   try {
-    const data = await getTagQuery(searchForm.value);
+    const data = await getTagQuery(searchParams.value);
     if (data.code === 200) {
-      dataList.value = data.data;
+      dataList.value = data.data.list;
+      limit.value = data.data?.limit;
+      total.value = data.data?.total;
     }
     loading.value = false;
   } catch (err) {
@@ -155,7 +147,7 @@ const editFn = async (data: any) => {
       <div class="flex items-center">
         <div>
           <UInput
-            v-model="searchForm.name"
+            v-model="searchParams.name"
             placeholder="请输入名称"
             class="mr-4"
           />
@@ -196,11 +188,18 @@ const editFn = async (data: any) => {
       </UTable>
     </div>
     <div
-      class="shadow p-2 rounded-2 mt-2 flex items-center justify-end"
+      class="shadow p-2 rounded-2 mt-4 flex items-center justify-end"
       :class="$colorMode.value === 'dark' ? 'bg-black' : 'bg-white'"
     >
-      <div class="mr-2 text-gray-700 text-xs">共 {{ dataList.length }} 条</div>
-      <UPagination v-model="page" :page-count="5" :total="dataList.length" />
+      <div class="mr-2 text-gray-700 text-xs">共 {{ total }} 条</div>
+      <UPagination
+        v-model="searchParams.page"
+        :page-count="limit"
+        :total="total"
+        :active-button="{ variant: 'outline' }"
+        :inactive-button="{ color: 'gray' }"
+        @update:modelValue="handlePageChange"
+      />
     </div>
     <!-- 提交表单 -->
     <USlideover v-model="openEditModal">

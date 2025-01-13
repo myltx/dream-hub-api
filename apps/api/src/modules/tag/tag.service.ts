@@ -86,8 +86,9 @@ export class TagService {
 
     const { data, error, count } = await queryBuilder.range(
       offset,
-      offset + limit - 1,
+      offset + limit * 1 - 1,
     );
+    console.log(count, 'count');
 
     if (error) {
       throw new Error(`查询出错: ${error.message}`);
