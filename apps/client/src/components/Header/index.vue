@@ -1,10 +1,4 @@
-<script setup lang="ts">
-import Github from './components/Github.vue';
-import User from './components/User.vue';
-import Search from './components/Search.vue';
-import NavLink from './components/Link.vue';
-import Rank from './components/Rank.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div
@@ -19,11 +13,11 @@ import Rank from './components/Rank.vue';
       {{ $config.public.projectName }}
     </div>
     <div class="flex items-center">
-      <Rank />
-      <Search />
+      <HeaderComponentsRanking />
+      <HeaderComponentsSearch />
       <ColorMode />
-      <Github />
-      <User class="ml-2" />
+      <HeaderComponentsGithub />
+      <HeaderComponentsUser class="ml-2" />
       <!-- <Icon name="dashicons:admin-users" /> -->
     </div>
   </div>

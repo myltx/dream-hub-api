@@ -47,3 +47,10 @@ export function getWebsiteQuery(params: any) {
     method: RequestEnum.GET,
   });
 }
+
+export function getRanking() {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.WEBSITE}/ranking`, {
+    method: RequestEnum.GET,
+  });
+}

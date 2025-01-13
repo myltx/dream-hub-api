@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Github from './components/Github.vue';
-import User from './components/User.vue';
 const router = useRouter();
 
 type DropdownItem = {
@@ -54,8 +52,8 @@ const handleDropdownItemClick = (item: DropdownItem) => {
     </div>
     <div class="flex items-center">
       <ColorMode />
-      <Github />
-      <User :type="'admin'" class="ml-2" />
+      <HeaderComponentsGithub />
+      <HeaderComponentsUser :type="'admin'" class="ml-2" />
     </div>
   </div>
 </template>

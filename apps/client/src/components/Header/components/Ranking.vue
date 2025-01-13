@@ -1,9 +1,24 @@
 <script setup lang="ts">
-const rankList = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+import { getRanking } from '~/api/website';
+
+interface Ranking {
+  title: string;
+  url: string;
+  visitCount: number;
+  id: string;
+}
+const rankingList = ref<Ranking[]>([]);
 
 const isOpen = ref(false);
-const showModal = () => {
+const showModal = async () => {
+  await getRankingList();
   isOpen.value = true;
+};
+const getRankingList = async () => {
+  try {
+    const { data } = await getRanking();
+    rankingList.value = data || [];
+  } catch (err) {}
 };
 </script>
 
@@ -21,8 +36,8 @@ const showModal = () => {
         <div class="text-3 text-gray-500">根据站点点击量统计</div>
         <ul class="mt-2">
           <li
-            v-for="(rank, index) in rankList"
-            :key="rank"
+            v-for="(rank, index) in rankingList"
+            :key="rank.id"
             class="flex items-center gap-2 py-1"
           >
             <Icon
@@ -42,12 +57,14 @@ const showModal = () => {
             />
             <span
               v-else
-              class="text-xl text-gray-500"
-              :class="index < 9 ? ' px-1.5' : 'px-0.3'"
+              class="text-4 text-gray-500"
+              :class="index < 9 ? ' px-1.5' : 'px-0.7'"
             >
               {{ index + 1 }}
             </span>
-            <span class="text-gray-700">User Name</span>
+            <a class="text-gray-700 font-bold" :href="rank.url" target="_blank">
+              {{ rank.title }}
+            </a>
           </li>
         </ul>
       </div>
