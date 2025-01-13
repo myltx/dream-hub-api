@@ -56,9 +56,9 @@ const goLink = async (data: { id: string; url: string }) => {
   } catch (error) {
     console.error('Error logging website access or visiting:', error);
   } finally {
-    // 打开目标链接
-    window.open(data.url, '_blank');
   }
+  // 打开目标链接
+  window.open(data.url, '_blank');
 };
 const getWebSites = () => {
   getWebsiteQuery({
