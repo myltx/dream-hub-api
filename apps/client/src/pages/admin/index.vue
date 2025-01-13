@@ -20,9 +20,6 @@ const toLink = (link: string) => {
     <Icon name="unjs:nypm" class="mr-2" /> 欢迎来到
     {{ $config.public.projectName }} 管理后台
   </div>
-  <div class="text-gray-500 text-center">
-    您可以在这里配置您自己需要的信息！
-  </div>
   <div class="text-gray-500 text-center mt-4 flex items-center justify-center">
     <Icon name="fluent-emoji-flat:fireworks" class="mr-2" />
     当前项目共被访问:

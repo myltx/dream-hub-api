@@ -20,6 +20,7 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { HttpStatus } from '@nestjs/common/enums';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { QueryTagDto } from './dto/query-tag.dto';
 
 @ApiTags('标签管理')
 @ApiBearerAuth()
@@ -72,14 +73,14 @@ export class TagController {
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('query')
-  async findByQuery(@Query() query: Record<string, any>) {
-    for (const key in query) {
-      if (Object.prototype.hasOwnProperty.call(query, key)) {
-        if (!query[key]) {
-          delete query[key];
-        }
-      }
-    }
+  async findByQuery(@Query() query: QueryTagDto) {
+    // for (const key in query) {
+    //   if (Object.prototype.hasOwnProperty.call(query, key)) {
+    //     if (!query[key]) {
+    //       delete query[key];
+    //     }
+    //   }
+    // }
     return this.tagService.findByQuery(query);
   }
 }
