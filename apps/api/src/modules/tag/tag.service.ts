@@ -88,7 +88,6 @@ export class TagService {
       offset,
       offset + limit * 1 - 1,
     );
-    console.log(count, 'count');
 
     if (error) {
       throw new Error(`查询出错: ${error.message}`);
@@ -103,5 +102,19 @@ export class TagService {
       page,
       limit,
     };
+  }
+
+  async isTagBoundToWebsite(tagId: string): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('website_tags') // 关联表
+      .select('website_id')
+      .eq('tag_id', tagId)
+      .limit(1); // 只检查是否存在至少一条记录
+    if (error) {
+      throw new Error(`检查绑定关系时出错: ${error.message}`);
+    }
+
+    // 如果 data 不为空数组，说明已绑定
+    return data.length > 0;
   }
 }

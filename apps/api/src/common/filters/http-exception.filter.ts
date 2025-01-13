@@ -16,10 +16,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    // 针对普通 Error 类型的处理
     const errorResponse =
       exception instanceof HttpException
         ? exception.getResponse()
-        : { message: 'Internal server error' };
+        : { message: exception.message || 'Internal server error' };
 
     response.status(status).json({
       code: status,

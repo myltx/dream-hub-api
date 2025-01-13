@@ -108,4 +108,18 @@ export class CategoriesService {
       limit,
     };
   }
+
+  async isCategoryBoundToWebsite(categoryId: number): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('websites') // 关联表
+      .select('category_id')
+      .eq('category_id', categoryId)
+      .limit(1); // 只检查是否存在至少一条记录
+    if (error) {
+      throw new Error(`检查绑定关系时出错: ${error.message}`);
+    }
+
+    // 如果 data 不为空数组，说明已绑定
+    return data.length > 0;
+  }
 }

@@ -52,6 +52,11 @@ export class TagController {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // 检查标签是否绑定站点
+    const isBound = await this.tagService.isTagBoundToWebsite(id);
+    if (isBound) {
+      throw new Error(`标签已绑定站点，无法删除`);
+    }
     return this.tagService.remove(id);
   }
 

@@ -58,6 +58,11 @@ export class CategoriesController {
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
+    // 检查标签是否绑定站点
+    const isBound = await this.categoriesService.isCategoryBoundToWebsite(id);
+    if (isBound) {
+      throw new Error(`分类已绑定站点，无法删除`);
+    }
     return this.categoriesService.remove(id);
   }
 
