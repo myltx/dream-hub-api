@@ -11,6 +11,7 @@ import { CategoriesModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { WebsiteModule } from './modules/website/website.module';
 import { LogModule } from './modules/siteAccessLog/siteAccessLog.module';
+import { WebsiteAccessLogModule } from './modules/websiteAccessLog/websiteAccessLog.module';
 
 // token
 import { AuthGuard } from './modules/auth/guards/auth.guard';
@@ -29,6 +30,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     TagModule,
     WebsiteModule,
     LogModule,
+    WebsiteAccessLogModule,
   ],
   controllers: [AppController],
   providers: [

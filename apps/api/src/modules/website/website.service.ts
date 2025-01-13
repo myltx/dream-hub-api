@@ -213,4 +213,43 @@ export class WebsiteService {
     }
     return data;
   }
+  // async increaseVisitCount(id: string) {
+  //   const { data, error } = await this.supabase
+  //     .from(this.dbName)
+  //     .update({ visit_count: this.supabase.rpc('increment', { count: 1 }) })
+  //     .eq('id', id)
+  //     .select();
+
+  //   if (error) {
+  //     throw new Error(`Error increasing visit count: ${error.message}`);
+  //   }
+
+  //   return data;
+  // }
+  async increaseVisitCount(id: string) {
+    // 查询当前值
+    const { data: currentData, error: fetchError } = await this.supabase
+      .from(this.dbName)
+      .select('visit_count')
+      .eq('id', id)
+      .single();
+
+    if (fetchError) {
+      throw new Error(`Error fetching visit count: ${fetchError.message}`);
+    }
+
+    // 递增并更新
+    const newCount = currentData.visit_count + 1;
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .update({ visit_count: newCount })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      throw new Error(`Error increasing visit count: ${error.message}`);
+    }
+
+    return data;
+  }
 }

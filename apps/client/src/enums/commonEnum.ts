@@ -6,5 +6,6 @@ export enum ServicePrefixEnum {
   CATEGORY = '/category',
   WEBSITE = '/website',
   TAG = '/tag',
-  SITEACCESSLOG = '/siteAccessLog',
+  SITE_ACCESS_LOG = '/siteAccessLog',
+  WEBSITE_ACCESS_LOG = '/websiteAccessLog',
 }

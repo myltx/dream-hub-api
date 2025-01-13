@@ -10,6 +10,13 @@ export function createWebsite(data: any) {
   });
 }
 
+export function websiteVisit(id: string) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.WEBSITE}/visit/${id}`, {
+    method: RequestEnum.GET,
+  });
+}
+
 export function getWebsite() {
   const http = getHttp();
   return http(`${ServicePrefixEnum.WEBSITE}`, {

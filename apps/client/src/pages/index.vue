@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getCategoryList } from '~/api/category';
-import { getWebsiteQuery } from '~/api/website';
+import { createWebsiteAccessLog } from '~/api/log';
+import { getWebsiteQuery, websiteVisit } from '~/api/website';
 
 interface Category {
   id: number;
@@ -45,8 +46,19 @@ const getSelectData = async () => {
   getWebSites();
 };
 
-const goLink = (url: string) => {
-  window.open(url, '_blank');
+const goLink = async (data: { id: string; url: string }) => {
+  try {
+    // 创建访问日志
+    await createWebsiteAccessLog({ websiteId: data.id });
+
+    // 增加访问计数
+    await websiteVisit(data.id);
+  } catch (error) {
+    console.error('Error logging website access or visiting:', error);
+  } finally {
+    // 打开目标链接
+    window.open(data.url, '_blank');
+  }
 };
 const getWebSites = () => {
   getWebsiteQuery({
@@ -97,7 +109,7 @@ onMounted(async () => {
           v-for="item in websites"
           :key="item.id"
           class="cursor-pointer item"
-          @click="goLink(item.url)"
+          @click="goLink(item)"
         >
           <div class="p-2">
             <div

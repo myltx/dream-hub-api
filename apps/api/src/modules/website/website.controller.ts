@@ -102,4 +102,12 @@ export class WebsiteController {
   async getRanking() {
     return this.websiteService.getRanking();
   }
+
+  @ApiOperation({ summary: '增加站点访问量' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('visit/:id')
+  async increaseVisitCount(@Param('id') id: string) {
+    return this.websiteService.increaseVisitCount(id);
+  }
 }

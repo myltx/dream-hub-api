@@ -4,7 +4,7 @@ import { RequestEnum } from '~/enums/httpEnum';
 
 export function createSiteAccessLog(data: any) {
   const http = getHttp();
-  return http(`${ServicePrefixEnum.SITEACCESSLOG}`, {
+  return http(`${ServicePrefixEnum.SITE_ACCESS_LOG}`, {
     method: RequestEnum.POST,
     body: data,
   });
@@ -12,14 +12,14 @@ export function createSiteAccessLog(data: any) {
 
 export function getSiteAccessLog() {
   const http = getHttp();
-  return http(`${ServicePrefixEnum.SITEACCESSLOG}`, {
+  return http(`${ServicePrefixEnum.SITE_ACCESS_LOG}`, {
     method: RequestEnum.GET,
   });
 }
 
 export function getSiteAccessInterViewCount() {
   const http = getHttp();
-  return http(`${ServicePrefixEnum.SITEACCESSLOG}/count`, {
+  return http(`${ServicePrefixEnum.SITE_ACCESS_LOG}/count`, {
     method: RequestEnum.GET,
   });
 }
@@ -29,7 +29,16 @@ export function getSiteAccessLogQuery(params: any) {
   // 构建查询字符串
   const queryString = new URLSearchParams(params).toString();
 
-  return http(`${ServicePrefixEnum.SITEACCESSLOG}/query?${queryString}`, {
+  return http(`${ServicePrefixEnum.SITE_ACCESS_LOG}/query?${queryString}`, {
     method: RequestEnum.GET,
+  });
+}
+
+// 这里开始是站点访问的日志接口
+export function createWebsiteAccessLog(data: any) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.WEBSITE_ACCESS_LOG}`, {
+    method: RequestEnum.POST,
+    body: data,
   });
 }
