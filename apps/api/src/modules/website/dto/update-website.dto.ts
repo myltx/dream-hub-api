@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsUrl, MaxLength } from 'class-validator';
 export class UpdateWebsiteDto {
   @ApiProperty({
     example: '123',
@@ -10,12 +11,16 @@ export class UpdateWebsiteDto {
     example: 'https://www.baidu.com',
     description: '网站地址',
   })
+  @IsNotEmpty({ message: '网站地址不能为空' })
+  @IsString({ message: '网站地址必须是字符串' })
+  @IsUrl({}, { message: '网站地址格式不正确' })
   readonly url: string;
 
   @ApiProperty({
     example: '百度',
     description: '网站名称',
   })
+  @MaxLength(12, { message: '网站名称不能超过12个字符' })
   readonly title: string;
 
   @ApiProperty({
@@ -28,12 +33,16 @@ export class UpdateWebsiteDto {
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图片',
   })
+  @IsString({ message: '网站地址必须是字符串' })
+  @IsUrl({}, { message: '网站地址格式不正确' })
   readonly image?: string;
 
   @ApiProperty({
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图标',
   })
+  @IsString({ message: '网站地址必须是字符串' })
+  @IsUrl({}, { message: '网站地址格式不正确' })
   readonly logo?: string;
 
   @ApiProperty({

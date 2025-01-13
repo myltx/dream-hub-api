@@ -104,8 +104,8 @@ const validate = (state: any): FormError[] => {
   const errors = [];
   if (!formData.value.name)
     errors.push({ path: 'name', message: '请输入分类名称' });
-  if (!formData.value.description)
-    errors.push({ path: 'description', message: '请输入描述' });
+  // if (!formData.value.description)
+  //   errors.push({ path: 'description', message: '请输入描述' });
   return errors;
 };
 
@@ -119,6 +119,7 @@ async function onSubmit() {
       await createCategory({
         name: formData.value?.name,
         description: formData.value?.description,
+        sortOrder: formData.value?.sortOrder,
       });
     }
     toast.add({

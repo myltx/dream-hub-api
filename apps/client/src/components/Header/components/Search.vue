@@ -49,11 +49,9 @@ const getWebSites = () => {
         commands,
       });
     });
-    console.log(websiteList.value, 'websiteList.value');
   });
 };
 const onSelect = (option: Website) => {
-  console.log(option);
   if (option.click) {
     option.click();
   } else if (option.to) {

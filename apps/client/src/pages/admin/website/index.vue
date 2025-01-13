@@ -92,8 +92,6 @@ async function onSubmit() {
   } catch (err) {
     console.log(err);
   }
-  closeEditModalFn();
-  getList();
 }
 
 // 这里获取列表数据

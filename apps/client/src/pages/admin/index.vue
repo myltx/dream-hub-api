@@ -7,7 +7,6 @@ definePageMeta({
 const router = useRouter();
 
 const { data } = await getSiteAccessInterViewCount();
-console.log(data, 'data');
 
 const toLink = (link: string) => {
   router.push(link);

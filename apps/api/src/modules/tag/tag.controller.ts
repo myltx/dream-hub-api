@@ -44,7 +44,6 @@ export class TagController {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    console.log(id, updateTagDto);
     return this.tagService.update(id, updateTagDto);
   }
 

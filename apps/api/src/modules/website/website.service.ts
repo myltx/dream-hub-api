@@ -51,7 +51,6 @@ export class WebsiteService {
       }
     }
 
-    console.log(updateWebsiteDto, 'updateWebsiteDto');
     // 更新主表数据
     const { data: websiteData, error: websiteError } = await this.supabase
       .from(this.dbName)

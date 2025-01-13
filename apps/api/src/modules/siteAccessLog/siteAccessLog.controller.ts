@@ -49,7 +49,6 @@ export class SiteAccessLogController {
   @Get('count')
   async getInterViewCount() {
     const data = await this.logService.findAll();
-    console.log(data);
 
     return data.length;
   }

@@ -41,11 +41,17 @@ export class CamelToSnakeInterceptor implements NestInterceptor {
     }
     return obj;
   }
-
   private convertToSnakeCase(obj: any): any {
     if (Array.isArray(obj)) {
       return obj.map((item) => this.convertToSnakeCase(item));
     } else if (obj && typeof obj === 'object') {
+      const pagingParams = ['page', 'limit'];
+      for (const key in obj) {
+        if (pagingParams.includes(key)) {
+          obj[key] = parseInt(obj[key]);
+        }
+      }
+
       return Object.fromEntries(
         Object.entries(obj).map(([key, value]) => [
           snakeCase(key),
