@@ -3,6 +3,7 @@ import Github from './components/Github.vue';
 import User from './components/User.vue';
 import Search from './components/Search.vue';
 import NavLink from './components/Link.vue';
+import Rank from './components/Rank.vue';
 </script>
 
 <template>
@@ -18,6 +19,7 @@ import NavLink from './components/Link.vue';
       {{ $config.public.projectName }}
     </div>
     <div class="flex items-center">
+      <Rank />
       <Search />
       <ColorMode />
       <Github />

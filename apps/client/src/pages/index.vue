@@ -104,7 +104,13 @@ onMounted(async () => {
               class="rounded-lg shadow overflow-hidden"
               :class="[$colorMode.value === 'dark' ? 'b-1 b-gray-500' : '']"
             >
-              <div class="p-4 h-30">
+              <div class="p-4 h-30 position-relative">
+                <div
+                  class="position-absolute top-0 right-0 bg-red-500 text-white text-3 px-1.5 py-1 rounded-bl-lg"
+                  v-if="item.isRecommended"
+                >
+                  推荐
+                </div>
                 <div class="flex items-center">
                   <img
                     :src="item.logo"

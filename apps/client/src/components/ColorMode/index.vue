@@ -51,8 +51,8 @@ async function toggleDark({ clientX: x, clientY: y }: MouseEvent) {
     <Icon
       :name="
         $colorMode.value === 'dark'
-          ? 'i-heroicons-moon-solid'
-          : 'i-heroicons-sun-solid'
+          ? 'line-md:moon-rising-filled-alt-loop'
+          : 'line-md:moon-to-sunny-outline-loop-transition'
       "
       class="text-2xl cursor-pointer"
       @click="toggleDark"
