@@ -51,7 +51,17 @@ export function setupHttp() {
 }
 
 type HttpStatusErrorHandler = (message: string, statusCode: number) => void;
-let httpStatusErrorHandler: HttpStatusErrorHandler;
+let httpStatusErrorHandler: HttpStatusErrorHandler = (
+  message: string,
+  statusCode: number
+) => {
+  const toast = useToast();
+  toast.add({
+    title: statusCode.toString(),
+    description: message,
+    color: 'red',
+  });
+};
 
 export function injectHttpStatusErrorHandler(handler: HttpStatusErrorHandler) {
   httpStatusErrorHandler = handler;
