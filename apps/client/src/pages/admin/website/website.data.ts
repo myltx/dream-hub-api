@@ -48,6 +48,6 @@ export const validate = (state: any): FormError[] => {
   if (!state.url) errors.push({ path: 'url', message: '请输入站点地址' });
   if (!state.description)
     errors.push({ path: 'description', message: '请输入描述' });
-  if (!state.image) errors.push({ path: 'image', message: '请上传图片' });
+  // if (!state.image) errors.push({ path: 'image', message: '请上传图片' });
   return errors;
 };

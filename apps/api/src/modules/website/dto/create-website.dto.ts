@@ -20,7 +20,7 @@ export class CreateWebsiteDto {
     example: '百度',
     description: '网站名称',
   })
-  @MaxLength(12)
+  @MaxLength(30)
   readonly title: string;
 
   @ApiProperty({
@@ -33,16 +33,16 @@ export class CreateWebsiteDto {
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图片',
   })
-  @IsString({ message: '网站图片必须是字符串' })
-  @IsUrl({}, { message: '网站图片格式不正确' })
+  // @IsString({ message: '网站图片必须是字符串' })
+  // @IsUrl({}, { message: '网站图片格式不正确' })
   readonly image?: string;
 
   @ApiProperty({
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图标',
   })
-  @IsString({ message: '网站图标必须是字符串' })
-  @IsUrl({}, { message: '网站图标格式不正确' })
+  // @IsString({ message: '网站图标必须是字符串' })
+  // @IsUrl({}, { message: '网站图标格式不正确' })
   readonly logo?: string;
 
   @ApiProperty({

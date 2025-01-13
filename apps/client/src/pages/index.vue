@@ -106,10 +106,10 @@ onMounted(async () => {
         style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
       >
         <div
-          v-for="item in websites"
-          :key="item.id"
+          v-for="website in websites"
+          :key="website.id"
           class="cursor-pointer item"
-          @click="goLink(item)"
+          @click="goLink(website)"
         >
           <div class="p-2">
             <div
@@ -119,23 +119,23 @@ onMounted(async () => {
               <div class="p-4 h-30 position-relative">
                 <div
                   class="position-absolute top-0 right-0 bg-red-500 text-white text-3 px-1.5 py-1 rounded-bl-lg"
-                  v-if="item.isRecommended"
+                  v-if="website.isRecommended"
                 >
                   推荐
                 </div>
                 <div class="flex items-center">
-                  <img
-                    :src="item.logo"
-                    alt=""
+                  <UAvatar
+                    :src="website.logo"
+                    :alt="website.title"
                     class="w-10 h-10 rounded-full mr-4"
                   />
                   <div>
                     <h2 class="text-4 font-bold mb-1">
-                      {{ item.title }}
+                      {{ website.title }}
                     </h2>
                     <div class="text-gray-500 text-3">
                       {{
-                        item.websiteTags
+                        website.websiteTags
                           ?.map((item: any) => item.tags)
                           .map((item: any) => item.name)
                           .join('、')
@@ -144,11 +144,13 @@ onMounted(async () => {
                   </div>
                 </div>
                 <div>
+                  <!-- <UPopover mode="hover" :label="website.description"> -->
                   <p
                     class="text-slate-500 text-3 mt-2 font-500 tracking-1px overflow-hidden line-clamp-2"
                   >
-                    {{ item.description }}
+                    {{ website.description }}
                   </p>
+                  <!-- </UPopover> -->
                 </div>
               </div>
             </div>
