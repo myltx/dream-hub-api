@@ -94,4 +94,12 @@ export class WebsiteController {
     }
     return this.websiteService.findByQuery(query);
   }
+
+  @ApiOperation({ summary: '获取站点排名' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('ranking')
+  async getRanking() {
+    return this.websiteService.getRanking();
+  }
 }

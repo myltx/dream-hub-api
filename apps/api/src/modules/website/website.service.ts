@@ -201,4 +201,16 @@ export class WebsiteService {
       limit,
     };
   }
+  // 实现根据 visit_count 字段获取排名逻辑 需要十条
+  async getRanking() {
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .select('*')
+      .order('visit_count', { ascending: false }) // 按访问量降序排序
+      .range(0, 9); // 获取前10条数据
+    if (error) {
+      throw new Error(`Error getting ranking: ${error.message}`);
+    }
+    return data;
+  }
 }
