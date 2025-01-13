@@ -33,16 +33,16 @@ export class UpdateWebsiteDto {
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图片',
   })
-  @IsString({ message: '网站地址必须是字符串' })
-  @IsUrl({}, { message: '网站地址格式不正确' })
+  // @IsString({ message: '网站地址必须是字符串' })
+  // @IsUrl({}, { message: '网站地址格式不正确' })
   readonly image?: string;
 
   @ApiProperty({
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图标',
   })
-  @IsString({ message: '网站地址必须是字符串' })
-  @IsUrl({}, { message: '网站地址格式不正确' })
+  // @IsString({ message: '网站地址必须是字符串' })
+  // @IsUrl({}, { message: '网站地址格式不正确' })
   readonly logo?: string;
 
   @ApiProperty({
