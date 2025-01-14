@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { getCategoryList } from '~/api/category';
+import { createFavorites, removeFavorites } from '~/api/favorites';
 import { createWebsiteAccessLog } from '~/api/log';
 import { getWebsiteQueryAll, websiteVisit } from '~/api/website';
+import { useDialog } from '~/components/BasicDialog';
 
 interface Category {
   id: number;
@@ -14,6 +16,8 @@ const categorys = ref<Category[]>([]);
 const activeTab = ref(-1);
 const websites = ref<Website[]>([]);
 const loading = ref(true);
+
+const { openDialog } = useDialog();
 
 const onChangeTab = (id: number) => {
   loading.value = true;
@@ -69,8 +73,36 @@ const getWebSites = () => {
   });
 };
 // 收藏
-const handleCollect = (website: any) => {
-  console.log(website, 'website');
+const handleCollect = async (website: any) => {
+  const toast = useToast();
+  if (!website.isFavorited) {
+    await createFavorites({
+      contentId: website.id,
+      contentType: 'website',
+    });
+    toast.add({
+      title: 'Success',
+      description: '收藏成功',
+      color: 'green',
+    });
+    getWebSites();
+  } else {
+    // 取消收藏
+    openDialog({
+      title: '取消收藏',
+      content: '确定取消收藏吗？',
+      onConfirm: async () => {
+        // 取消收藏
+        await removeFavorites(website.favoriteId);
+        toast.add({
+          title: 'Success',
+          description: '取消收藏成功',
+          color: 'green',
+        });
+        getWebSites();
+      },
+    });
+  }
 };
 onMounted(async () => {
   getSelectData();
@@ -158,8 +190,9 @@ onMounted(async () => {
                   </span>
                   <div class="flex items-center">
                     <Icon
-                      name="line-md:star-alt"
+                      :name="`${website.isFavorited ? 'line-md:star-alt-filled' : 'line-md:star'}`"
                       class="text-xl"
+                      :class="`${website.isFavorited ? 'color-yellow-500' : ''}`"
                       @click.stop="handleCollect(website)"
                     />
                   </div>

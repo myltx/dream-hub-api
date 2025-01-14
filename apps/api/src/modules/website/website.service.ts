@@ -245,7 +245,7 @@ export class WebsiteService {
     // 获取当前用户收藏的内容（仅站点类型）
     const { data: favorites, error: favoritesError } = await this.supabase
       .from('user_favorites')
-      .select('content_id')
+      .select('id, content_id') // 获取收藏记录的 id 和 content_id
       .eq('user_id', user_id)
       .eq('content_type', 'website'); // 仅查询收藏的站点
 
@@ -253,13 +253,23 @@ export class WebsiteService {
       throw new Error(`获取收藏数据出错: ${favoritesError.message}`);
     }
 
-    const favoriteContentIds = new Set(favorites.map((fav) => fav.content_id));
+    // 将收藏记录的 id 和 content_id 存入映射对象
+    const favoriteMap = new Map(
+      favorites.map((fav) => [
+        fav.content_id,
+        { id: fav.id, content_id: fav.content_id },
+      ]),
+    );
 
-    // 标记站点是否已被收藏
-    const enrichedData = data.map((website) => ({
-      ...website,
-      is_favorited: favoriteContentIds.has(website.id.toString()), // 确保类型匹配
-    }));
+    // 标记站点是否已被收藏，并且附加 favoriteId
+    const enrichedData = data.map((website) => {
+      const favorite = favoriteMap.get(website.id.toString()); // 通过 website.id 查找对应的收藏记录
+      return {
+        ...website,
+        is_favorited: Boolean(favorite), // 如果有对应收藏记录，则为 true
+        favoriteId: favorite ? favorite.id : null, // 收藏记录的 id，用于删除
+      };
+    });
 
     return {
       list: enrichedData,

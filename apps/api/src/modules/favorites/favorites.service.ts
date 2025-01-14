@@ -27,10 +27,7 @@ export class FavoritesService {
 
     if (existingFavorite) {
       // 如果已存在，直接返回提示或数据
-      return {
-        message: 'Already favorited',
-        data: existingFavorite,
-      };
+      throw new Error(`Error creating favorite: Already favorited`);
     }
 
     // 插入新的收藏记录
