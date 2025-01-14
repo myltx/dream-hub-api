@@ -55,6 +55,16 @@ export function getWebsiteQuery(params: any) {
   });
 }
 
+export function getWebsiteQueryAll(params: any) {
+  const http = getHttp();
+  // 构建查询字符串
+  const queryString = new URLSearchParams(params).toString();
+
+  return http(`${ServicePrefixEnum.WEBSITE}/queryAll?${queryString}`, {
+    method: RequestEnum.GET,
+  });
+}
+
 export function getRanking() {
   const http = getHttp();
   return http(`${ServicePrefixEnum.WEBSITE}/ranking`, {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getCategoryList } from '~/api/category';
 import { createWebsiteAccessLog } from '~/api/log';
-import { getWebsiteQuery, websiteVisit } from '~/api/website';
+import { getWebsiteQueryAll, websiteVisit } from '~/api/website';
 
 interface Category {
   id: number;
@@ -61,14 +61,16 @@ const goLink = async (data: { id: string; url: string }) => {
   window.open(data.url, '_blank');
 };
 const getWebSites = () => {
-  getWebsiteQuery({
+  getWebsiteQueryAll({
     categoryId: activeTab.value === -1 ? '' : activeTab.value,
-    page: 1,
-    limit: 9999,
   }).then((res) => {
     websites.value = res.data.list;
     loading.value = false;
   });
+};
+// 收藏
+const handleCollect = (website: any) => {
+  console.log(website, 'website');
 };
 onMounted(async () => {
   getSelectData();
@@ -116,13 +118,7 @@ onMounted(async () => {
               class="rounded-lg shadow overflow-hidden"
               :class="[$colorMode.value === 'dark' ? 'b-1 b-gray-500' : '']"
             >
-              <div class="p-4 h-30 position-relative">
-                <div
-                  class="position-absolute top-0 right-0 bg-red-500 text-white text-3 px-1.5 py-1 rounded-bl-lg"
-                  v-if="website.isRecommended"
-                >
-                  推荐
-                </div>
+              <div class="p-4 h-36">
                 <div class="flex items-center">
                   <UAvatar
                     :src="website.logo"
@@ -130,8 +126,13 @@ onMounted(async () => {
                     class="w-10 h-10 rounded-full mr-4"
                   />
                   <div>
-                    <h2 class="text-4 font-bold mb-1">
+                    <h2 class="text-4 font-bold mb-1 flex items-center">
                       {{ website.title }}
+                      <Icon
+                        name="line-md:thumbs-up-filled"
+                        class="text-xl color-red-500 ml-1"
+                        v-if="website.isRecommended"
+                      />
                     </h2>
                     <div class="text-gray-500 text-3">
                       {{
@@ -143,14 +144,25 @@ onMounted(async () => {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <!-- <UPopover mode="hover" :label="website.description"> -->
-                  <p
-                    class="text-slate-500 text-3 mt-2 font-500 tracking-1px overflow-hidden line-clamp-2"
-                  >
-                    {{ website.description }}
-                  </p>
-                  <!-- </UPopover> -->
+                <p
+                  class="text-slate-500 text-3 mt-2 font-500 tracking-1px overflow-hidden line-clamp-2 h-9"
+                >
+                  {{ website.description }}
+                </p>
+                <div
+                  class="mt-2 text-2 text-gray-500 flex items-center justify-between"
+                >
+                  <span class="mr-2 text-sm flex items-center">
+                    👀
+                    {{ website.visitCount }}
+                  </span>
+                  <div class="flex items-center">
+                    <Icon
+                      name="line-md:star-alt"
+                      class="text-xl"
+                      @click.stop="handleCollect(website)"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

@@ -99,7 +99,9 @@ const handleDropdownItemClick = (item: DropdownItem) => {
 <template>
   <UDropdown
     :items="showItems"
-    :ui="{ item: { disabled: 'cursor-text select-text' } }"
+    :ui="{
+      item: { disabled: 'cursor-text select-text' },
+    }"
     :popper="{ placement: 'bottom-start' }"
   >
     <UAvatar :src="user?.userInfo?.avatar" alt="Dream-hub" />

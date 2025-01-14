@@ -201,6 +201,72 @@ export class WebsiteService {
       limit,
     };
   }
+
+  async findByQueryAll(query: any) {
+    const { limit, user_id, ...filters } = query;
+
+    // 构建动态查询
+    const queryBuilder = this.supabase.from(this.dbName).select(
+      `*,
+      categories!websites_category_id_fkey(name),
+      website_tags(
+        tag_id,
+        tags!website_tags_tag_id_fkey(name)
+      )`,
+      { count: 'exact' },
+    );
+
+    const exclude = ['category_id'];
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) {
+        if (!exclude.includes(key)) {
+          queryBuilder.ilike(key, `%${value}%`); // 假设需要模糊查询
+        } else {
+          queryBuilder.eq(key, value);
+        }
+      }
+    }
+
+    // 多条件排序
+    queryBuilder
+      .order('is_recommended', { ascending: false }) // 推荐优先
+      .order('is_top', { ascending: false }) // 置顶优先
+      .order('sort_order', { ascending: true }); // 按 sort_order 排序
+
+    const { data, error, count } = await queryBuilder.range(
+      0,
+      limit * 1 - 1 || 99999,
+    );
+
+    if (error) {
+      throw new Error(`查询出错: ${error.message}`);
+    }
+
+    // 获取当前用户收藏的内容（仅站点类型）
+    const { data: favorites, error: favoritesError } = await this.supabase
+      .from('user_favorites')
+      .select('content_id')
+      .eq('user_id', user_id)
+      .eq('content_type', 'website'); // 仅查询收藏的站点
+
+    if (favoritesError) {
+      throw new Error(`获取收藏数据出错: ${favoritesError.message}`);
+    }
+
+    const favoriteContentIds = new Set(favorites.map((fav) => fav.content_id));
+
+    // 标记站点是否已被收藏
+    const enrichedData = data.map((website) => ({
+      ...website,
+      is_favorited: favoriteContentIds.has(website.id.toString()), // 确保类型匹配
+    }));
+
+    return {
+      list: enrichedData,
+      total: count,
+    };
+  }
+
   // 实现根据 visit_count 字段获取排名逻辑 需要十条
   async getRanking() {
     const { data, error } = await this.supabase

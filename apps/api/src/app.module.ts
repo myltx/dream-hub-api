@@ -18,6 +18,7 @@ import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { TokenService } from './modules/auth/token.service';
 // 驼峰转换拦截器
 import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     WebsiteModule,
     LogModule,
     WebsiteAccessLogModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [

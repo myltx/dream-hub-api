@@ -33,16 +33,16 @@ export class UpdateWebsiteDto {
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图片',
   })
-  // @IsString({ message: '网站地址必须是字符串' })
-  // @IsUrl({}, { message: '网站地址格式不正确' })
+  // @IsString({ message: '网站图片地址必须是字符串' })
+  // @IsUrl({}, { message: '网站图片地址格式不正确' })
   readonly image?: string;
 
   @ApiProperty({
     example: 'https://www.baidu.com/favicon.ico',
     description: '网站图标',
   })
-  // @IsString({ message: '网站地址必须是字符串' })
-  // @IsUrl({}, { message: '网站地址格式不正确' })
+  // @IsString({ message: '网站t图标地址必须是字符串' })
+  // @IsUrl({}, { message: '网站图标地址格式不正确' })
   readonly logo?: string;
 
   @ApiProperty({
@@ -71,12 +71,12 @@ export class UpdateWebsiteDto {
     example: '1',
     description: '网站排序',
   })
-  readonly sort_order?: number;
+  readonly sortOrder?: number;
   @ApiProperty({
     example: 1,
     description: '网站点击量',
   })
-  readonly visit_count?: number;
+  readonly visitCount?: number;
   @ApiProperty({
     example: true,
     description: '是否公开',

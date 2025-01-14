@@ -82,7 +82,6 @@ export class WebsiteController {
 
   @ApiOperation({ summary: '根据查询条件获取站点' })
   @HttpCode(HttpStatus.OK)
-  @IsPublic()
   @Get('query')
   async findByQuery(@Query() query: QueryWebsiteDto) {
     for (const key in query) {
@@ -93,6 +92,24 @@ export class WebsiteController {
       }
     }
     return this.websiteService.findByQuery(query);
+  }
+
+  @ApiOperation({ summary: '根据查询条件获取站点(不分页)' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('queryAll')
+  async findByQueryAll(@Query() query: any, @Request() req: any) {
+    for (const key in query) {
+      if (Object.prototype.hasOwnProperty.call(query, key)) {
+        if (!query[key] || query[key] === '-1') {
+          delete query[key];
+        }
+      }
+    }
+    return this.websiteService.findByQueryAll({
+      ...query,
+      user_id: req?.user?.sub,
+    });
   }
 
   @ApiOperation({ summary: '获取站点排名' })

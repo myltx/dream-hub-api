@@ -39,7 +39,6 @@ export class CategoriesController {
   @HttpCode(HttpStatus.OK)
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto, @Request() req) {
-    console.log(createCategoryDto);
     return this.categoriesService.create({
       ...createCategoryDto,
       user_id: req.user.sub,

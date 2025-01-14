@@ -20,7 +20,7 @@ const toLink = (link: string) => {
     {{ $config.public.projectName }} 管理后台
   </div>
   <div class="text-gray-500 text-center mt-4 flex items-center justify-center">
-    <Icon name="fluent-emoji-flat:fireworks" class="mr-2" />
+    <Icon name="emojione:party-popper" class="mr-2" />
     当前项目共被访问:
     <span class="text-blue-500">
       {{ data }}

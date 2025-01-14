@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const response = context.switchToHttp().getResponse();
 
     // 检查当前路由是否有 @IsPublic 装饰器
     const isPublic = this.reflector.get<boolean>(
@@ -25,35 +24,31 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (isPublic) {
-      return true; // 如果路由是公开的，直接通过守卫
-    }
-
     // 检查 Authorization 头
     const authorization = request.headers['authorization'];
-    if (!authorization || authorization.length < 7) {
+    if (authorization && authorization.startsWith('Bearer ')) {
+      const token = authorization.replace('Bearer ', '').trim();
+
+      try {
+        // 验证 Token
+        const payload = await this.tokenService.verifyToken(token);
+
+        // 将用户信息附加到请求对象中
+        request.user = payload;
+      } catch (error) {
+        if (!isPublic) {
+          throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
+        }
+        // 如果是公开路由且 Token 验证失败，继续放行
+      }
+    } else if (!isPublic) {
       throw new HttpException(
         'Authorization header is missing',
         HttpStatus.UNAUTHORIZED,
       );
     }
 
-    const token = authorization.replace('Bearer ', '');
-
-    try {
-      // 验证 Token
-      const payload = await this.tokenService.verifyToken(token);
-
-      // 检查 Token 是否过期
-      // if (this.tokenService.isTokenExpired(payload)) {
-      //   throw new HttpException('Token is expired', HttpStatus.UNAUTHORIZED);
-      // }
-
-      // 将用户信息附加到请求对象中
-      request.user = payload;
-      return true;
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
-    }
+    // 如果路由是公开的，直接通过守卫
+    return true;
   }
 }
