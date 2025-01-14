@@ -27,7 +27,7 @@ const getSelectData = async () => {
 const getWebSites = () => {
   getWebsiteQueryAll({
     categoryId: '-1',
-    limit: 10,
+    limit: 9999,
   }).then((res) => {
     websites.value = res.data.list;
     categorys.value.forEach((item) => {
@@ -74,6 +74,9 @@ onMounted(async () => {
 });
 const showModal = () => {
   isOpen.value = true;
+};
+const onQuery = () => {
+  console.log('onQuery');
 };
 const ui = {
   wrapper:
@@ -124,15 +127,10 @@ const ui = {
       @click="showModal"
     />
   </UTooltip>
-  <UModal
-    v-model="isOpen"
-    :ui="{
-      height: '200',
-    }"
-  >
+  <UModal v-model="isOpen">
     <UCommandPalette
       :autoselect="false"
-      :groups="websiteList"
+      :groups="websiteList.slice(0, 3)"
       placeholder="请输入搜索内容"
       :close-button="{
         icon: 'i-heroicons-x-mark-20-solid',
@@ -140,7 +138,20 @@ const ui = {
         variant: 'link',
         padded: false,
       }"
-      class="overflow-y-auto h-80%"
+      :fuse="{
+        fuseOptions: {
+          ignoreLocation: true,
+          includeMatches: true,
+          threshold: 0,
+          keys: [
+            'title',
+            'description',
+            'children.children.value',
+            'children.children.children.value',
+          ],
+        },
+        resultLimit: 10,
+      }"
       :ui="ui"
       @close="isOpen = false"
       @update:model-value="onSelect"

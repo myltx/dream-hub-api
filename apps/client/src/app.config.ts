@@ -12,9 +12,9 @@ export default defineAppConfig({
       padding: 'p-4',
     },
     modal: {
-      width: 'w-full sm:max-w-lg',
-      height: '',
-      fullscreen: 'w-screen h-screen',
+      // width: 'w-full sm:max-w-lg',
+      // height: '',
+      // fullscreen: 'w-screen h-screen',
       container: 'items-center',
     },
     tooltip: {
