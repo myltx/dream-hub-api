@@ -19,7 +19,7 @@ import {
 import { FavoritesService } from './favorites.service';
 import { CreateFavoritesDto } from './dto/create-favorites.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
-@ApiTags('日志管理')
+@ApiTags('收藏管理')
 @ApiBearerAuth()
 @ApiHeader({
   name: 'Authorization',
