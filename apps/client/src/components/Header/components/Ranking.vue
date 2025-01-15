@@ -29,13 +29,7 @@ const getRankingList = async () => {
   >
     <Icon name="mynaui:chart-bar-two" class="text-2xl" @click="showModal" />
   </UTooltip>
-  <UModal
-    v-model="isOpen"
-    :ui="{
-      footer: false,
-      container: 'items-start',
-    }"
-  >
+  <UModal v-model="isOpen">
     <!--  justify-end -->
     <div class="p-4">
       <div>
