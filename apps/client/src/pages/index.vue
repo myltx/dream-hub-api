@@ -51,7 +51,7 @@ const getSelectData = async () => {
   getWebSites();
 };
 
-const goLink = (data: { id: string; url: string }) => {
+const goLink = (data: any) => {
   // 创建访问日志
   createWebsiteAccessLog({ websiteId: data.id });
 

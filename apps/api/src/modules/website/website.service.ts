@@ -216,6 +216,7 @@ export class WebsiteService {
       { count: 'exact' },
     );
 
+    // 过滤条件
     const exclude = ['category_id'];
     for (const [key, value] of Object.entries(filters)) {
       if (value) {
@@ -227,12 +228,26 @@ export class WebsiteService {
       }
     }
 
-    // 多条件排序
+    // 添加 `status` 和 `is_public` 的条件
+    queryBuilder.eq('status', true); // 只查询 status 为 true 的记录
+    if (user_id) {
+      // 用户存在时，查询公共数据和用户私有数据
+      queryBuilder.or(
+        `is_public.eq.true,and(user_id.eq.${user_id},is_public.eq.false)`,
+      );
+    } else {
+      // 用户不存在时，只查询公共数据
+      queryBuilder.eq('is_public', true);
+    }
+
+    // 排序逻辑
     queryBuilder
       .order('is_recommended', { ascending: false }) // 推荐优先
       .order('is_top', { ascending: false }) // 置顶优先
-      .order('sort_order', { ascending: true }); // 按 sort_order 排序
+      .order('sort_order', { ascending: true }) // 按 sort_order 排序
+      .order('created_at', { ascending: false }); // 按 created_at 排序
 
+    // 分页
     const { data, error, count } = await queryBuilder.range(
       0,
       limit * 1 - 1 || 99999,
@@ -253,7 +268,7 @@ export class WebsiteService {
       throw new Error(`获取收藏数据出错: ${favoritesError.message}`);
     }
 
-    // 将收藏记录的 id 和 content_id 存入映射对象
+    // 收藏记录的映射
     const favoriteMap = new Map(
       favorites.map((fav) => [
         fav.content_id,
@@ -263,7 +278,7 @@ export class WebsiteService {
 
     // 标记站点是否已被收藏，并且附加 favoriteId
     const enrichedData = data.map((website) => {
-      const favorite = favoriteMap.get(website.id.toString()); // 通过 website.id 查找对应的收藏记录
+      const favorite = favoriteMap.get(website.id.toString()); // 查找对应收藏记录
       return {
         ...website,
         is_favorited: Boolean(favorite), // 如果有对应收藏记录，则为 true

@@ -17,6 +17,10 @@ export const columns = ref([
     label: '分类',
   },
   {
+    key: 'visitCount',
+    label: '访问量',
+  },
+  {
     key: 'websiteTags',
     label: '标签',
   },
@@ -37,6 +41,11 @@ export const defaultFormData = {
   logo: undefined,
   tags: undefined,
   id: '',
+  isRecommended: false,
+  isPublic: false,
+  status: true,
+  isTop: false,
+  sortOrder: 0,
 };
 
 export const validate = (state: any): FormError[] => {
@@ -44,10 +53,15 @@ export const validate = (state: any): FormError[] => {
   if (!state.title) errors.push({ path: 'title', message: '请输入站点名称' });
   if (!state.categoryId)
     errors.push({ path: 'categoryId', message: '请选择分类' });
-  if (!state.tags) errors.push({ path: 'tags', message: '请选择标签' });
+  // if (!state.tags) errors.push({ path: 'tags', message: '请选择标签' });
   if (!state.url) errors.push({ path: 'url', message: '请输入站点地址' });
   if (!state.description)
     errors.push({ path: 'description', message: '请输入描述' });
   // if (!state.image) errors.push({ path: 'image', message: '请上传图片' });
   return errors;
 };
+
+export const radioGroupOptions = [
+  { label: '是', value: true },
+  { label: '否', value: false },
+];

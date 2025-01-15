@@ -4,7 +4,10 @@ import { CreateTagDto } from '../modules/tag/dto/create-tag.dto';
 import { UpdateTagDto } from '../modules/tag/dto/update-tag.dto';
 import { QueryTagDto } from '../modules/tag/dto/query-tag.dto';
 
-export const mockCreateTagDto: CreateTagDto = { name: 'Test Tag', userId: '1' };
+export const mockCreateTagDto: CreateTagDto = {
+  name: 'Test Tag',
+  user_id: '1',
+};
 
 export const mockUpdateTagDto: UpdateTagDto = { name: 'Updated Tag' };
 

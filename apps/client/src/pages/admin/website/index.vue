@@ -8,7 +8,12 @@ import {
   updateWebsite,
 } from '~/api/website';
 import { useDialog } from '~/components/BasicDialog';
-import { columns, defaultFormData, validate } from './website.data';
+import {
+  columns,
+  defaultFormData,
+  validate,
+  radioGroupOptions,
+} from './website.data';
 
 definePageMeta({
   layout: 'admin',
@@ -239,7 +244,7 @@ const editFn = async (data: any) => {
         <h3
           class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
         >
-          编辑
+          {{ formData.id ? '编辑' : '新增' }}站点
         </h3>
         <UButton
           color="gray"
@@ -299,6 +304,42 @@ const editFn = async (data: any) => {
             />
           </UFormGroup>
 
+          <UFormGroup label="是否公开" name="isPublic">
+            <UToggle
+              v-model="formData.isPublic"
+              on-icon="i-heroicons-check-20-solid"
+              off-icon="i-heroicons-x-mark-20-solid"
+            />
+          </UFormGroup>
+
+          <UFormGroup label="是否推荐" name="isRecommended">
+            <UToggle
+              v-model="formData.isRecommended"
+              on-icon="i-heroicons-check-20-solid"
+              off-icon="i-heroicons-x-mark-20-solid"
+            />
+          </UFormGroup>
+
+          <UFormGroup label="是否置顶" name="isTop">
+            <UToggle
+              v-model="formData.isTop"
+              on-icon="i-heroicons-check-20-solid"
+              off-icon="i-heroicons-x-mark-20-solid"
+            />
+          </UFormGroup>
+
+          <UFormGroup label="是否发布" name="status">
+            <UToggle
+              v-model="formData.status"
+              on-icon="i-heroicons-check-20-solid"
+              off-icon="i-heroicons-x-mark-20-solid"
+            />
+          </UFormGroup>
+
+          <UFormGroup label="排序" name="sortOrder">
+            <UInput v-model="formData.sortOrder" placeholder="请输入排序" />
+          </UFormGroup>
+
           <UFormGroup label="描述" name="description">
             <UTextarea
               v-model="formData.description"
@@ -317,4 +358,8 @@ const editFn = async (data: any) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+fieldset {
+  display: flex;
+}
+</style>

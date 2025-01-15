@@ -42,7 +42,7 @@ export class WebsiteController {
   async create(@Body() createWebsiteDto: CreateWebsiteDto, @Request() req) {
     return this.websiteService.create({
       ...createWebsiteDto,
-      user_id: req.user.id,
+      user_id: req.user.sub,
     });
   }
 

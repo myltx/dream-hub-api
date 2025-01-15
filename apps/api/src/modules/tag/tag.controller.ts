@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -36,8 +37,11 @@ export class TagController {
   @ApiOperation({ summary: '创建标签' })
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() createTagDto: CreateTagDto) {
-    return this.tagService.create(createTagDto);
+  async create(@Body() createTagDto: CreateTagDto, @Request() req) {
+    return this.tagService.create({
+      ...createTagDto,
+      user_id: req.user.sub,
+    });
   }
 
   @ApiOperation({ summary: '更新标签' })

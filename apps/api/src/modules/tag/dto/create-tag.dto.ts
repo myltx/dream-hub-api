@@ -4,5 +4,5 @@ export class CreateTagDto {
   name: string;
 
   @ApiProperty({ example: 123, description: '用户ID' })
-  userId: string;
+  user_id: string;
 }
