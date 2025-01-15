@@ -130,7 +130,7 @@ const ui = {
   <UModal v-model="isOpen">
     <UCommandPalette
       :autoselect="false"
-      :groups="websiteList.slice(0, 3)"
+      :groups="websiteList"
       placeholder="请输入搜索内容"
       :close-button="{
         icon: 'i-heroicons-x-mark-20-solid',
