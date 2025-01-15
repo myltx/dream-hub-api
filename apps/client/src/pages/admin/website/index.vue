@@ -291,17 +291,33 @@ const editFn = async (data: any) => {
           </UFormGroup>
 
           <UFormGroup label="站点Logo" name="logo">
-            <UInput
-              v-model="formData.logo"
-              placeholder="请输入图片地址或者上传图片"
-            />
+            <div class="flex items-center justify-between">
+              <UInput
+                v-model="formData.logo"
+                placeholder="请输入图片地址或者上传图片"
+                class="w-4/5"
+              />
+              <UAvatar
+                class="mt-2"
+                :src="formData.image"
+                :alt="formData.title"
+              />
+            </div>
           </UFormGroup>
 
           <UFormGroup label="站点图片" name="image">
-            <UInput
-              v-model="formData.image"
-              placeholder="请输入图片地址或者上传图片"
-            />
+            <div class="flex items-center justify-between">
+              <UInput
+                v-model="formData.image"
+                placeholder="请输入图片地址或者上传图片"
+                class="w-4/5"
+              />
+              <UAvatar
+                class="mt-2"
+                :src="formData.image"
+                :alt="formData.title"
+              />
+            </div>
           </UFormGroup>
 
           <UFormGroup label="是否公开" name="isPublic">
