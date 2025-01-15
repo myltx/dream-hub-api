@@ -10,6 +10,15 @@ export class FavoritesService {
   ) {}
   async create(createFavoritesDto: CreateFavoritesDto) {
     const { user_id, content_id, content_type } = createFavoritesDto;
+    if (!user_id) {
+      throw new Error('user_id is required');
+    }
+    if (!content_id) {
+      throw new Error('content_id is required');
+    }
+    if (!content_type) {
+      throw new Error('content_type is required');
+    }
 
     // 检查是否已收藏
     const { data: existingFavorite, error: checkError } = await this.supabase

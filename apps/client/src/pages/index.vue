@@ -4,6 +4,7 @@ import { createFavorites, removeFavorites } from '~/api/favorites';
 import { createWebsiteAccessLog } from '~/api/log';
 import { getWebsiteQueryAll, websiteVisit } from '~/api/website';
 import { useDialog } from '~/components/BasicDialog';
+import { isAuthenticated, signIn } from '~/services/auth';
 
 interface Category {
   id: number;
@@ -70,6 +71,16 @@ const getWebSites = () => {
 };
 // 收藏
 const handleCollect = async (website: any) => {
+  if (!isAuthenticated()) {
+    openDialog({
+      title: '登录',
+      content: '登录后才能收藏',
+      onConfirm: async () => {
+        signIn();
+      },
+    });
+    return;
+  }
   const toast = useToast();
   if (!website.isFavorited) {
     await createFavorites({
