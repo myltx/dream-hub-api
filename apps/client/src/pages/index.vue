@@ -50,17 +50,13 @@ const getSelectData = async () => {
   getWebSites();
 };
 
-const goLink = async (data: { id: string; url: string }) => {
-  try {
-    // 创建访问日志
-    await createWebsiteAccessLog({ websiteId: data.id });
+const goLink = (data: { id: string; url: string }) => {
+  // 创建访问日志
+  createWebsiteAccessLog({ websiteId: data.id });
 
-    // 增加访问计数
-    await websiteVisit(data.id);
-  } catch (error) {
-    console.error('Error logging website access or visiting:', error);
-  } finally {
-  }
+  // 增加访问计数
+  websiteVisit(data.id);
+
   // 打开目标链接
   window.open(data.url, '_blank');
 };
