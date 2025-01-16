@@ -13,6 +13,7 @@
       {{ $config.public.projectName }}
     </div>
     <div class="flex items-center">
+      <LazyHeaderComponentsInCommonUse />
       <HeaderComponentsRanking />
       <HeaderComponentsSearch />
       <ColorMode />

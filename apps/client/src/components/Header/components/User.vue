@@ -58,6 +58,7 @@ const items = [
     },
   ],
 ] as DropdownItem[][];
+props.type !== 'admin' && items[0].shift();
 const showItems = ref<DropdownItem[][]>([]);
 watchEffect(() => {
   showItems.value = items
@@ -100,13 +101,15 @@ const handleDropdownItemClick = (item: DropdownItem) => {
   <UDropdown
     :items="showItems"
     :ui="{
-      item: { disabled: 'cursor-text select-text' },
+      item: { disabled: 'cursor-text select-text', base: 'group z-90' },
+      background: 'bg-white dark:bg-gray-800',
+      container: 'z-20 group',
     }"
     :popper="{ placement: 'bottom-start' }"
   >
     <UAvatar :src="user?.userInfo?.avatar" alt="Dream-hub" />
     <template #account="{ item }">
-      <div class="text-left">
+      <div class="text-left z-90">
         <p v-if="!isAuthenticated()">请先登录</p>
         <p>
           {{ user?.userInfo?.nikeName }}
@@ -122,7 +125,7 @@ const handleDropdownItemClick = (item: DropdownItem) => {
 
     <template #item="{ item }">
       <div
-        class="w-100% flex items-center justify-between"
+        class="w-100% flex items-center justify-between z-90"
         @click="handleDropdownItemClick(item)"
       >
         <span class="truncate">{{ item.label }}</span>
