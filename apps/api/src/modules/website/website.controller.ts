@@ -83,7 +83,7 @@ export class WebsiteController {
   @ApiOperation({ summary: '根据查询条件获取站点' })
   @HttpCode(HttpStatus.OK)
   @Get('query')
-  async findByQuery(@Query() query: QueryWebsiteDto) {
+  async findByQuery(@Query() query: QueryWebsiteDto, @Request() req: any) {
     for (const key in query) {
       if (Object.prototype.hasOwnProperty.call(query, key)) {
         if (!query[key] || query[key] === '-1') {
@@ -91,7 +91,10 @@ export class WebsiteController {
         }
       }
     }
-    return this.websiteService.findByQuery(query);
+    return this.websiteService.findByQuery({
+      ...query,
+      user_id: req?.user?.sub,
+    });
   }
 
   @ApiOperation({ summary: '根据查询条件获取站点(不分页)' })

@@ -3,10 +3,12 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateWebsiteDto } from './dto/create-website.dto';
 import { UpdateWebsiteDto } from './dto/update-website.dto';
 import { QueryWebsiteDto } from './dto/query-website.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class WebsiteService {
   dbName = 'websites';
+  userService = new UserService(this.supabase);
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
@@ -156,7 +158,7 @@ export class WebsiteService {
   }
 
   async findByQuery(query: QueryWebsiteDto) {
-    const { page, limit, ...filters } = query;
+    const { page, limit, user_id, ...filters } = query;
 
     const offset = (page - 1) * limit;
 
@@ -181,7 +183,11 @@ export class WebsiteService {
         }
       }
     }
-
+    // 实现 根据用户id获取用户信息
+    const { roles } = await this.userService.findOne(user_id);
+    if (!roles.includes('admin')) {
+      queryBuilder.eq('user_id', user_id);
+    }
     const { data, error, count } = await queryBuilder.range(
       offset,
       offset + limit * 1 - 1,
