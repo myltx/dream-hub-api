@@ -254,7 +254,7 @@ const editFn = async (data: any) => {
           @click="closeEditModalFn"
         />
       </div>
-      <div class="h-90%">
+      <div class="h-90% overflow-y-auto">
         <UForm
           ref="form"
           :validate="validate"
