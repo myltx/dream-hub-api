@@ -3,10 +3,12 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { QueryCategoryDto } from './dto/query-category.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class CategoriesService {
   dbName = 'categories';
+  userService = new UserService(this.supabase);
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
@@ -74,7 +76,7 @@ export class CategoriesService {
   }
 
   async findByQuery(query: QueryCategoryDto) {
-    const { page, limit, ...filters } = query;
+    const { page, limit, user_id, ...filters } = query;
 
     const offset = (page - 1) * limit;
 
@@ -87,6 +89,11 @@ export class CategoriesService {
       if (value) {
         queryBuilder.ilike(key, `%${value}%`); // 假设需要模糊查询
       }
+    }
+    // 实现 根据用户id获取用户信息
+    const { roles } = await this.userService.findOne(user_id);
+    if (!roles.includes('admin')) {
+      queryBuilder.eq('user_id', user_id);
     }
 
     const { data, error, count } = await queryBuilder.range(

@@ -12,6 +12,11 @@ export class QueryCategoryDto {
   @IsString()
   description?: string;
 
+  @ApiProperty({ description: '用户ID', required: false })
+  @IsOptional()
+  @IsString()
+  user_id?: string;
+
   @ApiProperty({ description: '页码 (默认: 1)', required: false, example: 1 })
   @IsOptional()
   @IsInt()

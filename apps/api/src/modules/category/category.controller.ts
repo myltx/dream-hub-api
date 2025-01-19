@@ -83,16 +83,11 @@ export class CategoriesController {
 
   @ApiOperation({ summary: '根据查询条件获取分类列表' })
   @HttpCode(HttpStatus.OK)
-  @IsPublic()
   @Get('query')
-  async findByQuery(@Query() query: QueryCategoryDto) {
-    // for (const key in query) {
-    //   if (Object.prototype.hasOwnProperty.call(query, key)) {
-    //     if (!query[key]) {
-    //       delete query[key];
-    //     }
-    //   }
-    // }
-    return this.categoriesService.findByQuery(query);
+  async findByQuery(@Query() query: QueryCategoryDto, @Request() req) {
+    return this.categoriesService.findByQuery({
+      ...query,
+      user_id: req?.user?.sub,
+    });
   }
 }
