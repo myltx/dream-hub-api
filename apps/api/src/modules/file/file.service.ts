@@ -58,6 +58,7 @@ export class FileService {
           file_name: fileName,
           path: data.path,
           public_url: publicUrl,
+          file_type: mimeType,
         },
       ])
       .select('id')
