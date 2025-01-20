@@ -194,7 +194,7 @@ export class WebsiteService {
     );
 
     if (error) {
-      throw new Error(`查询出错: ${error.message}`);
+      throw new Error(`Failed to get files: ${error.message}`);
     }
     // 计算总页数
     const totalPages = Math.ceil((count || 0) / limit);

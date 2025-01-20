@@ -12,13 +12,14 @@ import { TagModule } from './modules/tag/tag.module';
 import { WebsiteModule } from './modules/website/website.module';
 import { LogModule } from './modules/siteAccessLog/siteAccessLog.module';
 import { WebsiteAccessLogModule } from './modules/websiteAccessLog/websiteAccessLog.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
+import { FileModule } from './modules/file/file.module';
 
 // token
 import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { TokenService } from './modules/auth/token.service';
 // 驼峰转换拦截器
 import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
-import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -30,9 +31,10 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
     CategoriesModule,
     TagModule,
     WebsiteModule,
-    LogModule,
     WebsiteAccessLogModule,
     FavoritesModule,
+    FileModule,
+    LogModule,
   ],
   controllers: [AppController],
   providers: [

@@ -72,7 +72,7 @@ export class WebsiteController {
     return this.websiteService.findAll();
   }
 
-  @ApiOperation({ summary: '获取站点详情, (需要鉴权)' })
+  @ApiOperation({ summary: '获取站点, (不需要鉴权)' })
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('public')

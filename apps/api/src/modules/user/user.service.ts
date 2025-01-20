@@ -74,4 +74,34 @@ export class UserService {
 
     return data;
   }
+  // 文件上传方法
+  async uploadFile(
+    bucket: string,
+    path: string,
+    file: Buffer | File,
+  ): Promise<string> {
+    const { data, error } = await this.supabase.storage
+      .from(bucket)
+      .upload(path, file, {
+        upsert: true, // 如果文件已存在，覆盖
+      });
+
+    if (error) {
+      throw new Error(`Failed to upload file: ${error.message}`);
+    }
+
+    // 返回文件的路径
+    return data.path;
+  }
+
+  // 获取文件的公开 URL
+  async getFilePublicUrl(bucket: string, path: string): Promise<string> {
+    const { data } = this.supabase.storage.from(bucket).getPublicUrl(path);
+
+    if (!data.publicUrl) {
+      throw new Error(`Failed to get public URL for file: ${path}`);
+    }
+
+    return data.publicUrl;
+  }
 }
