@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Get,
   Query,
+  Body,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,6 +23,7 @@ import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileVo } from './vo/create-file.vo';
 import { QueryFileDto } from './dto/query-file.dto';
+import { UploadFileDto } from './dto/upload-file.dto';
 
 @ApiTags('文件管理')
 @ApiHeader({
@@ -37,7 +39,6 @@ import { QueryFileDto } from './dto/query-file.dto';
 @Controller('file')
 export class FileController {
   bucket = 'AddrVault';
-  path = '/images/avatar';
   constructor(private readonly fileService: FileService) {}
 
   @ApiOperation({ summary: '上传文件' })
@@ -47,10 +48,26 @@ export class FileController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Request() req, // 获取请求对象
+    @Body() body: UploadFileDto,
   ) {
+    const { type } = body;
+    console.log(file.mimetype.split('/')[1], type);
+    if (type === 'image') {
+      if (
+        !['jpg', 'jpeg', 'png', 'gif'].includes(file.mimetype.split('/')[1])
+      ) {
+        throw new Error('文件格式不正确');
+      }
+    } else if (!['markdown'].includes(file.mimetype.split('/')[1])) {
+      throw new Error('文件格式不正确');
+    }
+    const pathMap = {
+      image: '/images',
+      md: '/markdown',
+    };
     const fileData = await this.fileService.uploadFile(
       this.bucket,
-      this.path,
+      pathMap[type], // 根据文件类型选择路径
       file,
       req.user.sub, // 传递用户 ID
     );
@@ -74,7 +91,6 @@ export class FileController {
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    // TODO: 根据文件ID获取文件
     return this.fileService.getFileById(id);
   }
 
@@ -84,7 +100,6 @@ export class FileController {
   @Delete(':id')
   async deleteFile(@Param('id') id: string) {
     const { bucket, id: fileId, path } = await this.findOne(id);
-    // TODO: 删除文件
-    return this.fileService.deleteFile(id, bucket, path);
+    return this.fileService.deleteFile(fileId, bucket, path);
   }
 }
