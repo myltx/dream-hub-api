@@ -172,7 +172,7 @@ const showFile = (url: string) => {
           <UButton color="gray" @click="reset"> 重置 </UButton>
           <UButton class="mx-2" @click="fetch"> 查询 </UButton>
           <UButton @click="openEditModalFn">
-            <Icon name="line-md:upload-outline-loop" class="text-xl" />
+            <Icon name="line-md:cloud-alt-upload-filled-loop" class="text-xl" />
             文件上传
           </UButton>
         </div>
