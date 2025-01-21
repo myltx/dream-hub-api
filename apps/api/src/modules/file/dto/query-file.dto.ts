@@ -28,3 +28,13 @@ export class QueryFileDto {
   @Min(1)
   limit?: number = 10;
 }
+
+export class QueryFileDetailDto {
+  @ApiProperty({ description: '文件ID', required: true })
+  @IsString()
+  id: string;
+
+  @ApiProperty({ description: '文件类型', required: true })
+  @IsString()
+  type: string;
+}

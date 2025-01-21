@@ -107,7 +107,23 @@ export class FileService {
     if (error) {
       throw new Error(`Failed to get file: ${error.message}`);
     }
+    console.log(data, 'data');
     return data;
+  }
+
+  // 根据 id 获取 markdown 文件内容
+  async getMarkdownFileContent(id: string) {
+    const { bucket, path } = await this.getFileById(id);
+    const { data, error } = await this.supabase.storage
+      .from(bucket)
+      .download(path);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const content = await data.text(); // 将文件内容转为文本
+    return { content };
   }
 
   // 获取所有的文件
@@ -117,8 +133,7 @@ export class FileService {
     // 构建动态查询
     const queryBuilder = this.supabase
       .from(this.dbName)
-      .select('*')
-      .range(offset, offset + limit - 1);
+      .select('*', { count: 'exact' });
 
     // 添加过滤条件
     const exclude = [''];
@@ -132,8 +147,10 @@ export class FileService {
       }
     }
 
-    const { data, count, error } = await queryBuilder;
-
+    const { data, count, error } = await queryBuilder.range(
+      offset,
+      offset + limit - 1,
+    );
     if (error) {
       throw new Error(`Failed to get files: ${error.message}`);
     }

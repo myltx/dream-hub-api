@@ -22,7 +22,7 @@ import {
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileVo } from './vo/create-file.vo';
-import { QueryFileDto } from './dto/query-file.dto';
+import { QueryFileDetailDto, QueryFileDto } from './dto/query-file.dto';
 import { UploadFileDto } from './dto/upload-file.dto';
 
 @ApiTags('文件管理')
@@ -84,6 +84,19 @@ export class FileController {
       ...query,
       user_id: req.user.sub,
     });
+  }
+
+  @ApiOperation({ summary: '根据文件ID获取文件详情' })
+  @ApiBearerAuth() // 鉴权
+  @HttpCode(HttpStatus.OK)
+  @Get('detail')
+  async getFileDetails(@Query() query: QueryFileDetailDto) {
+    const { id, type } = query;
+    if (type === 'markdown') {
+      return this.fileService.getMarkdownFileContent(id);
+    } else {
+      return this.fileService.getFileById(id);
+    }
   }
 
   @ApiOperation({ summary: '根据文件ID获取文件' })
