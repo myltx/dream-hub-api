@@ -9,3 +9,32 @@ export function getFileDetails(params: { id: string; type: string }) {
     method: RequestEnum.GET,
   });
 }
+
+export function getFileQuery(params: any) {
+  const http = getHttp();
+  // 构建查询字符串
+  const queryString = new URLSearchParams(params).toString();
+
+  return http(`${ServicePrefixEnum.FILE}/query?${queryString}`, {
+    method: RequestEnum.GET,
+  });
+}
+
+export function delFile(id: string) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.FILE}/${id}`, {
+    method: RequestEnum.DELETE,
+  });
+}
+
+export function uploadFile(data: { file: File; type: 'image' | 'markdown' }) {
+  const http = getHttp();
+  // 构造 FormData
+  const formData = new FormData();
+  formData.append('file', data.file);
+  formData.append('type', data.type);
+  return http(`${ServicePrefixEnum.FILE}/upload`, {
+    method: RequestEnum.POST,
+    body: formData,
+  });
+}

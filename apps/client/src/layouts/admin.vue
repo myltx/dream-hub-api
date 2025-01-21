@@ -48,8 +48,13 @@ const links = [
   },
   {
     label: '标签管理',
-    icon: 'icon-park-outline:add-text-two',
+    icon: 'heroicons:bookmark',
     to: '/admin/tag',
+  },
+  {
+    label: '文件管理',
+    icon: 'heroicons:archive-box',
+    to: '/admin/file',
   },
 ];
 </script>
