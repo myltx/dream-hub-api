@@ -9,4 +9,5 @@ export enum ServicePrefixEnum {
   SITE_ACCESS_LOG = '/siteAccessLog',
   WEBSITE_ACCESS_LOG = '/websiteAccessLog',
   FAVORITES = '/favorites',
+  FILE = '/file',
 }
