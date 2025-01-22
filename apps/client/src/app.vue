@@ -21,6 +21,7 @@ const { status } = useAsyncData('initApplication', async () => {
   if (isAuthenticated()) {
     const res = await getIdTokenClaims();
     const { data } = await getUserInfoByUserId({ userId: res?.sub as string });
+
     userStore.initUser({
       ...res,
       userInfo: data,

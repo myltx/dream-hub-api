@@ -88,14 +88,12 @@ const validate = (state: any): FormError[] => {
 };
 
 const onFileChange = (e: any) => {
-  console.log(e);
   if (!e?.length) return;
   formData.value.file = e[0];
 };
 
 async function onSubmit() {
   const submitData = await form.value.validate();
-  console.log(submitData);
   const toast = useToast();
   try {
     await uploadFile(submitData);

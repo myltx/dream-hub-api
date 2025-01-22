@@ -21,7 +21,7 @@ const { isLoading } = useHandleSignInCallback(async () => {
   console.log('回调');
   // 完成后执行某些操作，例如重定向到主页
   const res = await fetchUserInfo();
-  const userInfo = ref({});
+  const userInfo = ref<any>({});
   const { data } = await getUserInfoByUserId({
     userId: res?.sub as string,
   });
@@ -38,7 +38,6 @@ const { isLoading } = useHandleSignInCallback(async () => {
   } else {
     userInfo.value = data;
   }
-
   userStore.initUser({
     ...res,
     userInfo: userInfo.value,

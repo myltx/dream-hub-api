@@ -10,6 +10,14 @@ export function createUser(data: any) {
   });
 }
 
+export function updateUser(id: string, data: any) {
+  const http = getHttp();
+  return http(`${ServicePrefixEnum.USER}/${id}`, {
+    method: RequestEnum.PATCH,
+    body: data,
+  });
+}
+
 export function getUserInfo() {
   const http = getHttp();
   return http(`${ServicePrefixEnum.USER}`, {
