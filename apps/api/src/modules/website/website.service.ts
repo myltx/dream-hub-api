@@ -288,7 +288,7 @@ export class WebsiteService {
       return {
         ...website,
         is_favorited: Boolean(favorite), // 如果有对应收藏记录，则为 true
-        favoriteId: favorite ? favorite.id : null, // 收藏记录的 id，用于删除
+        favoriteId: favorite.id, // 收藏记录的 id，用于删除
       };
     });
 
