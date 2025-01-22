@@ -107,7 +107,6 @@ export class FileService {
     if (error) {
       throw new Error(`Failed to get file: ${error.message}`);
     }
-    console.log(data, 'data');
     return data;
   }
 
