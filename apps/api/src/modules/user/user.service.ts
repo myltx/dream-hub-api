@@ -49,11 +49,12 @@ export class UserService {
     return data;
   }
 
-  async update(user_id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto, 'updateUserDto');
     const { data, error } = await this.supabase
       .from(this.dbName)
       .update(updateUserDto)
-      .eq('user_id', user_id);
+      .eq('id', id);
 
     if (error) {
       throw new Error(`Error updating user: ${error.message}`);

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class UpdateUserDto {
   @ApiProperty({
@@ -6,9 +7,18 @@ export class UpdateUserDto {
     description: '邮箱',
   })
   readonly email: string;
+
   @ApiProperty({
-    example: '123@qq.com',
-    description: '邮箱',
+    example: 'https://example.com/avatar.jpg',
+    description: '头像',
   })
-  readonly user_id: string;
+  @IsString()
+  readonly avatar: string;
+
+  @ApiProperty({
+    example: '张三',
+    description: '昵称',
+  })
+  @IsString()
+  readonly nike_name: string;
 }
