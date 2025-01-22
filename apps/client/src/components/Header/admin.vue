@@ -43,11 +43,7 @@ const handleDropdownItemClick = (item: DropdownItem) => {
       class="cursor-pointer flex items-center"
       @click="router.push('/admin')"
     >
-      <img
-        src="~/assets/images/logo.gif"
-        class="h-6 w-6 rounded-full mr-2"
-        alt=""
-      />
+      <HeaderComponentsLogo />
       {{ $config.public.projectName }} 后台管理
     </div>
     <div class="flex items-center">

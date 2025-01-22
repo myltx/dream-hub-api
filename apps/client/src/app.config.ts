@@ -58,11 +58,13 @@ export default defineAppConfig({
       input: {
         wrapper: 'pl-8',
       },
+      container:
+        'relative flex-initial overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800 scroll-py-2',
       group: {
         wrapper: 'p-2',
         label:
           'px-2.5 my-2 text-xs font-semibold text-gray-900 dark:text-white',
-        container: 'text-sm text-gray-700 dark:text-gray-200',
+        container: 'ftext-sm text-gray-700 dark:text-gray-200',
         active: 'flex-shrink-0 text-gray-500 dark:text-gray-400',
         inactive: 'flex-shrink-0 text-gray-500 dark:text-gray-400',
       },
