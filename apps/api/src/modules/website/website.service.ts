@@ -284,20 +284,12 @@ export class WebsiteService {
 
     // 标记站点是否已被收藏，并且附加 favoriteId
     const enrichedData = data.map((website) => {
-      const favorite = favoriteMap.get(website.id.toString()); // 查找对应收藏记录
-      if (Boolean(favorite)) {
-        return {
-          ...website,
-          is_favorited: Boolean(favorite), // 如果有对应收藏记录，则为 true
-          favoriteId: favorite.id, // 收藏记录的 id，用于删除
-        };
-      } else {
-        return {
-          ...website,
-          is_favorited: false, // 如果有对应收藏记录，则为 true
-          favoriteId: '', // 收藏记录的 id，用于删除
-        };
-      }
+      const favorite: any = favoriteMap.get(website.id.toString()); // 查找对应收藏记录
+      return {
+        ...website,
+        is_favorited: Boolean(favorite), // 如果有对应收藏记录，则为 true
+        favoriteId: favorite ? favorite?.id : '', // 收藏记录的 id，用于删除
+      };
     });
 
     return {
