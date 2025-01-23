@@ -193,6 +193,9 @@ importers:
       nuxt:
         specifier: ^3.15.0
         version: 3.15.0(@types/node@20.17.10)(typescript@5.7.3)(vite@6.0.6)
+      nuxt-viewport:
+        specifier: ^2.2.0
+        version: 2.2.0(vue@3.5.13)
       openai:
         specifier: ^4.79.4
         version: 4.79.4
@@ -5201,6 +5204,10 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: false
 
+  /bowser@2.11.0:
+    resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
+    dev: false
+
   /boxen@8.0.1:
     resolution: {integrity: sha512-F3PH5k5juxom4xktynS7MoFY+NUWH5LC4CnH11YB8NPew+HLpmBLCybSAEyb2F+4pRXhuhWqFesoQd6DAyc2hw==}
     engines: {node: '>=18'}
@@ -5997,6 +6004,10 @@ packages:
   /cookiejar@2.1.4:
     resolution: {integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==}
     dev: true
+
+  /cookiejs@2.1.3:
+    resolution: {integrity: sha512-pA/nRQVka2eTXm1/Dq8pNt1PN+e1PJNItah0vL15qwpet81/tUfrAp8e0iiVM8WEAzDcTGK5/1hDyR6BdBZMVg==}
+    dev: false
 
   /cookies@0.9.1:
     resolution: {integrity: sha512-TG2hpqe4ELx54QER/S3HQ9SRVnQnGBtKUz5bLQWtYAQ+o6GpgMs6sYUvaiJjVxb+UXwhRhAEP3m7LbsIZ77Hmw==}
@@ -10516,6 +10527,21 @@ packages:
     resolution: {integrity: sha512-JDVtBBwEe9VjVkhxwR/crtGJnyLHzvl2F1pjtglekjTVeiMThfhQHcvsI/u007gBAfPpmaCIdRGnoeTF4VKS8w==}
     engines: {node: ^16.10.0 || >=18.0.0}
     hasBin: true
+    dev: false
+
+  /nuxt-viewport@2.2.0(vue@3.5.13):
+    resolution: {integrity: sha512-AH8ZxL1rbl1kWauJrZqK4S59G3sCORlMh8H/SlhkAfsOlVJ+Aw7MteLFagKnRHf0HEuw44HlbDP+aty1ObkJeg==}
+    dependencies:
+      '@nuxt/kit': 3.15.1
+      bowser: 2.11.0
+      cookiejs: 2.1.3
+      vue-demi: 0.14.10(vue@3.5.13)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - magicast
+      - rollup
+      - supports-color
+      - vue
     dev: false
 
   /nuxt@3.15.0(@types/node@20.17.10)(typescript@5.7.3)(vite@6.0.6):
