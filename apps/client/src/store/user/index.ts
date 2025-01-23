@@ -50,8 +50,13 @@ export const useUserStore = defineStore('user', () => {
     sessionStorage.setItem('user', JSON.stringify(val));
   }
 
+  const isAdmin = computed(() => {
+    return user.value?.userInfo.roles.includes('admin');
+  });
+
   return {
     user,
+    isAdmin,
     setupNewUser,
     initUser,
   };
