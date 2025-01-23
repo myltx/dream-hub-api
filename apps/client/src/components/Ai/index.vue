@@ -6,7 +6,6 @@ import 'highlight.js/styles/github.css';
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
 import {
-  simplePrompt,
   logoImg,
   description,
   introPrompt,
@@ -14,6 +13,18 @@ import {
   intimate,
 } from './ai.data';
 
+const { $viewport } = useNuxtApp();
+
+const nowIsMobile = ref(
+  ['mobileWide', 'mobileMedium', 'mobile'].includes($viewport.breakpoint)
+);
+
+watch($viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
+  console.log('Breakpoint updated:', oldBreakpoint, '->', newBreakpoint);
+  nowIsMobile.value = ['mobileWide', 'mobileMedium', 'mobile'].includes(
+    newBreakpoint
+  );
+});
 const runtimeConfig = useRuntimeConfig();
 const { user, isAdmin } = storeToRefs(useUserStore());
 const toast = useToast();
@@ -216,8 +227,8 @@ defineExpose({
     <McLayout class="container w-full">
       <McHeader :title="'Dream-hub'" :logoImg="logoImg">
         <template #operationArea>
-          <div class="operations">
-            <UPopover>
+          <div class="operations flex items-center">
+            <UPopover class="flex items-center">
               <Icon
                 name="hugeicons:settings-02"
                 class="text-5 cursor-pointer"
@@ -316,6 +327,12 @@ defineExpose({
                 </div>
               </template>
             </UPopover>
+            <Icon
+              v-if="nowIsMobile"
+              name="line-md:close"
+              class="text-5 cursor-pointer ml-2"
+              @click="() => (isOpen = false)"
+            />
           </div>
         </template>
       </McHeader>

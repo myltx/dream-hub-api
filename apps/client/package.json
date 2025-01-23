@@ -23,6 +23,7 @@
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0",
     "nuxt": "^3.15.0",
+    "nuxt-viewport": "^2.2.0",
     "openai": "^4.79.4",
     "pinia": "^2.3.0",
     "vue": "latest",
