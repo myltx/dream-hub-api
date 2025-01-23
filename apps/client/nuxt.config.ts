@@ -34,6 +34,9 @@ export default defineNuxtConfig({
       jti: process.env.JTI || '',
       apiBase: process.env.API_BASE || '',
       projectName: process.env.PROJECT_NAME || '',
+      // AI 配置
+      aiApiKey: process.env.AI_API_KEY || '',
+      aiApiUrl: process.env.AI_BASE_URL || '',
     },
   },
   unocss: {

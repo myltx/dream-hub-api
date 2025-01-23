@@ -88,7 +88,7 @@ const onQuery = () => {
         <!-- :shortcuts="['⌘', 'K']" -->
         <div class="flex items-center justify-between">
           <span class="text-gray-500">
-            search ·
+            搜索 ·
             <UKbd size="xs">⌘</UKbd>
             +
             <UKbd size="xs">K</UKbd>

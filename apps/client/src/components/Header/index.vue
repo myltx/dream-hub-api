@@ -9,12 +9,14 @@
       {{ $config.public.projectName }}
     </div>
     <div class="flex items-center">
-      <LazyHeaderComponentsInCommonUse />
+      <HeaderComponentsAi />
+      <!-- <LazyHeaderComponentsInCommonUse /> -->
       <HeaderComponentsRanking />
       <HeaderComponentsSearch />
       <ColorMode />
       <HeaderComponentsGithub />
       <HeaderComponentsUser class="ml-2" />
+
       <!-- <Icon name="dashicons:admin-users" /> -->
     </div>
   </div>
