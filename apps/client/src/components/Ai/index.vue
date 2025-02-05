@@ -224,7 +224,10 @@ defineExpose({
       base: 'w-300',
     }"
   >
-    <McLayout class="container w-full">
+    <McLayout
+      class="container w-full"
+      :class="[nowIsMobile ? 'mobile-layout' : 'desktop-layout']"
+    >
       <McHeader :title="'Dream-hub'" :logoImg="logoImg">
         <template #operationArea>
           <div class="operations flex items-center">
@@ -577,5 +580,8 @@ defineExpose({
   flex-direction: column;
   gap: 8px;
   overflow: auto;
+}
+.mobile-layout {
+  flex: 0.9 !important;
 }
 </style>
