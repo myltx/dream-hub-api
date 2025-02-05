@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { getUserInfoByUserId } from '~/api/user';
-import { getIdTokenClaims, isAuthenticated } from './services/auth';
+import { getIdTokenClaims, getToken, isAuthenticated } from './services/auth';
 import { useUserStore } from './store/user';
 import { createSiteAccessLog } from './api/log';
 
@@ -21,13 +21,19 @@ const userStore = useUserStore();
 const { status } = useAsyncData('initApplication', async () => {
   if (isAuthenticated()) {
     const res = await getIdTokenClaims();
-    const { data } = await getUserInfoByUserId({ userId: res?.sub as string });
+    const token = await getToken();
+    if (token) {
+      const { data } = await getUserInfoByUserId({
+        userId: res?.sub as string,
+      });
 
-    userStore.initUser({
-      ...res,
-      userInfo: data,
-    });
+      userStore.initUser({
+        ...res,
+        userInfo: data,
+      });
+    }
   }
+
   const { userAgent, platform } = navigator;
   // 获取地理位置
   // if (navigator.geolocation) {
