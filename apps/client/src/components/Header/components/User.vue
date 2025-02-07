@@ -94,7 +94,11 @@ props.type !== 'admin' && items[0].shift();
 watchEffect(async () => {
   let token = '';
   if (isAuthenticated()) {
-    token = (await getToken()) as string;
+    try {
+      token = (await getToken()) as string;
+    } catch (err) {
+      token = '';
+    }
   }
   showItems.value = items
     .map((subArr) =>
