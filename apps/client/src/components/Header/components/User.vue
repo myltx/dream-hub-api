@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { FormError } from '#ui/types';
-import { signOut, isAuthenticated, signIn, getToken } from '~/services/auth';
+import {
+  signOut,
+  isAuthenticated,
+  signIn,
+  getToken,
+  isTokenExpired,
+} from '~/services/auth';
 import { uploadFile } from '~/api/file';
 import { useUserStore } from '~/store/user';
 import { storeToRefs } from 'pinia';
@@ -24,6 +30,7 @@ const { user } = storeToRefs(useUserStore());
 const { setupNewUser } = useUserStore();
 const isOpen = ref(false);
 const showItems = ref<DropdownItem[][]>([]);
+const token = ref(false);
 
 const form = ref();
 const formData = ref<{
@@ -92,14 +99,6 @@ const items = [
 ] as DropdownItem[][];
 props.type !== 'admin' && items[0].shift();
 watchEffect(async () => {
-  let token = '';
-  if (isAuthenticated()) {
-    try {
-      token = (await getToken()) as string;
-    } catch (err) {
-      token = '';
-    }
-  }
   showItems.value = items
     .map((subArr) =>
       subArr.filter((item) => {
@@ -108,13 +107,16 @@ watchEffect(async () => {
           item.show &&
           user.value?.userInfo?.roles?.includes('admin')
         ) {
-          return !!token;
+          return token.value;
         } else {
           return item.show;
         }
       })
     )
     .filter((item) => item.length);
+});
+onMounted(async () => {
+  token.value = await isTokenExpired();
 });
 
 const handleDropdownItemClick = (item: DropdownItem) => {

@@ -25,6 +25,17 @@ export async function getToken() {
   );
   return accessToken;
 }
+
+// token 是否过期
+export async function isTokenExpired() {
+  console.log(logto, 'logto');
+  if (isAuthenticated()) {
+    const token = await getToken();
+    return !!token;
+  } else {
+    return false;
+  }
+}
 export function fetchUserInfo() {
   return logto.fetchUserInfo();
 }

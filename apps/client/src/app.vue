@@ -13,25 +13,26 @@
 
 <script setup lang="ts">
 import { getUserInfoByUserId } from '~/api/user';
-import { getIdTokenClaims, getToken, isAuthenticated } from './services/auth';
+import {
+  getIdTokenClaims,
+  isAuthenticated,
+  isTokenExpired,
+} from './services/auth';
 import { useUserStore } from './store/user';
 import { createSiteAccessLog } from './api/log';
 
 const userStore = useUserStore();
 const { status } = useAsyncData('initApplication', async () => {
-  if (isAuthenticated()) {
+  if (await isTokenExpired()) {
     const res = await getIdTokenClaims();
-    const token = await getToken();
-    if (token) {
-      const { data } = await getUserInfoByUserId({
-        userId: res?.sub as string,
-      });
+    const { data } = await getUserInfoByUserId({
+      userId: res?.sub as string,
+    });
 
-      userStore.initUser({
-        ...res,
-        userInfo: data,
-      });
-    }
+    userStore.initUser({
+      ...res,
+      userInfo: data,
+    });
   }
 
   const { userAgent, platform } = navigator;
