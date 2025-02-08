@@ -38,7 +38,8 @@ import { UploadFileDto } from './dto/upload-file.dto';
 @ApiBearerAuth()
 @Controller('file')
 export class FileController {
-  bucket = 'AddrVault';
+  // bucket = 'AddrVault';
+  bucket = 'dream-hub';
   constructor(private readonly fileService: FileService) {}
 
   @ApiOperation({ summary: '上传文件' })

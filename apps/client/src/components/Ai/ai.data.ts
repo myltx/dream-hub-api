@@ -14,7 +14,7 @@ export const simplePrompt = [
 ];
 
 export const logoImg =
-  'https://xcwhdikndfrizmrtxyiy.supabase.co/storage/v1/object/public/AddrVault/images/1737596858621-468752379.png';
+  'https://xcwhdikndfrizmrtxyiy.supabase.co/storage/v1/object/public/dream-hub/images/1737596858621-468752379.png';
 
 export const description = [
   'Dream Hub 支持智能对话交互，可以回答您的问题、提供建议，并与您进行实时的交流和互动。',

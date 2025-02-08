@@ -18,5 +18,5 @@ export class CreateUserVo {
 // 	updated_at: '2024-12-20T08:35:04.224395',
 // 	nikeName: 'myltx',
 // 	avatar:
-// 	  'https://env-00jxh693vvmh.normal.cloudstatic.cn/AddrVault/logo.gif',
+// 	  'https://env-00jxh693vvmh.normal.cloudstatic.cn/dream-hub/logo.gif',
 //       },
