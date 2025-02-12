@@ -21,5 +21,11 @@
       "src": "/api-docs/(.*)",
       "dest": "src/main.ts"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "AI": false
+    }
+  }
 }
