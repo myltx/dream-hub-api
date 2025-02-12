@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:client": "pnpm --filter=@myltx/client dev",
     "dev:server": "pnpm --filter=@myltx/api start:dev",
-    "dev:docs": "pnpm --filter=@myltx/docs dev",
+    "dev:docs": "pnpm --filter=@myltx/docs docs:dev",
     "format": "prettier --write .",
     "prepare": "husky install",
     "commit": "cz",

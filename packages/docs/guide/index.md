@@ -40,8 +40,6 @@ Dream Hub 采用了现代 Web 技术进行开发：
 - **AI 能力**：[OpenAI](https://openai.com/) / 其他 AI 模型（如 Claude、Gemini）
 - **构建工具**：[pnpm](https://pnpm.io/) + Vite
 
-## 展示
-
 ## 🚀 快速开始
 
 如果你想在本地运行 Dream Hub，可以参考[快速开始](/guide/getting-started)指南。
