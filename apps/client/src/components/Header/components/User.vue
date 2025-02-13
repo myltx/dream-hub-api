@@ -74,7 +74,12 @@ const items = [
       icon: 'i-heroicons-book-open',
       show: isAuthenticated() && props.type === 'frontend',
     },
-
+    {
+      label: '文档说明',
+      key: 'document',
+      icon: 'line-md:file-document-minus',
+      show: true,
+    },
     {
       label: '看看效果',
       key: 'frontend',
@@ -132,6 +137,9 @@ const handleDropdownItemClick = (item: DropdownItem) => {
       return;
     case 'frontend':
       router.push('/');
+      return;
+    case 'document':
+      window.open('https://dream-hub.docs.myltx.top/guide/');
       return;
     default:
       return;
