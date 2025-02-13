@@ -23,62 +23,19 @@ cd dream-hub
 pnpm install
 ```
 
-💡 说明：Dream Hub 采用 pnpm workspace 进行项目管理，client 目录用于前端，api 目录用于后端。
+::: info 💡 说明
+Dream Hub 采用 pnpm workspace 进行项目管理，client 目录用于前端，api 目录用于后端。
+:::
 
 ## 🛠️ 3. 配置环境变量
 
 ### 3.1 前端（Nuxt3）：在 `client/.env` 文件中配置以下变量：
 
-```env
-# Supabase 后端 API 地址
-# logto 配置
-NUXT_LOGTO_ENDPOINT=
-NUXT_LOGTO_APP_ID=
-# NUXT_LOGTO_ENDPOINT=
-# NUXT_LOGTO_APP_ID=
-BACKEND_ENDPOINT=
-
-LOGTO_SIGN_IN_REDIRECT_URI =
-LOGTO_SIGN_OUT_REDIRECT_URI =
-
-# supabase 配置
-SUPABASE_URL=
-SUPABASE_KEY=
-
-
-# API_BASE=
-API_BASE=
-
-# project config
-PROJECT_NAME= Dream-hub
-
-# AI
-AI_API_KEY=
-AI_BASE_URL=
-```
+<!--@include: ./front-end-reference.md{31,59}-->
 
 ### 3.2 后端（NestJS）：在 `api/.env` 文件中配置以下变量：
 
-```env
-# supabase 配置
-SUPABASE_URL=
-SUPABASE_KEY=
-SUPABASE_JWT_SECRET=
-
-# redis 配置
-REDIS_URL=
-
-# server 配置
-PORT=8081
-
-# logto 配置
-LOGTO_ENDPOINT=h
-LOGTO_APP_ID=
-# LOGTO_ENDPOINT=
-# LOGTO_APP_ID=
-BACKEND_ENDPOINT=
-
-```
+<!--@include: ./api-reference.md{40,60}-->
 
 <!-- # AI -->
 
@@ -96,7 +53,9 @@ pnpm dev:server
 pnpm dev:client
 ```
 
-📌 注意：确保前端的 .env 配置正确，指向你的 Supabase 后端 API 地址,以及 logto 配置。
+::: warning 📌 注意
+确保前端的 .env 配置正确，指向你的 Supabase 后端 API 地址,以及 logto 配置。
+:::
 
 ## 🎯 6. 目录结构
 
