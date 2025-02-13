@@ -20,8 +20,19 @@ export default defineConfig({
         items: [
           { text: '简介', link: '/guide/' },
           { text: '快速开始', link: '/guide/getting-started' },
-          { text: '前端文档', link: '/guide/front-end-reference' },
-          { text: '后端文档', link: '/guide/api-reference' },
+          {
+            text: '开发文档',
+            items: [
+              { text: '前端文档', link: '/guide/front-end-reference' },
+              {
+                text: '后端文档',
+                items: [
+                  { text: '开发说明', link: '/guide/api-reference' },
+                  { text: 'Supabase配置', link: '/guide/supabase-reference' },
+                ],
+              },
+            ],
+          },
         ],
       },
       {
