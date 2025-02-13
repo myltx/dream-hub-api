@@ -1,7 +1,7 @@
 ## 项目介绍
 
-- dream-hub
-- 用于记录自己平时使用或发现的好用的网站,后续会完善自己的记录功能
+- [Dream-hub](https://nav.myltx.cn)：用于记录自己平时使用或发现的好用的网站,后续会完善自己的记录功能
+- [开发文档地址](https://dream-hub.docs.myltx.top/guide/)：参考此文档进行二次开发
 
 ## 📦 项目依赖
 
