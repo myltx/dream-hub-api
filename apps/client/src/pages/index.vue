@@ -127,9 +127,10 @@ onMounted(async () => {
   <div class="h-100% flex justify-between w-full">
     <div class="w-80 bg-bgColor px-2">
       <div
-        class="cursor-pointer py-2 flex items-center gap-2"
+        class="cursor-pointer py-2 flex items-center gap-2 hover:text-#0066FF"
         :class="{
-          'text-blue': selectedAnchor === `${categoriesKey}${link.id}`,
+          'text-#0066FF font-heavy':
+            selectedAnchor === `${categoriesKey}${link.id}`,
         }"
         @click="scrollToSection(`${categoriesKey}${link.id}`)"
         v-for="link in categorys"
@@ -145,7 +146,7 @@ onMounted(async () => {
       >
         <div class="px-30 flex gap-10">
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #3161fa, #87bffc);
@@ -154,7 +155,7 @@ onMounted(async () => {
             文章
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #00b8c1, #89e7db);
@@ -163,7 +164,7 @@ onMounted(async () => {
             热点
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #ff7631, #ffc786);
@@ -172,7 +173,7 @@ onMounted(async () => {
             AI
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #ff4943, #ffb09d);
