@@ -28,14 +28,25 @@ export function useScrollWatcher() {
       });
     },
     {
-      threshold: 0.1, // 设置最低阈值，当元素至少显示 10% 时才会触发
+      threshold: 0, // 设置最低阈值，当元素至少显示 10% 时才会触发
     }
   );
 
+  // 延迟观察新渲染的元素
+  // 定义一个函数，用于观察锚点标题
+  const observeTitles = () => {
+    // 使用nextTick函数，在下一个事件循环中执行
+    nextTick(() => {
+      // 获取所有的锚点标题
+      const newTitles = document.querySelectorAll('.anchor-title');
+      // 遍历所有的锚点标题
+      newTitles.forEach((title) => observer.observe(title));
+    });
+  };
+
   onMounted(() => {
     setHeaderHeight(); // 在组件挂载时获取上方元素的高度
-    const titles = document.querySelectorAll('.anchor-title'); // 假设每个锚点标题使用了 .anchor-title 类
-    titles.forEach((title) => observer.observe(title)); // 观察所有的标题元素
+    observeTitles();
   });
 
   onBeforeUnmount(() => {
@@ -51,5 +62,5 @@ export function useScrollWatcher() {
     }
   };
 
-  return { selectedAnchor, scrollToSection };
+  return { selectedAnchor, scrollToSection, observeTitles };
 }

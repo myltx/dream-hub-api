@@ -2,13 +2,13 @@
 import { getCategoryList } from '~/api/category';
 import { createFavorites, removeFavorites } from '~/api/favorites';
 import { createWebsiteAccessLog } from '~/api/log';
-import { getWebsiteQueryAll, websiteVisit } from '~/api/website';
+import { getWebsiteQueryAllGroup, websiteVisit } from '~/api/website';
 import { useDialog } from '~/components/BasicDialog';
 import { isAuthenticated, signIn } from '~/services/auth';
 
 import { useScrollWatcher } from '@/composables/useScrollWatcher';
 
-const { selectedAnchor, scrollToSection } = useScrollWatcher();
+const { selectedAnchor, scrollToSection, observeTitles } = useScrollWatcher();
 
 interface Category {
   id: number;
@@ -21,6 +21,7 @@ const categorys = ref<Category[]>([]);
 const activeTab = ref(-1);
 const websites = ref<Website[]>([]);
 const loading = ref(true);
+const categoriesKey = 'categories-';
 
 const { openDialog } = useDialog();
 
@@ -32,7 +33,7 @@ const onChangeTab = (id: number) => {
   if (tabElement) {
     tabElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }
-  getWebSites();
+  // getWebSites();
 };
 
 const getSelectData = async () => {
@@ -44,10 +45,10 @@ const getSelectData = async () => {
       value: item.id,
     };
   });
-  categorys.value.unshift({
-    id: -1,
-    name: '全部',
-  });
+  // categorys.value.unshift({
+  //   id: -1,
+  //   name: '全部',
+  // });
   if (categorys.value.length) {
     activeTab.value = categorys.value[0]?.id;
   }
@@ -65,11 +66,13 @@ const goLink = (data: any) => {
   window.open(data.url, '_blank');
 };
 const getWebSites = () => {
-  getWebsiteQueryAll({
-    categoryId: activeTab.value === -1 ? '' : activeTab.value,
-  }).then((res) => {
-    websites.value = res.data.list;
+  getWebsiteQueryAllGroup().then((res) => {
+    console.log(res, 'r');
+    websites.value = res.data.groupedData;
+    categorys.value = res.data.groupedData.map((item: any) => item.categories);
+    console.log(categorys.value, 'categorys.value');
     loading.value = false;
+    observeTitles();
   });
 };
 // 收藏
@@ -114,19 +117,7 @@ const handleCollect = async (website: any) => {
     });
   }
 };
-// 菜单
-const links = [
-  {
-    label: 'Vertical Navigation',
-    icon: 'i-heroicons-chart-bar',
-    href: '#banner',
-  },
-  {
-    label: 'Command Palette',
-    icon: 'i-heroicons-command-line',
-    href: '#banner1',
-  },
-];
+
 onMounted(async () => {
   getSelectData();
 });
@@ -134,25 +125,24 @@ onMounted(async () => {
 
 <template>
   <div class="h-100% flex justify-between w-full">
-    <div class="w-40 bg-bgColor px-2">
+    <div class="w-80 bg-bgColor px-2">
       <div
-        class="cursor-pointer"
-        :class="{ 'text-blue': selectedAnchor === 'banner' }"
-        @click="scrollToSection('banner')"
+        class="cursor-pointer py-2 flex items-center gap-2"
+        :class="{
+          'text-blue': selectedAnchor === `${categoriesKey}${link.id}`,
+        }"
+        @click="scrollToSection(`${categoriesKey}${link.id}`)"
+        v-for="link in categorys"
+        :key="link.id"
       >
-        banner
-      </div>
-      <div
-        class="cursor-pointer"
-        :class="{ 'text-blue': selectedAnchor === 'banner1' }"
-        @click="scrollToSection('banner1')"
-      >
-        banner1
+        <UIcon name="i-heroicons-light-bulb" class="w-5 h-5" /> {{ link.name }}
       </div>
     </div>
     <div class="flex-grow-1 h-100%">
       <!-- 内容区顶部 -->
-      <div class="h-48 bg-bgColor py-4 b-l-1 b-solid b-bColor page-header">
+      <div
+        class="h-48 bg-bgColor py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur shadow-"
+      >
         <div class="px-30 flex gap-10">
           <div
             class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
@@ -192,17 +182,24 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="h-78% overflow-y-auto bg-otherBgColor px-30">
-        <div class="">
-          <div class="anchor-title text-6 font-zk-syht-bold py-4" id="banner">
-            AI
+      <div class="h-77.7% overflow-y-auto bg-otherBgColor px-30 pb-5">
+        <div
+          class=""
+          v-for="categories in websites"
+          :key="categories?.categories?.id"
+        >
+          <div
+            class="anchor-title text-6 font-zk-syht-bold py-4"
+            :id="`${categoriesKey}${categories?.categories?.id}`"
+          >
+            {{ categories?.categories?.name }}
           </div>
           <div
             class="grid gap-6 w-full justify-center"
             style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
           >
             <div
-              v-for="website in websites"
+              v-for="website in categories.list"
               :key="website.id"
               @click="goLink(website)"
               class="bg-bgColor rounded-4 p-5 cursor-pointer item"
@@ -257,9 +254,6 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-        </div>
-        <div class="h-1000 bg-blue">
-          <div class="anchor-title" id="banner1">AI1231</div>
         </div>
       </div>
     </div>
@@ -359,7 +353,7 @@ onMounted(async () => {
       </div>
     </div>
   </div> -->
-  <!-- <Loading v-if="loading" /> -->
+  <Loading v-if="loading" />
 </template>
 
 <style scoped>
