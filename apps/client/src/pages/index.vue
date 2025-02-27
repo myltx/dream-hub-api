@@ -6,6 +6,10 @@ import { getWebsiteQueryAll, websiteVisit } from '~/api/website';
 import { useDialog } from '~/components/BasicDialog';
 import { isAuthenticated, signIn } from '~/services/auth';
 
+import { useScrollWatcher } from '@/composables/useScrollWatcher';
+
+const { selectedAnchor, scrollToSection } = useScrollWatcher();
+
 interface Category {
   id: number;
   name: string;
@@ -25,7 +29,6 @@ const onChangeTab = (id: number) => {
   activeTab.value = id;
   // 滚动到当前 Tab 的可见区域
   const tabElement = document.querySelector(`.tab[data-id="${id}"]`);
-  console.log(tabElement, 'tabElement');
   if (tabElement) {
     tabElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }
@@ -111,13 +114,158 @@ const handleCollect = async (website: any) => {
     });
   }
 };
+// 菜单
+const links = [
+  {
+    label: 'Vertical Navigation',
+    icon: 'i-heroicons-chart-bar',
+    href: '#banner',
+  },
+  {
+    label: 'Command Palette',
+    icon: 'i-heroicons-command-line',
+    href: '#banner1',
+  },
+];
 onMounted(async () => {
   getSelectData();
 });
 </script>
 
 <template>
-  <div class="h-100%">
+  <div class="h-100% flex justify-between w-full">
+    <div class="w-40 bg-bgColor px-2">
+      <div
+        class="cursor-pointer"
+        :class="{ 'text-blue': selectedAnchor === 'banner' }"
+        @click="scrollToSection('banner')"
+      >
+        banner
+      </div>
+      <div
+        class="cursor-pointer"
+        :class="{ 'text-blue': selectedAnchor === 'banner1' }"
+        @click="scrollToSection('banner1')"
+      >
+        banner1
+      </div>
+    </div>
+    <div class="flex-grow-1 h-100%">
+      <!-- 内容区顶部 -->
+      <div class="h-48 bg-bgColor py-4 b-l-1 b-solid b-bColor page-header">
+        <div class="px-30 flex gap-10">
+          <div
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            style="
+              background: #12c2e9;
+              background: linear-gradient(to bottom, #3161fa, #87bffc);
+            "
+          >
+            文章
+          </div>
+          <div
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            style="
+              background: #12c2e9;
+              background: linear-gradient(to bottom, #00b8c1, #89e7db);
+            "
+          >
+            热点
+          </div>
+          <div
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            style="
+              background: #12c2e9;
+              background: linear-gradient(to bottom, #ff7631, #ffc786);
+            "
+          >
+            AI
+          </div>
+          <div
+            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer"
+            style="
+              background: #12c2e9;
+              background: linear-gradient(to bottom, #ff4943, #ffb09d);
+            "
+          >
+            工具
+          </div>
+        </div>
+      </div>
+      <div class="h-78% overflow-y-auto bg-otherBgColor px-30">
+        <div class="">
+          <div class="anchor-title text-6 font-zk-syht-bold py-4" id="banner">
+            AI
+          </div>
+          <div
+            class="grid gap-6 w-full justify-center"
+            style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
+          >
+            <div
+              v-for="website in websites"
+              :key="website.id"
+              @click="goLink(website)"
+              class="bg-bgColor rounded-4 p-5 cursor-pointer item"
+            >
+              <div class="">
+                <div class="flex items-center">
+                  <UAvatar
+                    :src="website.logo"
+                    :alt="website.title"
+                    class="w-10 h-10 rounded-full mr-4"
+                  />
+                  <div>
+                    <h2 class="text-4 font-bold mb-1 flex items-center">
+                      {{ website.title }}
+                      <Icon
+                        name="line-md:thumbs-up-filled"
+                        class="text-xl color-red-500 ml-1"
+                        v-if="website.isRecommended"
+                      />
+                    </h2>
+                    <div class="text-gray-500 text-3">
+                      {{
+                        website.websiteTags
+                          ?.map((item: any) => item.tags)
+                          .map((item: any) => item.name)
+                          .join('、')
+                      }}
+                    </div>
+                  </div>
+                </div>
+                <p
+                  class="text-slate-500 text-3 mt-2 font-500 tracking-1px overflow-hidden line-clamp-2 h-9"
+                >
+                  {{ website.description }}
+                </p>
+                <div
+                  class="mt-2 text-2 text-gray-500 flex items-center justify-between"
+                >
+                  <span class="mr-2 text-sm flex items-center">
+                    👀
+                    {{ website.visitCount }}
+                  </span>
+                  <div class="flex items-center">
+                    <Icon
+                      :name="`${website.isFavorited ? 'line-md:star-alt-filled' : 'line-md:star'}`"
+                      class="text-xl"
+                      :class="`${website.isFavorited ? 'color-yellow-500' : ''}`"
+                      @click.stop="handleCollect(website)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="h-1000 bg-blue">
+          <div class="anchor-title" id="banner1">AI1231</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="h-100%">
     <div
       class="px-2 mt-2 h-auto mx-2 shadow-md rounded-lg w-100% overflow-x-hidden"
     >
@@ -210,23 +358,26 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </div>
-  <Loading v-if="loading" />
+  </div> -->
+  <!-- <Loading v-if="loading" /> -->
 </template>
 
 <style scoped>
 body {
-  background-color: #fff;
+  background-color: var(--background-color);
   color: rgba(0, 0, 0, 0.8);
 }
+
 .dark-mode body {
-  background-color: #091a28;
+  background-color: var(--background-color);
   color: #ebf4f1;
 }
+
 .sepia-mode body {
   background-color: #f1e7d0;
   color: #433422;
 }
+
 .item:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;

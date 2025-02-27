@@ -1,6 +1,9 @@
 <template>
-  <div class="mt-4">
-    <UDivider :label="$config.public.projectName" />
+  <div class="text-center text-gray-500 text-sm py-2">
+    <!-- <UDivider :label="$config.public.projectName" :ui="{
+
+    }" /> -->
+    {{ $config.public.projectName }}
   </div>
 </template>
 
