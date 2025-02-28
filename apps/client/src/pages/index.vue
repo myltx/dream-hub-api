@@ -130,11 +130,11 @@ onMounted(async () => {
 
 <template>
   <div class="h-100% flex justify-between w-full">
-    <div class="bg-bgColor px-4 w-60" v-if="!isMobile()">
+    <div class="bg-bgColor px-4 w-80 py-2" v-if="!isMobile()">
       <div
-        class="cursor-pointer py-2 flex items-center gap-2 hover:text-#0066FF"
+        class="cursor-pointer py-2 flex items-center gap-2 hover:text-#0066FF hover:bg-#ebeef1 hover:rounded-3 hover:font-bold px-1"
         :class="{
-          'text-#0066FF font-heavy':
+          'text-#0066FF font-heavy bg-#ebeef1 rounded-3 font-bold mb-1':
             selectedAnchor === `${categoriesKey}${link.id}`,
         }"
         @click="scrollToSection(`${categoriesKey}${link.id}`)"
@@ -189,6 +189,7 @@ onMounted(async () => {
             工具
           </div>
         </div>
+        <HotSpot />
       </div>
       <!-- 移动端选择器样式 -->
       <div
