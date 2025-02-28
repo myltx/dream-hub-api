@@ -25,16 +25,23 @@ const categoriesKey = 'categories-';
 
 const { openDialog } = useDialog();
 
-const onChangeTab = (id: number) => {
-  loading.value = true;
+const onChangeTab = (id: number, type: string = 'manual') => {
+  // loading.value = true;
   activeTab.value = id;
   // 滚动到当前 Tab 的可见区域
   const tabElement = document.querySelector(`.tab[data-id="${id}"]`);
   if (tabElement) {
     tabElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }
+  type === 'manual' && scrollToSection(`${categoriesKey}${id}`);
   // getWebSites();
 };
+watchEffect(() => {
+  if (isMobile()) {
+    const id = Number(selectedAnchor.value.replace(categoriesKey, ''));
+    onChangeTab(id, 'auto');
+  }
+});
 
 const getSelectData = async () => {
   const { data: categorysData } = await getCategoryList();
@@ -67,10 +74,8 @@ const goLink = (data: any) => {
 };
 const getWebSites = () => {
   getWebsiteQueryAllGroup().then((res) => {
-    console.log(res, 'r');
     websites.value = res.data.groupedData;
     categorys.value = res.data.groupedData.map((item: any) => item.categories);
-    console.log(categorys.value, 'categorys.value');
     loading.value = false;
     observeTitles();
   });
@@ -125,7 +130,7 @@ onMounted(async () => {
 
 <template>
   <div class="h-100% flex justify-between w-full">
-    <div class="w-80 bg-bgColor px-2">
+    <div class="bg-bgColor px-4 w-60" v-if="!isMobile()">
       <div
         class="cursor-pointer py-2 flex items-center gap-2 hover:text-#0066FF"
         :class="{
@@ -141,8 +146,10 @@ onMounted(async () => {
     </div>
     <div class="flex-grow-1 h-100%">
       <!-- 内容区顶部 -->
+      <!-- web端选择器样式 -->
       <div
         class="h-48 bg-bgColor py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur shadow-"
+        v-if="!isMobile()"
       >
         <div class="px-30 flex gap-10">
           <div
@@ -183,7 +190,34 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="h-77.7% overflow-y-auto bg-otherBgColor px-30 pb-5">
+      <!-- 移动端选择器样式 -->
+      <div
+        class="px-2 mt-2 h-auto shadow-md rounded-lg w-100vw overflow-x-hidden"
+        v-else
+      >
+        <div
+          class="w-99% flex items-center whitespace-nowrap overflow-x-auto h-100% py-2"
+        >
+          <div
+            v-for="tab in categorys"
+            :key="tab.id"
+            :data-id="tab.id"
+            class="tab p-5 cursor-pointer text-4 h-10 rounded-5 flex items-center justify-center mr-3 bg-bgColor shadow hover:text-blue hover:font-500"
+            :class="[
+              activeTab === tab.id
+                ? 'text-blue-500 border-blue-500 font-500'
+                : 'text-gray-500 border-gray-500',
+            ]"
+            @click="onChangeTab(tab.id)"
+          >
+            {{ tab.name }}
+          </div>
+        </div>
+      </div>
+      <div
+        class="overflow-y-auto bg-otherBgColor pb-5"
+        :class="isMobile() ? 'h-92%  px-8' : 'h-77.7% px-30'"
+      >
         <div
           class=""
           v-for="categories in websites"
@@ -240,7 +274,8 @@ onMounted(async () => {
                   class="mt-2 text-2 text-gray-500 flex items-center justify-between"
                 >
                   <span class="mr-2 text-sm flex items-center">
-                    👀
+                    <!-- 👀 -->
+                    <Icon name="line-md:watch" class="text-xl mr-1" />
                     {{ website.visitCount }}
                   </span>
                   <div class="flex items-center">
@@ -261,29 +296,7 @@ onMounted(async () => {
   </div>
 
   <!-- <div class="h-100%">
-    <div
-      class="px-2 mt-2 h-auto mx-2 shadow-md rounded-lg w-100% overflow-x-hidden"
-    >
-      <div
-        class="w-99% flex items-center whitespace-nowrap overflow-x-auto h-100% py-2"
-      >
-        <div
-          v-for="tab in categorys"
-          :key="tab.id"
-          :data-id="tab.id"
-          class="tab p-5 cursor-pointer text-4 h-10 rounded-5 flex items-center justify-center mr-3 shadow hover:text-blue hover:font-500"
-          :class="[
-            tab.id == activeTab
-              ? 'text-blue-500 border-blue-500 font-500'
-              : 'text-gray-500 border-gray-500',
-            $colorMode.value === 'dark' ? 'bg-gray-800' : '',
-          ]"
-          @click="onChangeTab(tab.id)"
-        >
-          {{ tab.name }}
-        </div>
-      </div>
-    </div>
+  
     <div class="mt-5 overflow-y-auto h-89%">
       <div
         class="grid gap-5 w-full justify-center"
@@ -373,8 +386,15 @@ body {
   color: #433422;
 }
 
+.item {
+  transition:
+    transform 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
+}
+
 .item:hover {
   transform: scale(1.05);
-  transition: transform 0.2s ease-in-out;
+  opacity: 0.95;
+  /* 添加透明度变化，使放大的效果更自然 */
 }
 </style>
