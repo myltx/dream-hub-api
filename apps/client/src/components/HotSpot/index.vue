@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { data, error } = await useFetch('https://api.moyuhuashui.com/baidu/');
 console.log(data.value, 'data');
+const handleClick = (data: any) => {
+  window.open(data.url, '_blank');
+};
 </script>
 
 <template>
@@ -8,12 +11,13 @@ console.log(data.value, 'data');
     <!-- <div class="text-xl font-bold">热点:</div> -->
     <div class="flex flex-wrap items-center">
       <div
-        class="w-1/4 p-2"
-        v-for="item in data?.data.slice(0, 4)"
+        class="w-1/5 p-2"
+        v-for="item in data?.data.slice(0, 5)"
         :key="item.id"
+        @click="handleClick(item)"
       >
         <div
-          class="text-sm overflow-text-ellipsis cursor-pointer whitespace-nowrap text-ellipsis"
+          class="text-sm overflow-hidden cursor-pointer whitespace-nowrap text-ellipsis"
         >
           🔥 百度：
           {{ item.title }}

@@ -132,11 +132,12 @@ onMounted(async () => {
   <div class="h-100% flex justify-between w-full">
     <div class="bg-bgColor px-4 w-80 py-2" v-if="!isMobile()">
       <div
-        class="cursor-pointer py-2 flex items-center gap-2 hover:text-#0066FF hover:bg-#ebeef1 hover:rounded-3 hover:font-bold px-1"
-        :class="{
-          'text-#0066FF font-heavy bg-#ebeef1 rounded-3 font-bold mb-1':
-            selectedAnchor === `${categoriesKey}${link.id}`,
-        }"
+        class="cursor-pointer py-2 flex items-center gap-2 hover:text-#fff hover:bg-#0066FF hover:rounded-3 hover:font-bold px-1"
+        :class="
+          selectedAnchor === `${categoriesKey}${link.id}`
+            ? 'text-#fff font-heavy bg-#0066FF rounded-3 font-bold mb-1'
+            : 'color-gray-600'
+        "
         @click="scrollToSection(`${categoriesKey}${link.id}`)"
         v-for="link in categorys"
         :key="link.id"
@@ -148,45 +149,49 @@ onMounted(async () => {
       <!-- 内容区顶部 -->
       <!-- web端选择器样式 -->
       <div
-        class="h-48 py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur bg-bgColor"
+        class="h-58 py-4 b-l-1 b-solid b-gray-100 page-header bg-bgColor"
         v-if="!isMobile()"
       >
-        <div class="px-30 flex gap-10">
+        <div class="px-30 flex gap-3">
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
+            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #3161fa, #87bffc);
             "
           >
-            文章
+            <img src="@/assets/images/1.png" alt="" />
+            <!-- 文章 -->
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
+            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #00b8c1, #89e7db);
             "
           >
-            热点
+            <!-- 热点 -->
+            <img src="@/assets/images/2.png" alt="" />
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
+            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #ff7631, #ffc786);
             "
           >
-            AI
+            <!-- AI -->
+            <img src="@/assets/images/3.png" alt="" />
           </div>
           <div
-            class="flex-1 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
+            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
             style="
               background: #12c2e9;
               background: linear-gradient(to bottom, #ff4943, #ffb09d);
             "
           >
-            工具
+            <!-- 工具 -->
+            <img src="@/assets/images/4.png" alt="" />
           </div>
         </div>
         <HotSpot />
@@ -217,7 +222,7 @@ onMounted(async () => {
       </div>
       <div
         class="overflow-y-auto bg-otherBgColor pb-5"
-        :class="isMobile() ? 'h-92%  px-8' : 'h-77.7% px-30'"
+        :class="isMobile() ? 'h-92%  px-8' : 'h-72% px-30'"
       >
         <div
           class=""
@@ -231,14 +236,14 @@ onMounted(async () => {
             {{ categories?.categories?.name }}
           </div>
           <div
-            class="grid gap-6 w-full justify-center"
-            style="grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr))"
+            class="grid gap-3 w-full justify-center"
+            style="grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr))"
           >
             <div
               v-for="website in categories.list"
               :key="website.id"
               @click="goLink(website)"
-              class="bg-bgColor rounded-4 p-5 cursor-pointer item"
+              class="bg-bgColor rounded-4 px-5 py-3 cursor-pointer item"
             >
               <div class="">
                 <div class="flex items-center">
