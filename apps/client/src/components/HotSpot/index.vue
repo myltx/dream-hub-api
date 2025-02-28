@@ -7,7 +7,7 @@ const handleClick = (data: any) => {
 </script>
 
 <template>
-  <div class="px-30 mt-5 flex items-center">
+  <div class="px-30 mt-2 flex items-center">
     <!-- <div class="text-xl font-bold">热点:</div> -->
     <div class="flex flex-wrap items-center">
       <div

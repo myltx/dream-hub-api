@@ -149,49 +149,29 @@ onMounted(async () => {
       <!-- 内容区顶部 -->
       <!-- web端选择器样式 -->
       <div
-        class="h-58 py-4 b-l-1 b-solid b-gray-100 page-header bg-bgColor"
+        class="h-48 py-4 b-l-1 b-solid b-gray-100 page-header bg-bgColor"
         v-if="!isMobile()"
       >
         <div class="px-30 flex gap-3">
           <div
-            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
-            style="
-              background: #12c2e9;
-              background: linear-gradient(to bottom, #3161fa, #87bffc);
-            "
+            class="flex-1 h-32 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
           >
-            <img src="@/assets/images/1.png" alt="" />
-            <!-- 文章 -->
+            <img src="@/assets/images/1.png" alt="" class="h-100% w-100%" />
           </div>
           <div
-            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
-            style="
-              background: #12c2e9;
-              background: linear-gradient(to bottom, #00b8c1, #89e7db);
-            "
+            class="flex-1 h-32 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
           >
-            <!-- 热点 -->
-            <img src="@/assets/images/2.png" alt="" />
+            <img src="@/assets/images/2.png" alt="" class="h-100% w-100%" />
           </div>
           <div
-            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
-            style="
-              background: #12c2e9;
-              background: linear-gradient(to bottom, #ff7631, #ffc786);
-            "
+            class="flex-1 h-32 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
           >
-            <!-- AI -->
-            <img src="@/assets/images/3.png" alt="" />
+            <img src="@/assets/images/3.png" alt="" class="h-100% w-100%" />
           </div>
           <div
-            class="flex-1 h-38 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
-            style="
-              background: #12c2e9;
-              background: linear-gradient(to bottom, #ff4943, #ffb09d);
-            "
+            class="flex-1 h-32 rounded-4 color-textColor h-26 font-zk-qfy text-15 flex items-center justify-center cursor-pointer item"
           >
-            <!-- 工具 -->
-            <img src="@/assets/images/4.png" alt="" />
+            <img src="@/assets/images/4.png" alt="" class="h-100% w-100%" />
           </div>
         </div>
         <HotSpot />
@@ -222,7 +202,7 @@ onMounted(async () => {
       </div>
       <div
         class="overflow-y-auto bg-otherBgColor pb-5"
-        :class="isMobile() ? 'h-92%  px-8' : 'h-72% px-30'"
+        :class="isMobile() ? 'h-92%  px-8' : 'h-76% px-30'"
       >
         <div
           class=""
@@ -331,4 +311,8 @@ body {
   opacity: 0.95;
   /* 添加透明度变化，使放大的效果更自然 */
 }
+
+/* .page-header {
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+} */
 </style>
