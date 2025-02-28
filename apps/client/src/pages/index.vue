@@ -148,7 +148,7 @@ onMounted(async () => {
       <!-- 内容区顶部 -->
       <!-- web端选择器样式 -->
       <div
-        class="h-48 py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur"
+        class="h-48 py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur bg-bgColor"
         v-if="!isMobile()"
       >
         <div class="px-30 flex gap-10">
