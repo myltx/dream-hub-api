@@ -144,11 +144,11 @@ onMounted(async () => {
         <UIcon name="i-heroicons-light-bulb" class="w-5 h-5" /> {{ link.name }}
       </div>
     </div>
-    <div class="flex-grow-1 h-100%">
+    <div class="flex-grow-1 h-100% bg-transparent">
       <!-- 内容区顶部 -->
       <!-- web端选择器样式 -->
       <div
-        class="h-48 bg-bgColor py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur shadow-"
+        class="h-48 py-4 b-l-1 b-solid b-bColor page-header shadow dark:shadow-otherBgColor 100 backdrop-blur"
         v-if="!isMobile()"
       >
         <div class="px-30 flex gap-10">
