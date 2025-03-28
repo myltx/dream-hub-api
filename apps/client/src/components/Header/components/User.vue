@@ -74,7 +74,12 @@ const items = [
       icon: 'i-heroicons-book-open',
       show: isAuthenticated() && props.type === 'frontend',
     },
-
+    {
+      label: '文档说明',
+      key: 'document',
+      icon: 'line-md:file-document-minus',
+      show: true,
+    },
     {
       label: '看看效果',
       key: 'frontend',
@@ -133,6 +138,9 @@ const handleDropdownItemClick = (item: DropdownItem) => {
     case 'frontend':
       router.push('/');
       return;
+    case 'document':
+      window.open('https://dream-hub.docs.myltx.top/guide/');
+      return;
     default:
       return;
   }
@@ -174,7 +182,7 @@ const onFileChange = (e: any) => {
     :ui="{
       item: { disabled: 'cursor-text select-text', base: 'group z-90' },
       background: 'bg-white dark:bg-gray-800',
-      container: 'z-20 group',
+      container: 'group',
     }"
     :popper="{ placement: 'bottom-start' }"
   >
