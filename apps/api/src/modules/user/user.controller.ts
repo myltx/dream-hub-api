@@ -67,6 +67,7 @@ export class UserController {
         code: 400,
       };
     }
+    // TODO: 这里需要也获取一下logto 的用户信息
     return this.userService.findOne(user_id);
   }
   @ApiOperation({
@@ -75,6 +76,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    // TODO: 这里需要将提交的信息转换格式也提交到 logto 用于记录
     return this.userService.update(id, updateUserDto);
   }
   @ApiOperation({
