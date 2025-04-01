@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { configureCors } from './config/cors.config';
 import { configureSwagger } from './config/swagger.config';
 import { ValidationPipe } from '@nestjs/common';
+import { AuthGuard } from './modules/guards/auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,9 @@ async function bootstrap() {
   configureCors(app); // 跨域
   app.useGlobalInterceptors(new ResponseInterceptor()); // 全局拦截器
   app.useGlobalFilters(new AllExceptionsFilter()); // 全局异常过滤器
+  // 全局应用 AuthGuard
+  app.useGlobalGuards(new AuthGuard(new Reflector()));
+
   configureSwagger(app); // Swagger
   // 启用全局校验管道
   app.useGlobalPipes(

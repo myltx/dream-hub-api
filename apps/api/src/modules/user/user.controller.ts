@@ -9,18 +9,23 @@ import {
   Req,
   HttpCode,
   HttpStatus,
+  Headers,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiExcludeEndpoint,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { HttpService } from '@nestjs/axios';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserVo } from './vo/create-user.vo';
+import { IsPublic } from '../auth/decorators/is-public.decorator';
 
 @ApiTags('用户管理')
 @ApiHeader({
@@ -31,7 +36,10 @@ import { CreateUserVo } from './vo/create-user.vo';
 @ApiBearerAuth() // 鉴权
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly httpService: HttpService,
+  ) {}
 
   @ApiOperation({
     summary: '添加用户', // 接口描述信息
@@ -67,7 +75,7 @@ export class UserController {
         code: 400,
       };
     }
-    // TODO: 这里需要也获取一下logto 的用户信息
+
     return this.userService.findOne(user_id);
   }
   @ApiOperation({
@@ -76,7 +84,6 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    // TODO: 这里需要将提交的信息转换格式也提交到 logto 用于记录
     return this.userService.update(id, updateUserDto);
   }
   @ApiOperation({
@@ -86,5 +93,16 @@ export class UserController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return this.userService.remove(id);
+  }
+
+  @ApiOperation({
+    summary: '获取token', // 接口描述信息
+  })
+  @HttpCode(HttpStatus.OK)
+  @Get('token')
+  @IsPublic()
+  @ApiExcludeEndpoint() // 这个接口不会出现在 Swagger 中
+  async getToken() {
+    return this.userService.getToken();
   }
 }

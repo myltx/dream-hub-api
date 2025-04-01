@@ -1,11 +1,13 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Headers } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LogtoService } from '../logto/logto.service';
 
 @Injectable()
 export class UserService {
   dbName = 'users';
+  logtoService = new LogtoService();
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
@@ -38,6 +40,9 @@ export class UserService {
       .select('*')
       .eq('user_id', user_id)
       .single();
+
+    // const user = await this.logtoService.logtoApi.get(`/api/users/${user_id}`);
+    // console.log(user, 'user');
     if (!data) {
       return null;
     }
@@ -104,5 +109,14 @@ export class UserService {
     }
 
     return data.publicUrl;
+  }
+
+  // 登录
+  async getToken() {
+    try {
+      return this.logtoService.fetchToken();
+    } catch (err) {
+      throw new Error(`Error fetching token: ${err.message}`);
+    }
   }
 }
