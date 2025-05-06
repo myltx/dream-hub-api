@@ -22,6 +22,7 @@ import { CreateWebsiteDto } from './dto/create-website.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { UpdateWebsiteDto } from './dto/update-website.dto';
 import { QueryWebsiteDto } from './dto/query-website.dto';
+import { CurrentUser } from '../auth/decorators/user.decorator';
 
 @ApiTags('站点管理')
 @ApiBearerAuth()
@@ -39,10 +40,13 @@ export class WebsiteController {
   })
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() createWebsiteDto: CreateWebsiteDto, @Request() req) {
+  async create(
+    @Body() createWebsiteDto: CreateWebsiteDto,
+    @CurrentUser() user: any,
+  ) {
     return this.websiteService.create({
       ...createWebsiteDto,
-      user_id: req.user.sub,
+      user_id: user.sub,
     });
   }
 
@@ -83,7 +87,11 @@ export class WebsiteController {
   @ApiOperation({ summary: '根据查询条件获取站点' })
   @HttpCode(HttpStatus.OK)
   @Get('query')
-  async findByQuery(@Query() query: QueryWebsiteDto, @Request() req: any) {
+  async findByQuery(
+    @Query() query: QueryWebsiteDto,
+    @CurrentUser() user: any,
+    @Request() req: any,
+  ) {
     for (const key in query) {
       if (Object.prototype.hasOwnProperty.call(query, key)) {
         if (!query[key] || query[key] === '-1') {
@@ -91,17 +99,19 @@ export class WebsiteController {
         }
       }
     }
-    return this.websiteService.findByQuery({
-      ...query,
-      user_id: req?.user?.sub,
-    });
+    return this.websiteService.findByQuery(
+      {
+        ...query,
+      },
+      user,
+    );
   }
 
   @ApiOperation({ summary: '根据查询条件获取站点(不分页)' })
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('queryAll')
-  async findByQueryAll(@Query() query: any, @Request() req: any) {
+  async findByQueryAll(@Query() query: any, @CurrentUser() user: any) {
     for (const key in query) {
       if (Object.prototype.hasOwnProperty.call(query, key)) {
         if (!query[key] || query[key] === '-1') {
@@ -109,19 +119,21 @@ export class WebsiteController {
         }
       }
     }
-    return this.websiteService.findByQueryAll({
-      ...query,
-      user_id: req?.user?.sub,
-    });
+    return this.websiteService.findByQueryAll(
+      {
+        ...query,
+      },
+      user,
+    );
   }
 
   @ApiOperation({ summary: '获取所有站点' })
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('queryAllGroup')
-  async findAllWebsite(@Request() req: any) {
+  async findAllWebsite(@CurrentUser() user: any) {
     return this.websiteService.findByQueryGroupAll({
-      user_id: req?.user?.sub,
+      user_id: user?.sub,
     });
   }
 

@@ -157,8 +157,9 @@ export class WebsiteService {
     return data;
   }
 
-  async findByQuery(query: QueryWebsiteDto) {
-    const { page, limit, user_id, ...filters } = query;
+  async findByQuery(query: QueryWebsiteDto, user: any) {
+    const { user_id, roles } = user;
+    const { page, limit, ...filters } = query;
 
     const offset = (page - 1) * limit;
 
@@ -183,9 +184,7 @@ export class WebsiteService {
         }
       }
     }
-    // 实现 根据用户id获取用户信息
-    const { roles } = await this.userService.findOne(user_id);
-    if (!roles.includes('admin')) {
+    if (!roles.includes('管理员')) {
       queryBuilder.eq('user_id', user_id);
     }
     const { data, error, count } = await queryBuilder.range(
@@ -208,8 +207,9 @@ export class WebsiteService {
     };
   }
 
-  async findByQueryAll(query: any) {
-    const { limit, user_id, ...filters } = query;
+  async findByQueryAll(query: any, user: any) {
+    const { user_id } = user;
+    const { limit, ...filters } = query;
 
     // 构建动态查询
     const queryBuilder = this.supabase.from(this.dbName).select(
