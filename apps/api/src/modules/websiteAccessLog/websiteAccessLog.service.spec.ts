@@ -1,18 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SiteAccessLogService } from './siteAccessLog.service';
+import { SiteAccessLogController } from '../siteAccessLog/siteAccessLog.controller';
+import { SiteAccessLogService } from '../siteAccessLog/siteAccessLog.service';
 
-describe('LogService', () => {
-  let service: SiteAccessLogService;
+const mockSupabaseClient = {
+  from: jest.fn().mockReturnThis(),
+  select: jest.fn().mockReturnThis(),
+  insert: jest.fn().mockReturnThis(),
+  // ...如有需要可继续补充
+};
+
+describe('SiteAccessLogController', () => {
+  let controller: SiteAccessLogController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SiteAccessLogService],
+      controllers: [SiteAccessLogController],
+      providers: [
+        SiteAccessLogService,
+        { provide: 'SupabaseClient', useValue: mockSupabaseClient },
+      ],
     }).compile();
 
-    service = module.get<SiteAccessLogService>(SiteAccessLogService);
+    controller = module.get<SiteAccessLogController>(SiteAccessLogController);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });
