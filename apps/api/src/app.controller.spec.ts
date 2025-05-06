@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { SupabaseService } from './database/supabase/supabase.service';
+
+const mockSupabaseService = {};
 
 describe('AppController', () => {
   let appController: AppController;
@@ -8,15 +10,18 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [{ provide: SupabaseService, useValue: mockSupabaseService }],
     }).compile();
 
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      // expect(appController.getHello()).toBe('Hello World!');
+  describe('getData', () => {
+    it('should return welcome html page', () => {
+      const result = appController.getData();
+      expect(result).toContain('<title>欢迎使用 Dream Hub API</title>');
+      expect(result).toContain('Dream Hub API');
+      expect(result).toContain('html');
     });
   });
 });

@@ -13,7 +13,8 @@ async function bootstrap() {
 
   // 应用配置
   configureCors(app); // 跨域
-  app.useGlobalInterceptors(new ResponseInterceptor()); // 全局拦截器
+  const reflector = app.get(Reflector); // ✅ 从容器中获取 Reflector 实例
+  app.useGlobalInterceptors(new ResponseInterceptor(reflector)); // 全局拦截器
   app.useGlobalFilters(new AllExceptionsFilter()); // 全局异常过滤器
   // 全局应用 AuthGuard
   app.useGlobalGuards(new AuthGuard(new Reflector()));
