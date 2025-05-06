@@ -8,6 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { LogtoService } from '../logto/logto.service';
 
 export const UncheckAuth = () => SetMetadata('uncheck', true);
 export const Permissions = (...permissions: string[]) =>
@@ -16,6 +17,7 @@ export const Permissions = (...permissions: string[]) =>
 @Injectable()
 export class AuthGuard implements CanActivate {
   private jwks: any;
+  private logtoService = new LogtoService();
   constructor(private readonly reflector: Reflector) {
     this.jwks = createRemoteJWKSet(
       new URL('/oidc/jwks', process.env.LOGTO_ENDPOINT),
@@ -53,8 +55,14 @@ export class AuthGuard implements CanActivate {
           throw new UnauthorizedException();
         }
       }
-      console.log(payload, 'payload');
+      // console.log(payload, 'payload');
+      // 这里获取用户在 Logto 的角色
+      const data = await this.logtoService.getUserRoles(payload.sub);
       request['userId'] = payload.sub;
+      request['user'] = {
+        ...payload,
+        roles: data.map((item) => item.name),
+      };
     } catch (e) {
       console.log(e, 'e');
       if (!uncheck) {
@@ -65,14 +73,14 @@ export class AuthGuard implements CanActivate {
   }
 
   private async jwtVerify(token) {
-    console.log(token, 'token');
-    console.log('------>');
-    console.log(this.jwks, 'jwks');
-    console.log('------>');
-    console.log(new URL('oidc', process.env.LOGTO_ENDPOINT).href, 'issuer');
-    console.log('------>');
-    console.log(process.env.BACKEND_ENDPOINT, 'audience');
-    console.log('------>');
+    // console.log(token, 'token');
+    // console.log('------>');
+    // console.log(this.jwks, 'jwks');
+    // console.log('------>');
+    // console.log(new URL('oidc', process.env.LOGTO_ENDPOINT).href, 'issuer');
+    // console.log('------>');
+    // console.log(process.env.BACKEND_ENDPOINT, 'audience');
+    // console.log('------>');
     const { payload } = await jwtVerify(
       // The raw Bearer Token extracted from the request header
       token,

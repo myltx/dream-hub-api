@@ -23,6 +23,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { QueryCategoryDto } from './dto/query-category.dto';
+import { CurrentUser } from '../auth/decorators/user.decorator';
 
 @ApiTags('分类管理')
 @ApiBearerAuth()
@@ -84,10 +85,15 @@ export class CategoriesController {
   @ApiOperation({ summary: '根据查询条件获取分类列表' })
   @HttpCode(HttpStatus.OK)
   @Get('query')
-  async findByQuery(@Query() query: QueryCategoryDto, @Request() req) {
-    return this.categoriesService.findByQuery({
-      ...query,
-      user_id: req?.user?.sub,
-    });
+  async findByQuery(
+    @Query() query: QueryCategoryDto,
+    @CurrentUser() user: any,
+  ) {
+    return this.categoriesService.findByQuery(
+      {
+        ...query,
+      },
+      user,
+    );
   }
 }

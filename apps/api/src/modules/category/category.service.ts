@@ -75,8 +75,9 @@ export class CategoriesService {
     return data;
   }
 
-  async findByQuery(query: QueryCategoryDto) {
-    const { page, limit, user_id, ...filters } = query;
+  async findByQuery(query: QueryCategoryDto, user: any) {
+    const { user_id, roles } = user;
+    const { page, limit, ...filters } = query;
 
     const offset = (page - 1) * limit;
 
@@ -91,8 +92,8 @@ export class CategoriesService {
       }
     }
     // 实现 根据用户id获取用户信息
-    const { roles } = await this.userService.findOne(user_id);
-    if (!roles.includes('admin')) {
+    if (!roles.includes('管理员')) {
+      console.log('非管理员');
       queryBuilder.eq('user_id', user_id);
     }
 

@@ -50,7 +50,6 @@ export class UserService {
     if (error) {
       throw new Error(`Error fetching user: ${error.message}`);
     }
-
     return data;
   }
 
@@ -118,5 +117,10 @@ export class UserService {
     } catch (err) {
       throw new Error(`Error fetching token: ${err.message}`);
     }
+  }
+
+  async getUserRoles(userId: string) {
+    const { data } = await this.logtoService.getUserRoles(userId);
+    return data;
   }
 }

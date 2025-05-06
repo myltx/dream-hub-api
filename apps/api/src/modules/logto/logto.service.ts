@@ -28,9 +28,9 @@ export class LogtoService {
 
     this.logtoApi.interceptors.request.use(async (config) => {
       const token = await this.fetchToken();
-      console.log(token, 'token');
+      // console.log(token, 'token');
       config.headers.Authorization = `Bearer ${token}`;
-      console.log(config, 'config');
+      // console.log(config, 'config');
       return config;
     });
   }
@@ -54,5 +54,9 @@ export class LogtoService {
     });
 
     return data.access_token;
+  }
+  public async getUserRoles(userId: string) {
+    const { data } = await this.logtoApi.get(`/api/users/${userId}/roles`);
+    return data;
   }
 }
