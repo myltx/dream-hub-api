@@ -9,7 +9,6 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
-  Request,
   Query,
 } from '@nestjs/common';
 import {
@@ -39,10 +38,13 @@ export class CategoriesController {
   @ApiOperation({ summary: '创建分类' })
   @HttpCode(HttpStatus.OK)
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto, @Request() req) {
+  async create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @CurrentUser() user: any,
+  ) {
     return this.categoriesService.create({
       ...createCategoryDto,
-      user_id: req.user.sub,
+      user_id: user.sub,
     });
   }
 
@@ -70,7 +72,7 @@ export class CategoriesController {
   @ApiOperation({ summary: '获取全部分类列表（需要鉴权）' })
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll(@Request() req) {
+  async findAll() {
     return this.categoriesService.findAll();
   }
 
