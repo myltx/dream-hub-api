@@ -9,6 +9,7 @@ import {
   mockQueryResult,
   mockTagService,
 } from '../../mock/tag.mock';
+import { Param, Get } from '@nestjs/common';
 
 describe('TagController', () => {
   let controller: TagController;
@@ -34,11 +35,14 @@ describe('TagController', () => {
   });
 
   describe('create', () => {
-    it('should call tagService.create with correct arguments', async () => {
+    it('should call tagService.create with correct arguments and user', async () => {
+      const user = { sub: '1' };
       const result = { id: '1', name: 'Test Tag' };
-
-      expect(await controller.create(mockCreateTagDto)).toEqual(result);
-      expect(service.create).toHaveBeenCalledWith(mockCreateTagDto);
+      expect(await controller.create(mockCreateTagDto, user)).toEqual(result);
+      expect(service.create).toHaveBeenCalledWith({
+        ...mockCreateTagDto,
+        user_id: user.sub,
+      });
     });
   });
 
@@ -46,7 +50,6 @@ describe('TagController', () => {
     it('should call tagService.update with correct arguments', async () => {
       const id = '1';
       const result = { id, name: 'Updated Tag' };
-
       expect(await controller.update(id, mockUpdateTagDto)).toEqual(result);
       expect(service.update).toHaveBeenCalledWith(id, mockUpdateTagDto);
     });
@@ -55,10 +58,18 @@ describe('TagController', () => {
   describe('remove', () => {
     it('should call tagService.remove with correct arguments', async () => {
       const id = '1';
+      mockTagService.isTagBoundToWebsite.mockResolvedValue(false);
       const result = { success: true };
-
       expect(await controller.remove(id)).toEqual(result);
+      expect(service.isTagBoundToWebsite).toHaveBeenCalledWith(id);
       expect(service.remove).toHaveBeenCalledWith(id);
+    });
+    it('should throw error if tag is bound to website', async () => {
+      const id = '1';
+      mockTagService.isTagBoundToWebsite.mockResolvedValue(true);
+      await expect(controller.remove(id)).rejects.toThrow(
+        '标签已绑定站点，无法删除',
+      );
     });
   });
 
@@ -82,6 +93,23 @@ describe('TagController', () => {
         mockQueryResult,
       );
       expect(service.findByQuery).toHaveBeenCalledWith(mockQueryTagDto);
+    });
+  });
+
+  // 新增 findOne 测试
+  describe('findOne', () => {
+    it('should call tagService.findOne with correct arguments', async () => {
+      const id = '1';
+      const tag = { id: '1', name: 'Test Tag' };
+      service.findOne = jest.fn().mockResolvedValue(tag);
+      expect(await controller.findOne(id)).toEqual(tag);
+      expect(service.findOne).toHaveBeenCalledWith(id);
+    });
+    it('should throw error if tagService.findOne throws', async () => {
+      const id = '1';
+      const error = new Error('not found');
+      service.findOne = jest.fn().mockRejectedValue(error);
+      await expect(controller.findOne(id)).rejects.toThrow('not found');
     });
   });
 });

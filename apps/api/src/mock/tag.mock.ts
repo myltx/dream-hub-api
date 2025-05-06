@@ -32,4 +32,5 @@ export const mockTagService = {
   remove: jest.fn().mockResolvedValue({ success: true }),
   findAll: jest.fn().mockResolvedValue(mockTagList),
   findByQuery: jest.fn().mockResolvedValue(mockQueryResult),
+  isTagBoundToWebsite: jest.fn(),
 };

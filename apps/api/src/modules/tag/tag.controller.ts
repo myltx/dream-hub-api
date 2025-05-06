@@ -22,6 +22,7 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { HttpStatus } from '@nestjs/common/enums';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { QueryTagDto } from './dto/query-tag.dto';
+import { CurrentUser } from '../auth/decorators/user.decorator';
 
 @ApiTags('标签管理')
 @ApiBearerAuth()
@@ -37,10 +38,10 @@ export class TagController {
   @ApiOperation({ summary: '创建标签' })
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() createTagDto: CreateTagDto, @Request() req) {
+  async create(@Body() createTagDto: CreateTagDto, @CurrentUser() user: any) {
     return this.tagService.create({
       ...createTagDto,
-      user_id: req.user.sub,
+      user_id: user.sub,
     });
   }
 
@@ -70,7 +71,7 @@ export class TagController {
     return this.tagService.findAll();
   }
 
-  @ApiOperation({ summary: '获取标签详情, (需要鉴权)' })
+  @ApiOperation({ summary: '获取标签列表, (无需鉴权)' })
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('public')
@@ -90,5 +91,12 @@ export class TagController {
     //   }
     // }
     return this.tagService.findByQuery(query);
+  }
+
+  @ApiOperation({ summary: '获取标签详情, (需要鉴权)' })
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.tagService.findOne(id);
   }
 }
