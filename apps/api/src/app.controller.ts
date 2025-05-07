@@ -17,10 +17,8 @@ export class AppController {
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>欢迎使用 Dream Hub API</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+          <title>Dream Hub API</title>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
           <style>
             body {
               margin: 0;
@@ -32,65 +30,72 @@ export class AppController {
               min-height: 100vh;
               background: linear-gradient(135deg, #6366f1, #3b82f6);
               color: #fff;
-              text-align: center;
               padding: 2rem;
+              text-align: center;
             }
-  
             .container {
-              background: rgba(255, 255, 255, 0.05);
-              padding: 3rem;
-              border-radius: 1.25rem;
-              box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-              backdrop-filter: blur(10px);
+              background: rgba(255,255,255,0.06);
+              padding: 2.5rem;
+              border-radius: 1.5rem;
+              backdrop-filter: blur(12px);
+              box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+              max-width: 500px;
+              width: 90%;
             }
-  
+            .logo {
+              width: 80px;
+              margin-bottom: 1rem;
+            }
             h1 {
-              font-size: 2.5rem;
-              font-weight: 700;
+              font-size: 2rem;
               margin-bottom: 0.5rem;
             }
-  
             p {
-              font-size: 1.2rem;
-              margin-bottom: 2rem;
               opacity: 0.9;
+              margin-bottom: 1.5rem;
             }
-  
-            .link {
+            .btn {
               display: inline-block;
+              margin-top: 1rem;
               padding: 0.75rem 1.5rem;
-              font-size: 1rem;
-              font-weight: 600;
+              background: #fff;
               color: #3b82f6;
-              background-color: #fff;
-              border-radius: 9999px;
+              font-weight: bold;
+              border-radius: 999px;
               text-decoration: none;
-              transition: background-color 0.3s ease;
+              transition: background 0.3s;
             }
-  
-            .link:hover {
-              background-color: #f0f0f0;
+            .btn:hover {
+              background: #e5e7eb;
             }
-  
             .version {
+              font-size: 0.85rem;
+              color: #ddd;
               margin-top: 1.5rem;
-              font-size: 0.9rem;
-              opacity: 0.7;
             }
-  
-            .icon {
-              font-size: 3rem;
-              margin-bottom: 1rem;
+            .qr {
+              margin-top: 2rem;
+              width: 120px;
+              height: 120px;
+            }
+            .team {
+              margin-top: 1.2rem;
+              font-size: 0.9rem;
+              color: #cbd5e1;
             }
           </style>
         </head>
         <body>
           <div class="container">
-            <div class="icon">🚀</div>
+            <img src="https://xcwhdikndfrizmrtxyiy.supabase.co/storage/v1/object/public/doc-img/api-img/logo.png" alt="Logo" class="logo" />
             <h1>欢迎使用 Dream Hub API</h1>
-            <p>你的开发助手，已准备就绪。</p>
-            <a class="link" href="/api-docs">查看 API 文档</a>
-            <div class="version">版本号：${version}</div>
+            <p>你的开发助手已准备就绪。</p>
+            <a href="/api-docs" class="btn">进入 API 文档</a>
+            <div class="version">当前版本：v${version}</div>
+            <img src="https://xcwhdikndfrizmrtxyiy.supabase.co/storage/v1/object/public/doc-img/api-img/wechat.png" class="qr" alt="二维码" />
+            <div class="team">
+              由 <a href="https://github.com/myltx/dream-hub" target="_blank" style="color: #fff; font-weight: bold;">DreamHub 团队</a> 提供支持
+            </div>
           </div>
         </body>
       </html>
