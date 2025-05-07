@@ -94,7 +94,7 @@ export class AppController {
             <div class="version">当前版本：v${version}</div>
             <img src="https://xcwhdikndfrizmrtxyiy.supabase.co/storage/v1/object/public/doc-img/api-img/wechat.png" class="qr" alt="二维码" />
             <div class="team">
-              由 <a href="https://github.com/myltx/dream-hub" target="_blank" style="color: #fff; font-weight: bold;">DreamHub 团队</a> 提供支持
+              由 <a href="https://dream-hub.docs.myltx.top/guide/" target="_blank" style="color: #fff; font-weight: bold;">DreamHub 团队</a> 提供支持
             </div>
           </div>
         </body>
