@@ -31,7 +31,7 @@ async function bootstrap() {
   // 启动应用
   await app.listen(PORT);
   console.log(
-    `Application is running on: ${await app.getUrl()}, or http://localhost:${PORT}`,
+    `🚀 Application is running on: ${await app.getUrl()}, or http://localhost:${PORT}`,
   );
 }
 bootstrap();

@@ -1,6 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
+export let SwaggerDocument: any; // <-- 导出文档变量
+
 export const configureSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
     .setTitle('Dream Hub')
@@ -9,9 +11,8 @@ export const configureSwagger = (app: INestApplication) => {
     .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('api-docs', app, document, {
+  SwaggerDocument = SwaggerModule.createDocument(app, config); // <-- 缓存文档
+  SwaggerModule.setup('api-docs', app, SwaggerDocument, {
     customSiteTitle: 'Dream Hub API Docs',
     customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist/swagger-ui.css',
     customJs: [
@@ -21,4 +22,6 @@ export const configureSwagger = (app: INestApplication) => {
     explorer: true,
     useGlobalPrefix: true,
   });
+
+  return SwaggerDocument;
 };

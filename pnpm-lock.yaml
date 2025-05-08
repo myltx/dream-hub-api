@@ -142,6 +142,9 @@ importers:
       supertest:
         specifier: ^7.0.0
         version: 7.0.0
+      swagger-ui-themes:
+        specifier: ^3.0.1
+        version: 3.0.1
       ts-jest:
         specifier: ^29.1.0
         version: 29.2.5(@babel/core@7.26.0)(jest@29.7.0)(typescript@5.7.2)
@@ -8202,6 +8205,11 @@ packages:
       express: 4.21.2
       swagger-ui-dist: 5.18.2
     dev: false
+
+  /swagger-ui-themes@3.0.1:
+    resolution: {integrity: sha512-oQpH1uVJVio5R453YvyF3CJzwoEnIfJvWlwwFA0g4AX2NvnnjaT9wAT5kbFLs8pFhfGeq/mA/VlTOFYllm5Rzg==}
+    engines: {node: '>=0.10.3'}
+    dev: true
 
   /symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}

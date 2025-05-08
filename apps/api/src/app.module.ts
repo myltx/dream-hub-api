@@ -19,6 +19,8 @@ import { AuthGuard } from './modules/guards/auth.guard';
 // token
 // 驼峰转换拦截器
 import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
+// swagger
+import { SwaggerController } from './modules/swagger/swagger.controller';
 
 @Module({
   imports: [
@@ -35,7 +37,7 @@ import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.in
     FileModule,
     LogModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SwaggerController],
   providers: [
     AppService,
     AuthGuard,
