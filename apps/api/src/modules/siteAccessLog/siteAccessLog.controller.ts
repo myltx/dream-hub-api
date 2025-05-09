@@ -113,4 +113,12 @@ export class SiteAccessLogController {
     const { start, end } = query;
     return this.logService.getMonthlyVisitStatsWithFill(start, end);
   }
+
+  @ApiOperation({ summary: '统计访问日志、插入每日访问表中' })
+  @HttpCode(HttpStatus.OK)
+  // @IsPublic()
+  @Post('sync-daily-visits')
+  async syncDailyVisits() {
+    return this.logService.syncDailySiteVisits();
+  }
 }

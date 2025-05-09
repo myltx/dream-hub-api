@@ -171,4 +171,12 @@ export class SiteAccessLogService {
       total_visits: dataMap.get(month) ?? 0,
     }));
   }
+
+  async syncDailySiteVisits() {
+    const { error } = await this.supabase.rpc('sync_daily_site_visits');
+
+    if (error) {
+      throw new Error(`Failed to sync daily site visits: ${error.message}`);
+    }
+  }
 }
