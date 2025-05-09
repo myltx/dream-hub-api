@@ -6,6 +6,9 @@ import { configureCors } from './config/cors.config';
 import { configureSwagger } from './config/swagger.config';
 import { ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from './modules/guards/auth.guard';
+// import { TransformQueryPipe } from './common/pipes/transform-query.pipe';
+// import { TransformBodyPipe } from './common/pipes/transform-body.pipe';
+import { CamelToSnakePipe } from './common/pipes/camelToSnakePipe.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +21,9 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter()); // 全局异常过滤器
   // 全局应用 AuthGuard
   app.useGlobalGuards(new AuthGuard(new Reflector()));
-
+  // app.useGlobalPipes(new TransformQueryPipe());
+  // app.useGlobalPipes(new TransformBodyPipe());
+  app.useGlobalPipes(new CamelToSnakePipe());
   configureSwagger(app); // Swagger
   // 启用全局校验管道
   app.useGlobalPipes(

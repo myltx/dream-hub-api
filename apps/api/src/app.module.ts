@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { SupabaseModule } from './database/supabase/supabase.module';
@@ -18,7 +18,8 @@ import { AuthGuard } from './modules/guards/auth.guard';
 
 // token
 // 驼峰转换拦截器
-import { CamelToSnakeInterceptor } from './common/interceptors/camel-to-snake.interceptor';
+import { SnakeToCamelInterceptor } from './common/interceptors/snake-to-camel.interceptor';
+// 其他 import...
 // swagger
 import { SwaggerController } from './modules/swagger/swagger.controller';
 
@@ -44,7 +45,7 @@ import { SwaggerController } from './modules/swagger/swagger.controller';
     SupabaseClientProvider,
     {
       provide: APP_INTERCEPTOR,
-      useClass: CamelToSnakeInterceptor,
+      useClass: SnakeToCamelInterceptor,
     },
   ],
   exports: [SupabaseClientProvider],
