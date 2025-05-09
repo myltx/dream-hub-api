@@ -10,7 +10,7 @@
 - [unocss](https://unocss.dev/) Unocss is a utility-first CSS framework that provides a powerful and flexible way to build custom styles for your web applications.
 - [logto](https://logto.io/) Logto is an open-source identity and access management (IAM) solution that helps you build modern web and mobile applications with ease.
 - [supabase](https://supabase.com/) Supabase is an open source real-time database and backend built on PostgreSQL.
-- [nsetjs](https://nestjs.com/) Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications.
+- [nestjs](https://nestjs.com/) Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications.
 
 ## ✨ 特性
 

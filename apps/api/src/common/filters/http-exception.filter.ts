@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { formatTime } from '../utils';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -30,7 +31,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ? errorResponse
           : errorResponse['message'] || 'An error occurred',
       error: exception.name || 'Error',
-      timestamp: new Date().toISOString(),
+      timestamp: formatTime(new Date().toISOString()),
     });
   }
 }

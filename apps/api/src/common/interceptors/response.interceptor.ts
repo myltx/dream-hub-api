@@ -8,6 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RAW_RESPONSE_KEY } from '../decorators/raw-response.decorator';
+import { formatTime } from '../utils';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
@@ -26,8 +27,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
         code: 200,
         success: true,
         data,
-        message: 'Request successfully processed',
-        timestamp: new Date().toISOString(),
+        message: 'Request Success Fully processed',
+        timestamp: formatTime(new Date().toISOString()),
       })),
     );
   }
