@@ -19,3 +19,45 @@ export function formatTime(time: number | string): string {
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
+
+export function getAllMonthsBetween(start: string, end: string): string[] {
+  const result: string[] = [];
+
+  const [startYear, startMonth] = start.split('-').map(Number);
+  const [endYear, endMonth] = end.split('-').map(Number);
+
+  let year = startYear;
+  let month = startMonth;
+
+  while (year < endYear || (year === endYear && month <= endMonth)) {
+    const mm = month.toString().padStart(2, '0');
+    result.push(`${year}-${mm}`);
+
+    month++;
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+  }
+
+  return result;
+}
+
+export function getDefaultStartAndEnd(): {
+  startMonth: string;
+  endMonth: string;
+} {
+  const now = new Date();
+  const endYear = now.getFullYear();
+  const endMonth = now.getMonth() + 1; // 0-based
+
+  const endStr = `${endYear}-${String(endMonth).padStart(2, '0')}`;
+
+  // 12个月前
+  now.setMonth(now.getMonth() - 11);
+  const startYear = now.getFullYear();
+  const startMonth = now.getMonth() + 1;
+  const startStr = `${startYear}-${String(startMonth).padStart(2, '0')}`;
+
+  return { startMonth: startStr, endMonth: endStr };
+}
