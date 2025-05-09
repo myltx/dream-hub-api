@@ -121,4 +121,13 @@ export class SiteAccessLogController {
   async syncDailyVisits() {
     return this.logService.syncDailySiteVisits();
   }
+
+  @ApiOperation({ summary: '获取访问数量总和' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('totalVisits')
+  async getTotalVisits() {
+    const totalVisits = await this.logService.getTotalVisits();
+    return { totalVisits };
+  }
 }

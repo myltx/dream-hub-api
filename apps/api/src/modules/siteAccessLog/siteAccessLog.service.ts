@@ -26,6 +26,7 @@ export class SiteAccessLogService {
 
   async findAll() {
     const { data, error } = await this.supabase.from(this.dbName).select('*');
+    console.log(data, 'ddd');
 
     if (error) {
       throw new Error(`Error fetching tags: ${error.message}`);
@@ -178,5 +179,23 @@ export class SiteAccessLogService {
     if (error) {
       throw new Error(`Failed to sync daily site visits: ${error.message}`);
     }
+  }
+  // 获取总的访问数量
+  async getTotalVisits() {
+    const { data, error } = (await this.supabase
+      .from('daily_site_visits')
+      .select('visit_count')) as any; // 获取单个结果
+
+    if (error) {
+      throw new Error(`Error fetching total visits: ${error.message}`);
+    }
+
+    // 计算访问数量总和
+    const totalVisits = data.reduce(
+      (sum, record) => sum + record.visit_count,
+      0,
+    );
+
+    return totalVisits;
   }
 }
