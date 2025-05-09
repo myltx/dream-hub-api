@@ -1,3 +1,6 @@
+// 管理员角色名称
+export const ADMIN_ROLE_NAME = '管理员';
+
 /**
  *
  * @description 格式化时间

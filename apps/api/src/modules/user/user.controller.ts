@@ -26,6 +26,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserVo } from './vo/create-user.vo';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { CurrentUser } from '../auth/decorators/user.decorator';
+import { ADMIN_ROLE_NAME } from '../../common/utils/index';
 
 @ApiTags('用户管理')
 @ApiHeader({
@@ -104,5 +106,23 @@ export class UserController {
   @ApiExcludeEndpoint() // 这个接口不会出现在 Swagger 中
   async getToken() {
     return this.userService.getToken();
+  }
+
+  @ApiOperation({
+    summary: '判断用户是否为管理员',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Get('checkAdmin')
+  // 1.	GET /api/users/me/is-admin
+  // 表示判断当前登录用户是否为管理员。
+  //   2.	GET /api/auth/is-admin
+  // 更偏向于登录权限判断，适合鉴权相关模块。
+  //   3.	GET /api/users/:id/is-admin
+  // 如果你希望判断任意用户（而非当前用户），可带参数。
+  //   4.	POST /api/users/check-admin
+  // 如果你需要传入用户信息判断（非基于 token 的），可以用 POST。
+  async checkAdmin(@CurrentUser() user: any) {
+    const { roles } = user;
+    return roles.includes(ADMIN_ROLE_NAME);
   }
 }
