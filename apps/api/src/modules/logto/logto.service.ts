@@ -59,4 +59,29 @@ export class LogtoService {
     const { data } = await this.logtoApi.get(`/api/users/${userId}/roles`);
     return data;
   }
+  public async getPersonalAccessTokens(userId: string) {
+    const { data } = await this.logtoApi.get(
+      `/api/users/${userId}/personal-access-tokens`,
+    );
+    console.log(data, 'data');
+    return data;
+  }
+  public async addPersonalAccessToken(
+    userId: string,
+    tokenName: string,
+    expiresAt: string,
+  ) {
+    const { data } = await this.logtoApi.post(
+      `/api/users/${userId}/personal-access-tokens`,
+      {
+        name: tokenName,
+        // 我需要的是 一个临时的token 过期时间为
+        expiresAt: new Date(
+          Date.now() + 1000 * 60 * 60 * 24 * 30,
+        ).toISOString(), // 30天后过期
+        scopes: ['all'],
+      },
+    );
+    return data;
+  }
 }

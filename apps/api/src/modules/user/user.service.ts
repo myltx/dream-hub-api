@@ -118,6 +118,13 @@ export class UserService {
       throw new Error(`Error fetching token: ${err.message}`);
     }
   }
+  async getUserToken(userId: string) {
+    try {
+      return this.logtoService.getPersonalAccessTokens(userId);
+    } catch (err) {
+      throw new Error(`Error fetching token: ${err.message}`);
+    }
+  }
 
   async getUserRoles(userId: string) {
     const { data } = await this.logtoService.getUserRoles(userId);

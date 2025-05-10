@@ -11,6 +11,7 @@ import {
   HttpStatus,
   Headers,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -102,8 +103,8 @@ export class UserController {
   })
   @HttpCode(HttpStatus.OK)
   @Get('token')
-  @IsPublic()
-  @ApiExcludeEndpoint() // 这个接口不会出现在 Swagger 中
+  // @IsPublic()
+  // @ApiExcludeEndpoint() // 这个接口不会出现在 Swagger 中
   async getToken() {
     return this.userService.getToken();
   }
@@ -124,5 +125,16 @@ export class UserController {
   async checkAdmin(@CurrentUser() user: any) {
     const { roles } = user;
     return roles.includes(ADMIN_ROLE_NAME);
+  }
+
+  @ApiOperation({
+    summary: '获取用户Token',
+  })
+  @HttpCode(HttpStatus.OK)
+  @Get('getUserToken')
+  @IsPublic()
+  // @ApiExcludeEndpoint() // 这个接口不会出现在 Swagger 中
+  async getUserToken(@Query('userId') user_id: string) {
+    return this.userService.getUserToken(user_id);
   }
 }
