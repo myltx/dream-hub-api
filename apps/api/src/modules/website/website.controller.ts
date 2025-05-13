@@ -131,9 +131,10 @@ export class WebsiteController {
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('queryAllGroup')
-  async findAllWebsite(@CurrentUser() user: any) {
+  async findAllWebsite(@Query('userId') userId: string) {
+    console.log(userId, 'userId');
     return this.websiteService.findByQueryGroupAll({
-      user_id: user?.sub,
+      user_id: userId,
     });
   }
 

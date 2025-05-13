@@ -360,6 +360,7 @@ export class WebsiteService {
       .eq('user_id', user_id)
       .eq('content_type', 'website'); // 仅查询收藏的站点
 
+    console.log(favorites, 'favorites');
     if (favoritesError) {
       throw new Error(`获取收藏数据出错: ${favoritesError.message}`);
     }
