@@ -4,6 +4,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { QueryCategoryDto } from './dto/query-category.dto';
 import { UserService } from '../user/user.service';
+import { BusinessException } from '../../exceptions/index';
 
 @Injectable()
 export class CategoriesService {
@@ -19,7 +20,7 @@ export class CategoriesService {
       .insert([createCategoryDto]);
 
     if (error) {
-      throw new Error(`Error creating category: ${error.message}`);
+      throw new BusinessException(`Error creating category: ${error.message}`);
     }
 
     return data;
@@ -32,7 +33,9 @@ export class CategoriesService {
       .order('sort_order', { ascending: false }); // 由大到小排序
 
     if (error) {
-      throw new Error(`Error fetching categories: ${error.message}`);
+      throw new BusinessException(
+        `Error fetching categories: ${error.message}`,
+      );
     }
 
     return data;
@@ -46,7 +49,7 @@ export class CategoriesService {
       .single();
 
     if (error) {
-      throw new Error(`Error fetching category: ${error.message}`);
+      throw new BusinessException(`Error fetching category: ${error.message}`);
     }
     return data;
   }
@@ -57,7 +60,7 @@ export class CategoriesService {
       .eq('id', id);
 
     if (error) {
-      throw new Error(`Error updating category: ${error.message}`);
+      throw new BusinessException(`Error updating category: ${error.message}`);
     }
 
     return data;
@@ -69,7 +72,7 @@ export class CategoriesService {
       .eq('id', id);
 
     if (error) {
-      throw new Error(`Error deleting category: ${error.message}`);
+      throw new BusinessException(`Error deleting category: ${error.message}`);
     }
 
     return data;
@@ -103,7 +106,7 @@ export class CategoriesService {
     );
 
     if (error) {
-      throw new Error(`查询出错: ${error.message}`);
+      throw new BusinessException(`查询出错: ${error.message}`);
     }
     // 计算总页数
     const totalPages = Math.ceil((count || 0) / limit);
@@ -124,7 +127,7 @@ export class CategoriesService {
       .eq('category_id', categoryId)
       .limit(1); // 只检查是否存在至少一条记录
     if (error) {
-      throw new Error(`检查绑定关系时出错: ${error.message}`);
+      throw new BusinessException(`检查绑定关系时出错: ${error.message}`);
     }
 
     // 如果 data 不为空数组，说明已绑定

@@ -17,8 +17,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FavoritesService } from './favorites.service';
-import { CreateFavoritesDto } from './dto/create-favorites.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { CurrentUser } from '../auth/decorators/user.decorator';
 @ApiTags('收藏管理')
 @ApiBearerAuth()
 @ApiHeader({
@@ -33,19 +33,42 @@ export class FavoritesController {
   @ApiOperation({ summary: '新增收藏' })
   @Post()
   @HttpCode(HttpStatus.OK)
-  @IsPublic()
-  async create(@Body() createFavoritesDto: CreateFavoritesDto, @Request() req) {
-    return this.favoritesService.create({
-      ...createFavoritesDto,
-      user_id: req.user?.sub,
+  async create(@Body() createFavoritesDto: any, @CurrentUser() user: any) {
+    return this.favoritesService.create(
+      {
+        ...createFavoritesDto,
+      },
+      user?.sub,
+    );
+  }
+
+  @ApiOperation({ summary: '根据contentId删除收藏' })
+  @Post('removeByContent')
+  @HttpCode(HttpStatus.OK)
+  async remove(
+    @Body()
+    body: {
+      content_id: string;
+      content_type: string;
+    },
+    @CurrentUser() user: any,
+  ) {
+    const { content_id, content_type } = body;
+    return this.favoritesService.removeByContent({
+      content_id,
+      user_id: user.sub,
+      content_type,
     });
   }
 
-  @ApiOperation({ summary: '删除收藏' })
+  @ApiOperation({ summary: '根据ID删除收藏' })
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') id: string) {
-    return this.favoritesService.remove(id);
+  async removeId(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.favoritesService.removeById({
+      id,
+      user_id: user.sub,
+    });
   }
 
   @ApiOperation({ summary: '获取收藏列表' })
@@ -58,14 +81,14 @@ export class FavoritesController {
   @HttpCode(HttpStatus.OK)
   @IsPublic()
   @Get('query')
-  async findByQuery(@Query() query: Record<string, any>) {
-    for (const key in query) {
-      if (Object.prototype.hasOwnProperty.call(query, key)) {
-        if (!query[key]) {
-          delete query[key];
+  async findByQuery(@Body() body: Record<string, any>) {
+    for (const key in body) {
+      if (Object.prototype.hasOwnProperty.call(body, key)) {
+        if (!body[key]) {
+          delete body[key];
         }
       }
     }
-    return this.favoritesService.findByQuery(query);
+    return this.favoritesService.findByQuery(body);
   }
 }

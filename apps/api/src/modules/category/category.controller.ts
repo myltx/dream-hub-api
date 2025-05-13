@@ -23,6 +23,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { QueryCategoryDto } from './dto/query-category.dto';
 import { CurrentUser } from '../auth/decorators/user.decorator';
+import { BusinessException } from '../../exceptions/index';
 
 @ApiTags('分类管理')
 @ApiBearerAuth()
@@ -64,7 +65,10 @@ export class CategoriesController {
     // 检查标签是否绑定站点
     const isBound = await this.categoriesService.isCategoryBoundToWebsite(id);
     if (isBound) {
-      throw new Error(`分类已绑定站点，无法删除`);
+      throw new BusinessException(
+        `分类已绑定站点，无法删除`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.categoriesService.remove(id);
   }

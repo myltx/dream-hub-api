@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateFavoritesDto } from './dto/create-favorites.dto';
+import { BusinessException } from '../../exceptions/index';
 
 @Injectable()
 export class FavoritesService {
@@ -8,75 +9,113 @@ export class FavoritesService {
   constructor(
     @Inject('SupabaseClient') private readonly supabase: SupabaseClient,
   ) {}
-  async create(createFavoritesDto: CreateFavoritesDto) {
-    const { user_id, content_id, content_type } = createFavoritesDto;
-    if (!user_id) {
-      throw new Error('user_id is required');
-    }
-    if (!content_id) {
-      throw new Error('content_id is required');
-    }
-    if (!content_type) {
-      throw new Error('content_type is required');
+  async create(createFavoritesDto: CreateFavoritesDto, userId: string) {
+    const { content_id, content_type } = createFavoritesDto;
+    const { data: existingFavorite, error: checkError } = await this.supabase
+      .from(this.dbName)
+      .select('*')
+      .eq('user_id', userId)
+      .eq('content_id', content_id)
+      .eq('content_type', content_type)
+      .maybeSingle(); // 更安全
+
+    if (checkError) {
+      throw new BusinessException(`检查收藏失败: ${checkError.message}`);
     }
 
-    // 检查是否已收藏
+    if (existingFavorite) {
+      throw new BusinessException('已收藏，无需重复收藏');
+    }
+
+    const { data, error } = await this.supabase
+      .from(this.dbName)
+      .insert([
+        {
+          ...createFavoritesDto,
+          user_id: userId,
+        },
+      ])
+      .select(); // 返回插入后的数据
+
+    if (error) {
+      throw new BusinessException(`创建收藏失败: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async removeByContent({
+    content_id,
+    content_type,
+    user_id,
+  }: {
+    user_id: string;
+    content_id: string;
+    content_type: string;
+  }) {
+    // 检查是否存在
+    console.log('取消收藏', {
+      user_id,
+      content_id,
+      content_type,
+    });
     const { data: existingFavorite, error: checkError } = await this.supabase
       .from(this.dbName)
       .select('*')
       .eq('user_id', user_id)
       .eq('content_id', content_id)
       .eq('content_type', content_type)
-      .single(); // 只取一条记录
+      .maybeSingle(); // 更安全
 
-    if (checkError && checkError.code !== 'PGRST116') {
-      // 忽略没有匹配记录的错误，处理其他错误
-      throw new Error(`Error checking favorite: ${checkError.message}`);
+    if (checkError) {
+      throw new BusinessException(`检查收藏失败: ${checkError.message}`);
     }
-
-    if (existingFavorite) {
-      // 如果已存在，直接返回提示或数据
-      throw new Error(`Error creating favorite: Already favorited`);
+    if (!existingFavorite) {
+      throw new BusinessException('未收藏，无法取消');
     }
-
-    // 插入新的收藏记录
-    const { data, error } = await this.supabase
+    if (existingFavorite.user_id !== user_id) {
+      throw new BusinessException('没有权限取消收藏');
+    }
+    const { error } = await this.supabase
       .from(this.dbName)
-      .insert([createFavoritesDto]);
+      .delete()
+      .eq('user_id', user_id)
+      .eq('content_id', content_id)
+      .eq('content_type', content_type);
 
     if (error) {
-      throw new Error(`Error creating favorite: ${error.message}`);
+      throw new BusinessException(`取消收藏失败: ${error.message}`);
     }
 
-    return data;
+    return true;
   }
 
-  async remove(id: string) {
-    // 检查是否存在需要删除的收藏记录
+  async removeById({ id, user_id }: { user_id: string; id: string }) {
+    // 检查是否存在
     const { data: existingFavorite, error: checkError } = await this.supabase
       .from(this.dbName)
       .select('*')
+      .eq('user_id', user_id)
       .eq('id', id)
-      .single(); // 只检查一条记录
-
-    if (checkError && checkError.code !== 'PGRST116') {
-      // 忽略记录未找到的错误，抛出其他错误
-      throw new Error(`Error checking favorite: ${checkError.message}`);
+      .maybeSingle(); // 更安全
+    console.log(existingFavorite, 'existingFavorite');
+    if (checkError) {
+      throw new BusinessException(`检查收藏失败: ${checkError.message}`);
     }
-
     if (!existingFavorite) {
-      // 如果记录不存在，返回提示
-      throw new Error(`Error deleting favorite: Favorite not found`);
+      throw new BusinessException('未收藏，无法取消');
     }
-
-    // 删除收藏记录
-    const { error: deleteError } = await this.supabase
+    if (existingFavorite.user_id !== user_id) {
+      throw new BusinessException('没有权限取消收藏');
+    }
+    const { error } = await this.supabase
       .from(this.dbName)
       .delete()
+      .eq('user_id', user_id)
       .eq('id', id);
 
-    if (deleteError) {
-      throw new Error(`Error deleting favorite: ${deleteError.message}`);
+    if (error) {
+      throw new BusinessException(`取消收藏失败: ${error.message}`);
     }
 
     return true;

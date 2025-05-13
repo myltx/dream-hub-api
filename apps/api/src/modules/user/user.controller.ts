@@ -12,6 +12,7 @@ import {
   Headers,
   UseGuards,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -29,6 +30,7 @@ import { CreateUserVo } from './vo/create-user.vo';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { CurrentUser } from '../auth/decorators/user.decorator';
 import { ADMIN_ROLE_NAME } from '../../common/utils/index';
+import { FindUserDto } from './dto/find-user.dto';
 
 @ApiTags('用户管理')
 @ApiHeader({
@@ -71,15 +73,8 @@ export class UserController {
   })
   @HttpCode(HttpStatus.OK)
   @Post('detail')
-  async findOne(@Body() { user_id }) {
-    if (!user_id) {
-      return {
-        message: 'userId不能为空',
-        code: 400,
-      };
-    }
-
-    return this.userService.findOne(user_id);
+  async findOne(@Body() dto: FindUserDto) {
+    return this.userService.findOne(dto.user_id);
   }
   @ApiOperation({
     summary: '更新用户', // 接口描述信息
