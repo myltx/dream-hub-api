@@ -153,4 +153,19 @@ export class WebsiteController {
   async increaseVisitCount(@Param('id') id: string) {
     return this.websiteService.increaseVisitCount(id);
   }
+
+  // MCP 调用接口
+  @ApiOperation({ summary: 'MCP 调用接口: 获取站点列表' })
+  @HttpCode(HttpStatus.OK)
+  @IsPublic()
+  @Get('mcp')
+  async getWebsitesForMcp(
+    @Query('limit') limit?: number,
+    @Query('keyword') keyword?: string,
+  ) {
+    return this.websiteService.getWebsitesForMcp({
+      limit: limit ? Number(limit) : 20,
+      keyword,
+    });
+  }
 }

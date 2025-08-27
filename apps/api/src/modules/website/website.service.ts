@@ -463,4 +463,41 @@ export class WebsiteService {
 
     return data;
   }
+  /**
+   * MCP 使用的简化查询接口
+   * 支持 title + description 模糊搜索
+   */
+  async getWebsitesForMcp(query?: { limit?: number; keyword?: string }) {
+    const limit = query?.limit ?? 20;
+    const keyword = query?.keyword ?? '';
+
+    let queryBuilder = this.supabase
+      .from(this.dbName)
+      .select('id, title, url, description, visit_count, is_public')
+      .eq('status', true) // 只取可用数据
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (keyword) {
+      // 同时在 title 和 description 搜索
+      queryBuilder = queryBuilder.or(
+        `title.ilike.%${keyword}%,description.ilike.%${keyword}%`,
+      );
+    }
+
+    const { data, error } = await queryBuilder;
+
+    if (error) {
+      throw new Error(`Error fetching websites for MCP: ${error.message}`);
+    }
+
+    return data.map((site) => ({
+      id: site.id,
+      title: site.title,
+      url: site.url,
+      description: site.description,
+      visitCount: site.visit_count,
+      isPublic: site.is_public,
+    }));
+  }
 }
